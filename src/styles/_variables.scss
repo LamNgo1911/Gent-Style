@@ -1,0 +1,43 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
+// colors
+$primary-color: #b7b7a4;
+$secondary-color: #a5a58d;
+$text-color: #333;
+$background-color: #f8f9fa;
+
+// fonts
+$font-family: "Roboto", sans-serif;
+$font-size-base: 1rem;
+$font-weight-normal: 400;
+$font-weight-bold: 700;
+
+// spacing
+$padding-base: 1rem;
+$margin-base: 1rem;
+$border-radius: 0.25rem;
+
+// Z-Index
+$z-index-modal: 1000;
+$z-index-dropdown: 500;
+$z-index-tooltip: 200;
+
+// dark theme
+$dark-background-color: #232323;
+$dark-text-color: #ffe8d6;
+$dark-link-color: #ffe8d6;
+$dark-border-color: #555;
+$dark-shadow-color: rgba(0, 0, 0, 0.5);
+
+// light theme
+$light-background-color: #ffe8d6;
+$light-text-color: #333;
+$light-link-color: #007bff;
+$light-border-color: #ddd;
+$light-shadow-color: rgba(0, 0, 0, 0.1);
+
+// breakpoints
+$breakpoint-sm: 576px;
+$breakpoint-md: 768px;
+$breakpoint-lg: 992px;
+$breakpoint-xl: 1200px;

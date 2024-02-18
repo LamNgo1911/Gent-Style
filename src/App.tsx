@@ -1,6 +1,6 @@
-import Header from "./components/Header/Header";
-import { Routes, Route } from "react-router-dom";
-import Footer from "./components/Footer/Footer";
+import Header from "./components/Header";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Footer from "./components/Footer";
 import Home from "./pages/Home/Home";
 import ProductListing from "./pages/ProductListing";
 import ProductDetail from "./pages/ProductDetail";
@@ -12,12 +12,23 @@ import SearchResults from "./pages/SearchResults";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+import { useState } from "react";
 
 function App() {
+  const { pathname } = useLocation();
+  const [darkTheme, setDarkTheme] = useState(false);
+
+  const isAuthPage = pathname === "/login" || pathname === "/register";
   return (
-    <div className="App">
-      <Header />
+    <div className={`App ${darkTheme ? "dark-theme" : "light-theme"}`}>
+      {!isAuthPage && <Header />}
       <Routes>
+        {/* auth */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        {/* main content */}
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductListing />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
@@ -30,7 +41,7 @@ function App() {
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-      <Footer />
+      {!isAuthPage && <Footer />}
     </div>
   );
 }

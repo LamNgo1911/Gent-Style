@@ -1,1 +1,37 @@
-@use "./variables";
+@use "./variables" as vars;
+
+// -------- btn style --------
+@mixin button-style($theme: light) {
+  @if $theme == light {
+    background-color: vars.$light-background-color;
+    color: vars.$light-text-color;
+    border-radius: vars.$border-radius;
+    border: none;
+    padding: vars.$padding-base;
+    &:hover {
+      background-color: darken(vars.$light-background-color, 10%);
+    }
+    &:active {
+      background-color: darken(vars.$light-background-color, 20%);
+    }
+  } @else {
+    background-color: vars.$dark-background-color;
+    color: vars.$dark-text-color;
+    border-radius: vars.$border-radius;
+    border: none;
+    padding: vars.$padding-base;
+    &:hover {
+      background-color: darken(vars.$dark-background-color, 10%);
+    }
+    &:active {
+      background-color: darken(vars.$dark-background-color, 20%);
+    }
+  }
+}
+
+// -------- responsive --------
+@mixin responsive {
+  @media (max-width: vars.$breakpoint-sm) {
+    @content;
+  }
+}

@@ -1,0 +1,16 @@
+@use "./variables" as vars;
+
+// font-size adjustment
+@function new-font-size($factor) {
+  @return vars.$font-size-base * $factor;
+}
+
+// padding adjustment
+@function new-padding-size($factor) {
+  @return vars.$padding-base * $factor;
+}
+
+// margin adjustment
+@function new-margin-size($factor) {
+  @return vars.$margin-base * $factor;
+}
