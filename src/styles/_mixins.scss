@@ -7,7 +7,7 @@
     color: vars.$light-text-color;
     border-radius: vars.$border-radius;
     border: none;
-    padding: vars.$padding-base;
+    padding: 0.2rem 1rem;
     &:hover {
       background-color: darken(vars.$light-background-color, 10%);
     }
@@ -19,7 +19,7 @@
     color: vars.$dark-text-color;
     border-radius: vars.$border-radius;
     border: none;
-    padding: vars.$padding-base;
+    padding: 0.2rem 1rem;
     &:hover {
       background-color: darken(vars.$dark-background-color, 10%);
     }
@@ -34,4 +34,26 @@
   @media (max-width: vars.$breakpoint-sm) {
     @content;
   }
+}
+
+// login/register input form
+@mixin input {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  color: #333;
+  transition: border-color 0.3s ease;
+
+  &:focus {
+    outline: none;
+    border-color: vars.$primary-color;
+    box-shadow: 0 0 5px vars.$light-shadow-color; // Shadow on focus
+  }
+}
+
+@mixin error-text {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem; // Add some spacing above the error message
 }

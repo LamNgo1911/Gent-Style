@@ -1,17 +1,27 @@
 @use "../../../styles/functions" as funcs;
 @use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixs;
 
 .register-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
   gap: 2rem;
 
   padding: 0 funcs.new-padding-size(1.5);
   height: 100vh;
   .register__title {
     font-size: funcs.new-font-size(2);
+    font-family: vars.$font-family-style;
+  }
+
+  .register__welcome {
+    font-size: funcs.new-font-size(0.8);
+    width: 60%;
+    color: vars.$secondary-color;
   }
 
   .register-form {
@@ -30,18 +40,43 @@
 
       input {
         width: 100%;
+        @include mixs.input;
+      }
+
+      .error {
+        @include mixs.error-text;
       }
     }
 
     .form-terms {
+      width: 100%;
+
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
+      align-items: start;
       gap: 0.2rem;
+
+      .form-terms__input {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
+
+      label {
+        font-size: 0.8rem;
+        color: vars.$secondary-color;
+      }
+
+      .error {
+        @include mixs.error-text;
+      }
     }
 
     .submit-btn {
       align-self: center;
+      width: 100%;
+      @include mixs.button-style();
+      padding: 0.6rem 1rem;
     }
   }
 
@@ -49,5 +84,11 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    .register__small-decor {
+      width: 40px;
+      height: 1px;
+      background-color: black;
+    }
   }
 }

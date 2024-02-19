@@ -1,0 +1,101 @@
+@use "../../../styles/functions" as funcs;
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixs;
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 500px;
+  margin: 0 auto;
+  gap: 2rem;
+
+  padding: 0 funcs.new-padding-size(1.5);
+  height: 100vh;
+  .login__title {
+    font-size: funcs.new-font-size(2);
+    font-family: vars.$font-family-style;
+  }
+
+  .login__subtitle {
+    font-size: funcs.new-font-size(0.8);
+    width: 60%;
+    color: vars.$secondary-color;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    gap: 1rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      width: 100%;
+      gap: 0.2rem;
+
+      input {
+        width: 100%;
+        @include mixs.input;
+      }
+
+      .error {
+        @include mixs.error-text;
+      }
+    }
+
+    .form-check {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      //   border: 1px solid black;
+
+      .form-check__input {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 0.2rem;
+
+        label {
+          font-size: 0.8rem;
+          color: vars.$secondary-color;
+        }
+
+        .error {
+          @include mixs.error-text;
+        }
+      }
+
+      .forgot-password {
+        width: 100%;
+        text-align: end;
+        font-size: 0.8rem;
+        cursor: pointer;
+      }
+    }
+
+    .submit-btn {
+      align-self: center;
+      width: 100%;
+      @include mixs.button-style();
+      padding: 0.6rem 1rem;
+    }
+  }
+
+  .login__small-text {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    .login__small-decor {
+      width: 40px;
+      height: 1px;
+      background-color: black;
+    }
+  }
+}
