@@ -1,9 +1,15 @@
-import React, { useState } from "react";
-import "./Login.scss";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { RootState } from "../../../redux/store";
+
+import GoogleClientId from "../../../config/googleOAuth";
+import "./Login.scss";
+import { axiosApi } from "../../../config/axiosApi";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../../redux/slices/userSlice";
 
 export default function Login() {
   const {
@@ -11,15 +17,37 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const navigate = useNavigate();
+  const { ref } = register("email");
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
-    navigate("/dashboard");
-  };
+    const { email, password } = data;
 
-  const clientId =
-    "775960901268-sqpvtimc7vdd13u2uafrrst6cpj8cj34.apps.googleusercontent.com";
+    try {
+      // get access_token
+      const tokenData = await axiosApi.post("auth/login", {
+        email,
+        password,
+      });
+      console.log(tokenData.data.access_token);
+      // get user infor
+      const userData = await axiosApi.get("auth/profile", {
+        headers: {
+          Authorization: `Bearer ${tokenData.data.access_token}`,
+        },
+      });
+
+      console.log(userData);
+      dispatch(setUser(userData.data));
+      navigate("/");
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   const handleSuccess = (credentialResponse: any) => {
     if (credentialResponse.credential) {
@@ -31,6 +59,11 @@ export default function Login() {
   const handleFailure = (error: any) => {
     console.log("Google login failure:", error);
   };
+
+  // focus on email input when users navigate the register page
+  useEffect(() => {
+    emailRef.current?.focus();
+  }, []);
 
   return (
     <div className="login-container">
@@ -46,6 +79,10 @@ export default function Login() {
             type="email"
             id="email"
             placeholder="Enter your email"
+            ref={(e) => {
+              ref(e);
+              emailRef.current = e; // you can still assign to ref
+            }}
           />
           {errors.email && <span className="error">Email is required</span>}
         </div>
@@ -77,7 +114,7 @@ export default function Login() {
         </button>
       </form>
       <div className="google-login">
-        <GoogleOAuthProvider clientId={clientId}>
+        <GoogleOAuthProvider clientId={GoogleClientId.clientId}>
           <GoogleLogin
             text="signin_with"
             onSuccess={handleSuccess}

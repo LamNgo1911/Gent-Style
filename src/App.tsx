@@ -1,5 +1,7 @@
-import Header from "./components/Header";
 import { Routes, Route, useLocation } from "react-router-dom";
+import { useState } from "react";
+
+import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home/Home";
 import ProductListing from "./pages/ProductListing";
@@ -14,7 +16,6 @@ import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import { useState } from "react";
 
 function App() {
   const { pathname } = useLocation();

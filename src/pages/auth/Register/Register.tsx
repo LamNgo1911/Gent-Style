@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import "./Register.scss";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
+import { useEffect, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+
+import "./Register.scss";
+import { axiosApi } from "../../../config/axiosApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../../redux/slices/userSlice";
 
 export default function Register() {
   const {
@@ -15,45 +17,42 @@ export default function Register() {
 
   const password = watch("password");
   const navigate = useNavigate();
+  const { ref } = register("username");
+  const usernameRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
+  const [isExistingEmail, setIsExistingEmail] = useState(false);
 
-  const onSubmit = (data: any) => {
+  // check and store current user
+  const onSubmit = async (data: FieldValues) => {
+    const { username, email, password } = data;
+    try {
+      // check existing email from api
+      const emailCheckingRes = await axiosApi.post("users/is-available", {
+        email,
+      });
+      setIsExistingEmail(emailCheckingRes.data.isAvailable);
+
+      // store new user in api
+      if (!emailCheckingRes.data.isAvailable) {
+        await axiosApi.post("users", {
+          name: username,
+          email,
+          password,
+          avatar: "https://picsum.photos/800",
+        });
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+
     navigate("/login");
   };
-  console.log(errors.email);
 
-  const clientId =
-    "775960901268-sqpvtimc7vdd13u2uafrrst6cpj8cj34.apps.googleusercontent.com";
-
-  const [googleLoginSuccess, setGoogleLoginSuccess] = useState(false);
-  const [googleLoginError, setGoogleLoginError] = useState(false);
-
-  const handleSuccess = (credentialResponse: any) => {
-    if (credentialResponse.credential) {
-      const credentialResponseDecode = jwtDecode(credentialResponse.credential);
-      
-      console.log(credentialResponseDecode);
-    }
-    setGoogleLoginSuccess(true);
-    setGoogleLoginError(false);
- 
-  };
-
-  const handleFailure = (error: any) => {
-    console.log("Login failure:", error);
-    setGoogleLoginSuccess(false);
-    setGoogleLoginError(true);
-   
-  };
-
-  const emailInputRef = useRef<HTMLInputElement>(null);
-
-  // useEffect(() => {
-  //   emailInputRef.current?.focus();
-  // }, []);
-
-  console.log("Email value:", watch("email"));
-  console.log("password value:", watch("password"));
-
+  // focus on username input when users navigate the register page
+  useEffect(() => {
+    usernameRef.current?.focus();
+  }, []);
+  console.log(errors);
   return (
     <div className="register-container">
       <h2 className="register__title">Create your account</h2>
@@ -62,30 +61,59 @@ export default function Register() {
       </small>
       <form onSubmit={handleSubmit(onSubmit)} className="register-form">
         <div className="form-group">
+          <label htmlFor="username">Username</label>
+          <input
+            {...register("username", { required: true })}
+            type="username"
+            id="username"
+            placeholder="Enter your username"
+            ref={(e) => {
+              ref(e);
+              usernameRef.current = e; // you can still assign to ref
+            }}
+          />
+          {errors.username && (
+            <span className="error">
+              {errors.username.type === "required" && "Username is required"}
+            </span>
+          )}
+        </div>
+        <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             {...register("email", { required: true })}
             type="email"
             id="email"
             placeholder="Enter your email"
-            // ref={emailInputRef}
           />
           {errors.email && (
             <span className="error">
-              {errors.email.type === "required" ? "Email is required" : ""}
+              {errors.email.type === "required" && "Email is required"}
             </span>
+          )}
+          {isExistingEmail && (
+            <span className="error">Email already exists</span>
           )}
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: true,
+              minLength: 4,
+              maxLength: 15,
+            })}
             type="password"
             id="password"
             placeholder="Enter your password"
           />
-          {errors.password && (
+          {errors.password?.type === "required" && (
             <span className="error">Password is required</span>
+          )}
+          {errors.password?.type === "minLength" && (
+            <span className="error">
+              Password must be longer or equal to 4 characters
+            </span>
           )}
         </div>
         <div className="form-group">
@@ -94,12 +122,14 @@ export default function Register() {
             {...register("confirmPassword", {
               required: true,
               validate: (value) => value === password,
+              minLength: 4,
+              maxLength: 15,
             })}
             type="password"
             id="confirmPassword"
             placeholder="Confirm your password"
           />
-          {errors.confirmPassword && (
+          {errors.confirmPassword?.type === "validate" && (
             <span className="error">Passwords do not match</span>
           )}
         </div>
@@ -120,19 +150,6 @@ export default function Register() {
           Create account
         </button>
       </form>
-      <div className="register__small-text">
-        <span className="register__small-decor"></span>
-        <small>& Create account with</small>
-        <span className="register__small-decor"></span>
-      </div>
-      {/* Google register */}
-      <GoogleOAuthProvider clientId={clientId}>
-        <GoogleLogin
-          text="signup_with"
-          onSuccess={() => handleSuccess}
-          onError={() => handleFailure}
-        />
-      </GoogleOAuthProvider>
     </div>
   );
 }
