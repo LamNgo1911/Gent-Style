@@ -4,8 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./Register.scss";
 import { axiosApi } from "../../../config/axiosApi";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../../redux/slices/userSlice";
 
 export default function Register() {
   const {
@@ -19,7 +17,6 @@ export default function Register() {
   const navigate = useNavigate();
   const { ref } = register("username");
   const usernameRef = useRef<HTMLInputElement | null>(null);
-  const dispatch = useDispatch();
   const [isExistingEmail, setIsExistingEmail] = useState(false);
 
   // check and store current user

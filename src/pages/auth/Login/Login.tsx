@@ -22,6 +22,7 @@ export default function Login() {
   const { ref } = register("email");
   const emailRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
@@ -45,7 +46,17 @@ export default function Login() {
       dispatch(setUser(userData.data));
       navigate("/");
     } catch (error: any) {
-      console.log(error);
+      if (error.response.status === 400) {
+        setErrorMessage("Invalid username or password");
+      } else if (error.response.status === 401) {
+        setErrorMessage("Invalid credentials");
+      } else if (error.response.status === 403) {
+        setErrorMessage("Access denied");
+      } else if (error.response.status === 404) {
+        setErrorMessage("Not found");
+      } else if (error.response.status === 500) {
+        setErrorMessage("Temporary server issue, please try again later");
+      }
     }
   };
 
@@ -109,6 +120,7 @@ export default function Login() {
           </div>
           <small className="forgot-password">Forgot password?</small>
         </div>
+        {errorMessage && <span className="error">{errorMessage}</span>}
         <button type="submit" className="submit-btn">
           Log in
         </button>
