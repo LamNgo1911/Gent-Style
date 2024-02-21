@@ -15,9 +15,9 @@ export type LoginInfo = {
   password: string;
 };
 
-export const fetchLogin = createAsyncThunk(
+export const fetchLogin = createAsyncThunk<User, LoginInfo>(
   "user/fetchLogin",
-  async ({ email, password }: LoginInfo, { rejectWithValue }) => {
+  async ({ email, password }, { rejectWithValue }) => {
     try {
       const tokenData = await axiosApi.post("auth/login", { email, password });
       const userData = await axiosApi.get("auth/profile", {
@@ -62,6 +62,8 @@ export const userSlice = createSlice({
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
       // console.log(action.payload);
       state.user = action.payload;
+      state.isAuthenticated = true;
+      state.isLoading = false;
       state.error = null;
     });
     builder.addCase(fetchLogin.pending, (state) => {

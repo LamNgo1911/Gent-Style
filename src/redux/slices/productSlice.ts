@@ -16,7 +16,7 @@ const initialState: InitialState = {
   wishlist: [],
 };
 
-const fetchAllProducts = createAsyncThunk(
+const fetchAllProducts = createAsyncThunk<Product[], void>(
   "fetchAllProducts",
   async (_, { rejectWithValue }) => {
     try {
@@ -24,7 +24,7 @@ const fetchAllProducts = createAsyncThunk(
       const data: Product[] = result.data;
       return data;
     } catch (error: any) {
-      return rejectWithValue(error);
+      return rejectWithValue(error.response.message);
     }
   }
 );
@@ -43,6 +43,9 @@ export const productSlice = createSlice({
       );
       state.wishlist = newWishlist;
     },
+    clearWishlist: (state) => {
+      state.wishlist = [];
+    },
     sortProductsbyPrice(state) {
       const newProductList = [...state.products].sort(
         (a, b) => a.price - b.price
@@ -52,11 +55,14 @@ export const productSlice = createSlice({
   },
   extraReducers: (builder) => {
     // fetchAllProducts
-    builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
-      state.products = action.payload;
-      state.loading = false;
-      state.error = null;
-    });
+    builder.addCase(
+      fetchAllProducts.fulfilled,
+      (state, action: PayloadAction<Product[]>) => {
+        state.products = action.payload;
+        state.loading = false;
+        state.error = null;
+      }
+    );
     builder.addCase(fetchAllProducts.pending, (state) => {
       state.loading = true;
       state.error = null;
