@@ -1,15 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { useNavigate } from "react-router-dom";
-import { RootState } from "../../../redux/store";
+import { Link, useNavigate } from "react-router-dom";
 
+import { AppDispatch, RootState } from "../../../redux/store";
 import GoogleClientId from "../../../config/googleOAuth";
 import "./Login.scss";
 import { axiosApi } from "../../../config/axiosApi";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../../redux/slices/userSlice";
+import { fetchLogin } from "../../../redux/slices/userSlice";
+import { dataCredential } from "../../../misc/dataCredential";
 
 export default function Login() {
   const {
@@ -21,52 +22,49 @@ export default function Login() {
   const navigate = useNavigate();
   const { ref } = register("email");
   const emailRef = useRef<HTMLInputElement | null>(null);
-  const dispatch = useDispatch();
-  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch: AppDispatch = useDispatch();
+  const { error, user } = useSelector((state: RootState) => state.users);
 
   const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
     const { email, password } = data;
 
-    try {
-      // get access_token
-      const tokenData = await axiosApi.post("auth/login", {
-        email,
-        password,
-      });
-      console.log(tokenData.data.access_token);
-      // get user infor
-      const userData = await axiosApi.get("auth/profile", {
-        headers: {
-          Authorization: `Bearer ${tokenData.data.access_token}`,
-        },
-      });
+    await dispatch(fetchLogin({ email, password }));
+    navigate("/");
+  };
 
-      console.log(userData);
-      dispatch(setUser(userData.data));
-      navigate("/");
-    } catch (error: any) {
-      if (error.response.status === 400) {
-        setErrorMessage("Invalid username or password");
-      } else if (error.response.status === 401) {
-        setErrorMessage("Invalid credentials");
-      } else if (error.response.status === 403) {
-        setErrorMessage("Access denied");
-      } else if (error.response.status === 404) {
-        setErrorMessage("Not found");
-      } else if (error.response.status === 500) {
-        setErrorMessage("Temporary server issue, please try again later");
+  const handleSuccess = async (credentialResponse: any) => {
+    if (credentialResponse.credential) {
+      const credentialResponseDecode: dataCredential = jwtDecode(
+        credentialResponse.credential
+      );
+      const { name, email, picture } = credentialResponseDecode;
+
+      //  create a new user with google oauth 2.0
+      try {
+        // check existing email from api
+        const emailCheckingRes = await axiosApi.post("users/is-available", {
+          email,
+        });
+
+        // checking email if already exist, we can let user login intead creating a new user
+        if (!emailCheckingRes.data.isAvailable) {
+          await axiosApi.post("users", {
+            name,
+            email,
+            password: "1234",
+            avatar: picture,
+          });
+        }
+
+        await dispatch(fetchLogin({ email, password: "1234" }));
+        navigate("/");
+      } catch (error) {
+        console.log(error);
       }
     }
   };
-
-  const handleSuccess = (credentialResponse: any) => {
-    if (credentialResponse.credential) {
-      const credentialResponseDecode = jwtDecode(credentialResponse.credential);
-      console.log(credentialResponseDecode);
-    }
-  };
-
+  console.log(user);
   const handleFailure = (error: any) => {
     console.log("Google login failure:", error);
   };
@@ -120,7 +118,7 @@ export default function Login() {
           </div>
           <small className="forgot-password">Forgot password?</small>
         </div>
-        {errorMessage && <span className="error">{errorMessage}</span>}
+        {error && <span className="error">{error}</span>}
         <button type="submit" className="submit-btn">
           Log in
         </button>
@@ -134,6 +132,12 @@ export default function Login() {
           />
         </GoogleOAuthProvider>
       </div>
+      <p>
+        Doesn't have an account yet?{" "}
+        <Link to="/register" className="form-link">
+          Create an account
+        </Link>
+      </p>
     </div>
   );
 }

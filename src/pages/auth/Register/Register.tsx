@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./Register.scss";
 import { axiosApi } from "../../../config/axiosApi";
@@ -22,13 +22,14 @@ export default function Register() {
   // check and store current user
   const onSubmit = async (data: FieldValues) => {
     const { username, email, password } = data;
+    console.log(email);
     try {
       // check existing email from api
       const emailCheckingRes = await axiosApi.post("users/is-available", {
         email,
       });
       setIsExistingEmail(emailCheckingRes.data.isAvailable);
-
+      console.log(emailCheckingRes.data);
       // store new user in api
       if (!emailCheckingRes.data.isAvailable) {
         await axiosApi.post("users", {
@@ -61,7 +62,7 @@ export default function Register() {
           <label htmlFor="username">Username</label>
           <input
             {...register("username", { required: true })}
-            type="username"
+            type="text"
             id="username"
             placeholder="Enter your username"
             ref={(e) => {
@@ -147,6 +148,12 @@ export default function Register() {
           Create account
         </button>
       </form>
+      <p>
+        Already have an account?{" "}
+        <Link to="/login" className="form-link">
+          Login here
+        </Link>
+      </p>
     </div>
   );
 }

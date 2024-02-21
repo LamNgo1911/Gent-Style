@@ -1,67 +1,79 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type User = {
-  id: number;
-  name: string;
-  role: string;
-  email: string;
-  password: string;
-  avatar: string;
-};
-
-type UserState = {
-  currentUser: User | null;
-  isLoggedIn: boolean;
-  loading: boolean;
-  error: string | null;
-};
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { axiosApi } from "../../config/axiosApi";
+import { errorMessages } from "../../misc/errorMessages";
+import { User, UserState } from "../../misc/typesInRedux";
 
 const initialState: UserState = {
-  currentUser: null,
-  isLoggedIn: false,
-  loading: false,
+  user: null,
+  isAuthenticated: false,
+  isLoading: false,
   error: null,
 };
+
+export type LoginInfo = {
+  email: string;
+  password: string;
+};
+
+export const fetchLogin = createAsyncThunk(
+  "user/fetchLogin",
+  async ({ email, password }: LoginInfo, { rejectWithValue }) => {
+    try {
+      const tokenData = await axiosApi.post("auth/login", { email, password });
+      const userData = await axiosApi.get("auth/profile", {
+        headers: { Authorization: `Bearer ${tokenData.data.access_token}` },
+      });
+      // console.log(userData.data);
+      return userData.data;
+    } catch (error: any) {
+      return rejectWithValue(errorMessages[error.response.status]);
+    }
+  }
+);
 
 export const userSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
-    setUser(state, actions: PayloadAction<User>) {
-      state.currentUser = actions.payload;
-      state.isLoggedIn = true;
-      state.loading = false;
+    setUser: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      state.isAuthenticated = true;
+      state.isLoading = false;
       state.error = null;
     },
-    clearUser(state) {
-      state.currentUser = null;
-      state.isLoggedIn = false;
-      state.loading = false;
-      state.error = null;
+    setLoading: (state, action: PayloadAction<boolean>) => {
+      state.isLoading = action.payload;
     },
-    startLoading(state) {
-      state.loading = true;
-      state.error = null;
-    },
-    stopLoading(state) {
-      state.loading = false;
-    },
-    setError(state, action: PayloadAction<string>) {
+    setError: (state, action: PayloadAction<string | null>) => {
       state.error = action.payload;
-      state.loading = false;
+      state.isLoading = false;
     },
-    clearError(state) {
+    logout: (state) => {
+      state.user = null;
+      state.isAuthenticated = false;
+      state.isLoading = false;
+      state.error = null;
+    },
+    clearError: (state) => {
       state.error = null;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchLogin.fulfilled, (state, action) => {
+      // console.log(action.payload);
+      state.user = action.payload;
+      state.error = null;
+    });
+    builder.addCase(fetchLogin.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(fetchLogin.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+  },
 });
 
-export const {
-  setUser,
-  clearUser,
-  startLoading,
-  stopLoading,
-  setError,
-  clearError,
-} = userSlice.actions;
+export const { setUser, setLoading, setError, logout, clearError } =
+  userSlice.actions;
 export default userSlice.reducer;
