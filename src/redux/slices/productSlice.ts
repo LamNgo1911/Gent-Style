@@ -72,3 +72,12 @@ export const productSlice = createSlice({
     });
   },
 });
+
+const productReducer = productSlice.reducer;
+export const {
+  addToWishlist,
+  removeFromWishlist,
+  clearWishlist,
+  sortProductsbyPrice,
+} = productSlice.actions;
+export default productReducer;

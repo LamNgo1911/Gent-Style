@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Product } from "../misc/typesInRedux";
+import { store } from "./store";
 
 const productQueries = createApi({
   //base query for all the api calls inside this createApi
@@ -24,30 +25,53 @@ const productQueries = createApi({
 
     // mutation
     createProduct: builder.mutation<Product, Partial<Product>>({
-      query: (newProduct) => ({
-        url: "",
-        method: "POST",
-        body: newProduct,
-      }),
+      query: (newProduct) => {
+        const admin = store.getState().users.user?.role === "admin";
+        if (!admin) {
+          throw new Error("User is not authorized to create products");
+        }
+
+        return {
+          url: "",
+          method: "POST",
+          body: newProduct,
+        };
+      },
       invalidatesTags: ["Products"],
     }),
 
     updateProduct: builder.mutation<Product, Partial<Product>>({
-      query: (updatedProduct) => ({
-        url: `${updatedProduct.id}`,
-        method: "PUT",
-        body: updatedProduct,
-      }),
+      query: (updatedProduct) => {
+        const admin = store.getState().users.user?.role === "admin";
+        if (!admin) {
+          throw new Error("User is not authorized to create products");
+          //  store.getState().products.error === "User is not authorized to create products"
+        }
+
+        return {
+          url: `${updatedProduct.id}`,
+          method: "PUT",
+          body: updatedProduct,
+        };
+      },
       invalidatesTags: (result, error, updatedProduct) => [
         { type: "Products", id: updatedProduct.id },
       ],
     }),
 
     deleteProduct: builder.mutation<boolean, number>({
-      query: (productId) => ({
-        url: `${productId}`,
-        method: "DELETE",
-      }),
+      query: (productId) => {
+        const admin = store.getState().users.user?.role === "admin";
+        if (!admin) {
+          throw new Error("User is not authorized to create products");
+          //   store.getState().products.error === "User is not authorized to create products"
+        }
+
+        return {
+          url: `${productId}`,
+          method: "DELETE",
+        };
+      },
       invalidatesTags: ["Products"],
     }),
   }),
@@ -60,4 +84,5 @@ export const {
   useUpdateProductMutation,
   useDeleteProductMutation,
 } = productQueries;
+
 export default productQueries;
