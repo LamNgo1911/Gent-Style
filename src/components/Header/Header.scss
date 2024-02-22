@@ -1,0 +1,118 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.header-container {
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 0.8rem;
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+
+  .header__logo-container {
+    background: vars.$primary-color;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 1px solid vars.$dark-shadow-color;
+
+    .header__logo {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .header__right-side {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.form-search {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 70%;
+
+  .form-search__input {
+    @include mixs.input;
+    font-size: 0.85rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    width: 100%;
+  }
+}
+
+.menu {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: vars.$z-index-dropdown;
+  background-color: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  display: none;
+
+  .menu-dropdown {
+    // background-color: vars.$primary-color;
+    height: 100vh;
+    width: 80%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.8rem 0.8rem;
+    gap: 0.8rem;
+    animation: slideLeftToRight 0.3s ease-in-out;
+    a {
+      text-decoration: none;
+      //   color: vars.$text-color;
+    }
+  }
+}
+
+@keyframes slideLeftToRight {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.menu.open {
+  display: block;
+}
+
+.header-btn {
+  font-size: 1.5rem;
+}
+
+.hidden {
+  display: none;
+}
+
+// header-container__down
+.header-down {
+  position: fixed;
+  z-index: 100;
+  bottom: 0;
+  left: 0;
+  padding: 0.8rem;
+  width: 100%;
+
+  border-top: 1px solid;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+}

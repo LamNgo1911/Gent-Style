@@ -3,12 +3,12 @@ import { FieldValues, useForm } from "react-hook-form";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 import { AppDispatch, RootState } from "../../../redux/store";
 import GoogleClientId from "../../../config/googleOAuth";
 import "./Login.scss";
 import { axiosApi } from "../../../config/axiosApi";
-import { useDispatch, useSelector } from "react-redux";
 import { fetchLogin } from "../../../redux/slices/userSlice";
 import { dataCredential } from "../../../misc/dataCredential";
 

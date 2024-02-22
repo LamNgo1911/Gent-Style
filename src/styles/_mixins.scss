@@ -40,15 +40,15 @@
 @mixin input {
   padding: 0.5rem;
   border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 0.5rem;
+  font-size: 1rem;
   color: #333;
   transition: border-color 0.3s ease;
 
   &:focus {
     outline: none;
     border-color: vars.$primary-color;
-    box-shadow: 0 0 5px vars.$light-shadow-color; // Shadow on focus
+    box-shadow: 0 0 0.2rem vars.$light-shadow-color; // Shadow on focus
   }
 }
 

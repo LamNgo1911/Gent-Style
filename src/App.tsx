@@ -16,14 +16,21 @@ import Wishlist from "./pages/Wishlist";
 import Profile from "./pages/Profile";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import { useSelector } from "react-redux";
+import { RootState } from "./redux/store";
+import Admin from "./pages/Admin";
+import { useTheme } from "./context/useTheme";
 
 function App() {
   const { pathname } = useLocation();
-  const [darkTheme, setDarkTheme] = useState(false);
+  const { theme } = useTheme();
+  const { user, isAuthenticated } = useSelector(
+    (state: RootState) => state.users
+  );
 
   const isAuthPage = pathname === "/login" || pathname === "/register";
   return (
-    <div className={`App ${darkTheme ? "dark-theme" : "light-theme"}`}>
+    <div className={`App ${theme}`}>
       {!isAuthPage && <Header />}
       <Routes>
         {/* auth */}
@@ -40,7 +47,10 @@ function App() {
         <Route path="/shopping-cart" element={<ShoppingCart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        <Route path="/profile" element={<Profile />} />
+        {isAuthenticated && <Route path="/profile" element={<Profile />} />}
+        {isAuthenticated && user?.role === "admin" && (
+          <Route path="/admin" element={<Admin />} />
+        )}
       </Routes>
       {!isAuthPage && <Footer />}
     </div>
