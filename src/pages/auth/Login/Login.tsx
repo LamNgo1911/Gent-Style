@@ -11,6 +11,7 @@ import "./Login.scss";
 import { axiosApi } from "../../../config/axiosApi";
 import { fetchLogin } from "../../../redux/slices/userSlice";
 import { dataCredential } from "../../../misc/dataCredential";
+import { useTheme } from "../../../context/useTheme";
 
 export default function Login() {
   const {
@@ -24,6 +25,7 @@ export default function Login() {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const dispatch: AppDispatch = useDispatch();
   const { error, user } = useSelector((state: RootState) => state.users);
+  const { theme } = useTheme();
 
   const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
@@ -119,7 +121,12 @@ export default function Login() {
           <small className="forgot-password">Forgot password?</small>
         </div>
         {error && <span className="error">{error}</span>}
-        <button type="submit" className="submit-btn">
+        <button
+          type="submit"
+          className={`submit-btn ${
+            theme === "dark-theme" ? "btn-dark-theme" : "btn-light-theme"
+          }`}
+        >
           Log in
         </button>
       </form>

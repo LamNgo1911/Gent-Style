@@ -18,14 +18,10 @@ export default function Header() {
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
   const [isOpenSearchBtn, setIsOpenSearchBtn] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
-  const { theme } = useTheme();
+  const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
-
-  const toggleMenu = () => {
-    setIsOpenDropdownMenu(!isOpenDropdownMenu);
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -111,7 +107,11 @@ export default function Header() {
         <Link to="/shopping-cart">
           <AiOutlineShoppingCart className="header-btn" />
         </Link>
-        <IoIosSunny className="header-btn" />
+        {theme === "light-theme" ? (
+          <IoIosMoon className="header-btn" onClick={() => toggleTheme()} />
+        ) : (
+          <IoIosSunny className="header-btn" onClick={() => toggleTheme()} />
+        )}
         {/* <IoIosMoon className="header-btn" /> */}
       </div>
     </header>

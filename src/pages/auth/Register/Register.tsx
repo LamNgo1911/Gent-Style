@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import "./Register.scss";
 import { axiosApi } from "../../../config/axiosApi";
+import { useTheme } from "../../../context/useTheme";
 
 export default function Register() {
   const {
@@ -18,6 +19,7 @@ export default function Register() {
   const { ref } = register("username");
   const usernameRef = useRef<HTMLInputElement | null>(null);
   const [isExistingEmail, setIsExistingEmail] = useState(false);
+  const { theme } = useTheme();
 
   // check and store current user
   const onSubmit = async (data: FieldValues) => {
@@ -144,7 +146,12 @@ export default function Register() {
             <span className="error">Please accept the terms</span>
           )}
         </div>
-        <button type="submit" className="submit-btn">
+        <button
+          type="submit"
+          className={`submit-btn ${
+            theme === "dark-theme" ? "btn-dark-theme" : "btn-light-theme"
+          }`}
+        >
           Create account
         </button>
       </form>
