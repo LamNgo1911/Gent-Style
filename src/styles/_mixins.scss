@@ -8,8 +8,18 @@
 }
 
 // -------- responsive --------
-@mixin responsive {
+@mixin sm-screen {
   @media (max-width: vars.$breakpoint-sm) {
+    @content;
+  }
+}
+@mixin md-screen {
+  @media (min-width: 577px) and (max-width: vars.$breakpoint-lg) {
+    @content;
+  }
+}
+@mixin lg-screen {
+  @media (min-width: 993px) {
     @content;
   }
 }
@@ -34,4 +44,78 @@
   color: red;
   font-size: 0.8rem;
   margin-top: 0.5rem; // Add some spacing above the error message
+}
+
+// ------------ Animation ------------
+@mixin fadeIn {
+  animation: fadeIn 0.3s ease-out both;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin slideUp {
+  animation: slideUp 0.3s ease-in-out both;
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+}
+
+@mixin shake {
+  animation: shake 0.3s ease-in-out infinite both;
+
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-5px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(5px);
+    }
+  }
+}
+
+@mixin spin {
+  animation: spin 1s linear infinite both;
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@mixin slideLeftToRight {
+  animation: slideLeftToRight 0.3s ease-out both;
+
+  @keyframes slideLeftToRight {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(0);
+    }
+  }
 }

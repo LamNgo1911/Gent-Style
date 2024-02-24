@@ -20,9 +20,19 @@
     background: vars.$primary-color;
     border-radius: 50%;
     overflow: hidden;
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 2rem;
+    height: 2rem;
     border: 1px solid vars.$dark-shadow-color;
+
+    @include mixs.md-screen {
+      width: 2.3rem;
+      height: 2.3rem;
+    }
+
+    @include mixs.lg-screen {
+      width: 2.6rem;
+      height: 2.6rem;
+    }
 
     .header__logo {
       width: 100%;
@@ -37,21 +47,26 @@
   }
 }
 
-.form-search {
+// ----- laptop version -----
+.header-nav__wrapper {
   display: flex;
   align-items: center;
-  gap: 0.2rem;
-  width: 70%;
+  gap: 0.5rem;
 
-  .form-search__input {
-    @include mixs.input;
+  a {
+    text-decoration: none;
     font-size: 0.85rem;
-    padding-top: 0.3rem;
-    padding-bottom: 0.3rem;
-    width: 100%;
+    font-weight: 500;
   }
 }
 
+.header__right-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+// ----- mobile version -----
 .menu {
   position: fixed;
   left: 0;
@@ -62,29 +77,23 @@
   display: none;
 
   .menu-dropdown {
-    // background-color: vars.$primary-color;
     height: 100vh;
-    width: 80%;
+    width: 45%;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 0.8rem 0.8rem;
+    padding: 1rem 1.5rem;
     gap: 0.8rem;
-    animation: slideLeftToRight 0.3s ease-in-out;
+    @include mixs.slideLeftToRight;
+
     a {
       text-decoration: none;
-      //   color: vars.$text-color;
+      font-size: 0.9rem;
+      @include mixs.md-screen {
+        font-size: 1.1rem;
+      }
     }
-  }
-}
-
-@keyframes slideLeftToRight {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(0);
   }
 }
 
@@ -92,15 +101,7 @@
   display: block;
 }
 
-.header-btn {
-  font-size: 1.5rem;
-}
-
-.hidden {
-  display: none;
-}
-
-// header-container__down
+// nav-down mobile version
 .header-down {
   position: fixed;
   z-index: 100;
@@ -116,4 +117,19 @@
   display: flex;
   justify-content: space-around;
   cursor: pointer;
+}
+
+.header-btn {
+  font-size: 1.5rem;
+  // @include mixs.md-screen {
+  //   font-size: 1.2rem;
+  // }
+
+  // @include mixs.lg-screen {
+  //   font-size: 1.5rem;
+  // }
+}
+
+.hidden {
+  display: none;
 }

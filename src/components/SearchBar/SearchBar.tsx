@@ -1,15 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { LuSearch } from "react-icons/lu";
+
+import "./SearchBar.scss";
 
 type SearchBarProps = {
   setIsOpenSearchBtn: React.Dispatch<React.SetStateAction<boolean>>;
+  isSmallScreen: boolean;
 };
 
 type FormValues = {
   searchQuery: string;
 };
 
-export default function SearchBar({ setIsOpenSearchBtn }: SearchBarProps) {
+export default function SearchBar({
+  setIsOpenSearchBtn,
+  isSmallScreen,
+}: SearchBarProps) {
   const formRef = useRef<HTMLFormElement>(null);
 
   const {
@@ -22,6 +29,7 @@ export default function SearchBar({ setIsOpenSearchBtn }: SearchBarProps) {
   const onSubmitSearch: SubmitHandler<FormValues> = (data, event) => {
     // Handle form submission
     console.log(data.searchQuery);
+    // console.log(event?.target.value)
   };
 
   // close search bar when users click outside
@@ -44,12 +52,19 @@ export default function SearchBar({ setIsOpenSearchBtn }: SearchBarProps) {
       className="form-search"
       onSubmit={handleSubmit(onSubmitSearch)}
     >
-      <input
-        className="form-search__input"
-        type="text"
-        placeholder="Search for products"
-        {...register("searchQuery")}
-      />
+      <div className="form-search_wrapper">
+        <LuSearch
+          type="submit"
+          className="header-btn"
+          onClick={handleSubmit(onSubmitSearch)}
+        />
+        <input
+          className="form-search__input"
+          type="text"
+          placeholder="Search for products"
+          {...register("searchQuery")}
+        />
+      </div>
     </form>
   );
 }

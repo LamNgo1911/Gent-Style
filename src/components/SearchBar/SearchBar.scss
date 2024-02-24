@@ -1,0 +1,39 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.form-search {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  width: 70%;
+
+  @include mixs.lg-screen {
+    width: 35%;
+  }
+
+  .form-search_wrapper {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0 0.2rem;
+    width: 100%;
+
+    .form-search__input {
+      @include mixs.input;
+      font-size: 0.85rem;
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+
+      width: 100%;
+      border: none;
+      outline: none;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+  }
+}

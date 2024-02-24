@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
 import { RiHeartFill } from "react-icons/ri";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosSunny, IoIosMoon } from "react-icons/io";
@@ -15,105 +16,151 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 
 export default function Header() {
+  // state for mobile version
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
   const [isOpenSearchBtn, setIsOpenSearchBtn] = useState(true);
-  const menuRef = useRef<HTMLDivElement>(null);
+
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target as Node) &&
-        !isOpenDropdownMenu
-      ) {
-        setIsOpenDropdownMenu(false);
-      }
-    };
+  // screen responsive
+  const isSmallScreen = useMediaQuery({ maxWidth: 576 });
+  const isMediumScreen = useMediaQuery({ minWidth: 577, maxWidth: 992 });
+  const isBigScreen = useMediaQuery({ minWidth: 993 });
 
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isOpenDropdownMenu]);
-
+  // keep menu-dropdown open when clicking outside of menu-dropdown ul
   const handleDropdownClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
 
   return (
-    // for mobile
     <header className={`header-container ${theme}`}>
       {/* ---logo and name--- */}
       <div className="header__logo-container">
         <img className="header__logo" src={image} alt="gentStyle-symbol" />
       </div>
 
+      {/* nav - laptop version */}
+      {isBigScreen && (
+        <nav className="header-nav">
+          <ul className="header-nav__wrapper">
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/sale">Sale</Link>
+            <Link to="/contact-us">ContactUs</Link>
+          </ul>
+        </nav>
+      )}
+
       {/* search bar */}
-      {!isOpenSearchBtn && (
-        <SearchBar setIsOpenSearchBtn={setIsOpenSearchBtn} />
+      {(!isSmallScreen || (isSmallScreen && !isOpenSearchBtn)) && (
+        <SearchBar
+          setIsOpenSearchBtn={setIsOpenSearchBtn}
+          isSmallScreen={isSmallScreen}
+        />
       )}
 
       {/* hamburger btn */}
       <div className="header__right-side">
-        <LuSearch
-          className={`header-btn ${!isOpenSearchBtn && "hidden"}`}
-          onClick={() => setIsOpenSearchBtn(!isOpenSearchBtn)}
-        />
-        <Hamburger
-          toggled={isOpenDropdownMenu}
-          toggle={setIsOpenDropdownMenu}
-          size={22}
-        />
+        {isSmallScreen && (
+          <LuSearch
+            className={`header-btn ${!isOpenSearchBtn && "hidden"}`}
+            onClick={() => setIsOpenSearchBtn(!isOpenSearchBtn)}
+          />
+        )}
+        {!isBigScreen && (
+          <Hamburger
+            toggled={isOpenDropdownMenu}
+            toggle={setIsOpenDropdownMenu}
+            size={22}
+          />
+        )}
       </div>
 
-      {/* menu dropdown */}
-      <nav
-        ref={menuRef}
-        className={`menu ${isOpenDropdownMenu ? "open" : ""}`}
-        onClick={() => setIsOpenDropdownMenu(false)}
-      >
-        <ul className={`menu-dropdown ${theme}`} onClick={handleDropdownClick}>
-          <Link to={"/"} className="header__logo-container">
-            <img className="header__logo" src={image} alt="gentStyle-symbol" />
+      {/* -------------- right-nav - laptop version --------------*/}
+      {isBigScreen && (
+        <div className="header__right-nav">
+          {theme === "light-theme" ? (
+            <IoIosMoon className="header-btn" onClick={() => toggleTheme()} />
+          ) : (
+            <IoIosSunny className="header-btn" onClick={() => toggleTheme()} />
+          )}
+          <Link to="/wishlist">
+            <RiHeartFill className="header-btn" />
           </Link>
-          <Link to="/">Home</Link>
-          <Link to="/products">Products</Link>
-          <Link to="/about-us">About Us</Link>
-          <Link to="/contact-us">Contact Us</Link>
-        </ul>
-      </nav>
+          <Link to="/shopping-cart">
+            <AiOutlineShoppingCart className="header-btn" />
+          </Link>
+          <Link
+            to={`${
+              isAuthenticated
+                ? user?.role === "admin"
+                  ? "/admin"
+                  : "/profile"
+                : "/login"
+            }`}
+          >
+            <IoPerson className="header-btn" />
+          </Link>
+        </div>
+      )}
+
+      {/* -------------- Mobile/tablet version --------------*/}
+      {/* menu dropdown */}
+      {!isBigScreen && (
+        <nav
+          className={`menu ${isOpenDropdownMenu ? "open" : ""}`}
+          onClick={() => setIsOpenDropdownMenu(false)}
+        >
+          <ul
+            className={`menu-dropdown ${theme}`}
+            onClick={handleDropdownClick}
+          >
+            <Link to={"/"} className="header__logo-container">
+              <img
+                className="header__logo"
+                src={image}
+                alt="gentStyle-symbol"
+              />
+            </Link>
+            <Link to="/">Home</Link>
+            <Link to="/products">Products</Link>
+            <Link to="/about-us">About Us</Link>
+            <Link to="/contact-us">Contact Us</Link>
+          </ul>
+        </nav>
+      )}
 
       {/* ---Profile, wishlist and, shopping cart--- */}
-      <div className={`header-down ${theme}`}>
-        <Link
-          to={`${
-            isAuthenticated
-              ? user?.role === "admin"
-                ? "/admin"
-                : "/profile"
-              : "/login"
-          }`}
-        >
-          <IoPerson className="header-btn" />
-        </Link>
-        <Link to="/wishlist">
-          <RiHeartFill className="header-btn" />
-        </Link>
-        <Link to="/shopping-cart">
-          <AiOutlineShoppingCart className="header-btn" />
-        </Link>
-        {theme === "light-theme" ? (
-          <IoIosMoon className="header-btn" onClick={() => toggleTheme()} />
-        ) : (
-          <IoIosSunny className="header-btn" onClick={() => toggleTheme()} />
-        )}
-        {/* <IoIosMoon className="header-btn" /> */}
-      </div>
+      {!isBigScreen && (
+        <div className={`header-down ${theme}`}>
+          <Link
+            to={`${
+              isAuthenticated
+                ? user?.role === "admin"
+                  ? "/admin"
+                  : "/profile"
+                : "/login"
+            }`}
+          >
+            <IoPerson className="header-btn" />
+          </Link>
+          <Link to="/wishlist">
+            <RiHeartFill className="header-btn" />
+          </Link>
+          <Link to="/shopping-cart">
+            <AiOutlineShoppingCart className="header-btn" />
+          </Link>
+          {theme === "light-theme" ? (
+            <IoIosMoon className="header-btn" onClick={() => toggleTheme()} />
+          ) : (
+            <IoIosSunny className="header-btn" onClick={() => toggleTheme()} />
+          )}
+          {/* -------------- laptop version --------------*/}
+        </div>
+      )}
     </header>
   );
 }
