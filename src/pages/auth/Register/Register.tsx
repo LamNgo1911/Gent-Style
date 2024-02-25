@@ -146,12 +146,7 @@ export default function Register() {
             <span className="error">Please accept the terms</span>
           )}
         </div>
-        <button
-          type="submit"
-          className={`submit-btn ${
-            theme === "dark-theme" ? "btn-dark-theme" : "btn-light-theme"
-          }`}
-        >
+        <button type="submit" className={`submit-btn ${theme}`}>
           Create account
         </button>
       </form>

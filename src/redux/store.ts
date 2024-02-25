@@ -1,8 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import userSlice from "./slices/userSlice";
 import productReducer from "./slices/productSlice";
 import cartReducer from "./slices/cartSlice";
+
 import productQueries from "./productQuery";
+import { useDispatch } from "react-redux";
 
 export const store = configureStore({
   reducer: {
@@ -20,3 +23,4 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {products: ProductState,...}
 export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<typeof store.dispatch>();

@@ -22,6 +22,18 @@
   }
   border-color: vars.$light-border-color;
   box-shadow: vars.$light-shadow-color;
+
+  button {
+    background-color: vars.$dark-background-color;
+    color: vars.$dark-text-color;
+
+    &:hover {
+      background-color: darken(vars.$dark-background-color, 10%);
+    }
+    &:active {
+      background-color: darken(vars.$dark-background-color, 20%);
+    }
+  }
 }
 
 .dark-theme {
@@ -33,28 +45,16 @@
   }
   border-color: vars.$dark-border-color;
   box-shadow: vars.$dark-shadow-color;
-}
 
-.btn-light-theme {
-  background-color: vars.$dark-background-color;
-  color: vars.$dark-text-color;
+  button {
+    background-color: vars.$light-background-color;
+    color: vars.$light-text-color;
 
-  &:hover {
-    background-color: darken(vars.$dark-background-color, 10%);
-  }
-  &:active {
-    background-color: darken(vars.$dark-background-color, 20%);
-  }
-}
-
-.btn-dark-theme {
-  background-color: vars.$light-background-color;
-  color: vars.$light-text-color;
-
-  &:hover {
-    background-color: darken(vars.$light-background-color, 10%);
-  }
-  &:active {
-    background-color: darken(vars.$light-background-color, 20%);
+    &:hover {
+      background-color: darken(vars.$light-background-color, 10%);
+    }
+    &:active {
+      background-color: darken(vars.$light-background-color, 20%);
+    }
   }
 }

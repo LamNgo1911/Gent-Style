@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import { RiHeartFill } from "react-icons/ri";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosSunny, IoIosMoon } from "react-icons/io";
@@ -14,33 +13,50 @@ import { Link } from "react-router-dom";
 import { useTheme } from "../../context/useTheme";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useMediaQueries } from "../hooks/useMediaQuery";
 
 export default function Header() {
   // state for mobile version
-  const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState(false);
-  const [isOpenSearchBtn, setIsOpenSearchBtn] = useState(true);
+  const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState<boolean>(false);
+  const [isOpenSearchBtn, setIsOpenSearchBtn] = useState<boolean>(true);
+  const [scroll, setScroll] = useState<boolean>(true);
+
+  // media query
+  const { isSmallScreen, isBigScreen } = useMediaQueries();
 
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
 
-  // screen responsive
-  const isSmallScreen = useMediaQuery({ maxWidth: 576 });
-  const isMediumScreen = useMediaQuery({ minWidth: 577, maxWidth: 992 });
-  const isBigScreen = useMediaQuery({ minWidth: 993 });
-
   // keep menu-dropdown open when clicking outside of menu-dropdown ul
   const handleDropdownClick = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
 
+  // change color when users scroll down
+  useEffect(() => {
+    const handleScroll = () => {
+      window.addEventListener("scroll", () => {
+        if (window.scrollY > 70) {
+          setScroll(true);
+        } else {
+          setScroll(false);
+        }
+      });
+    };
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className={`header-container ${theme}`}>
+    <header
+      className={`header-container ${theme} ${!scroll && "No-scrolling"}`}
+    >
       {/* ---logo and name--- */}
-      <div className="header__logo-container">
+      <Link to="/" className="header__logo-container">
         <img className="header__logo" src={image} alt="gentStyle-symbol" />
-      </div>
+      </Link>
 
       {/* nav - laptop version */}
       {isBigScreen && (
@@ -74,7 +90,7 @@ export default function Header() {
           <Hamburger
             toggled={isOpenDropdownMenu}
             toggle={setIsOpenDropdownMenu}
-            size={22}
+            size={20}
           />
         )}
       </div>
@@ -127,7 +143,7 @@ export default function Header() {
             </Link>
             <Link to="/">Home</Link>
             <Link to="/products">Products</Link>
-            <Link to="/about-us">About Us</Link>
+            <Link to="/sale">Sale</Link>
             <Link to="/contact-us">Contact Us</Link>
           </ul>
         </nav>
@@ -158,7 +174,6 @@ export default function Header() {
           ) : (
             <IoIosSunny className="header-btn" onClick={() => toggleTheme()} />
           )}
-          {/* -------------- laptop version --------------*/}
         </div>
       )}
     </header>

@@ -11,10 +11,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.8rem 0.8rem;
+  padding: 0 0.8rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
-  border-bottom: 1px solid;
+
+  @include mixs.lg-screen {
+    padding: 0.5rem 0.8rem;
+  }
 
   .header__logo-container {
     background: vars.$primary-color;
@@ -55,7 +58,7 @@
 
   a {
     text-decoration: none;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: 500;
   }
 }
@@ -121,15 +124,12 @@
 
 .header-btn {
   font-size: 1.5rem;
-  // @include mixs.md-screen {
-  //   font-size: 1.2rem;
-  // }
-
-  // @include mixs.lg-screen {
-  //   font-size: 1.5rem;
-  // }
 }
 
 .hidden {
   display: none;
+}
+
+.No-scrolling {
+  background-color: transparent;
 }

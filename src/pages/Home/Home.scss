@@ -1,0 +1,82 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.home {
+  .hero-section {
+    position: relative;
+    .hero-banner {
+      position: relative;
+      .hero-image {
+        width: 100%;
+        height: auto;
+      }
+      .hero-content {
+        position: absolute;
+        top: 45%;
+        left: 25%;
+
+        width: 40%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        font-family: vars.$font-family-style;
+        font-size: 0.9rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+
+        @include mixs.md-screen {
+          font-size: 1.2rem;
+          top: 40%;
+        }
+
+        @include mixs.lg-screen {
+          font-size: 1.5rem;
+          top: 30%;
+        }
+
+        .hero-button {
+          @include mixs.button-style();
+          font-weight: 600;
+          font-size: 0.75rem;
+
+          @include mixs.md-screen {
+            font-size: 0.85rem;
+          }
+
+          @include mixs.lg-screen {
+            font-size: 0.95rem;
+          }
+        }
+      }
+    }
+  }
+
+  // category section
+  .categories-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 0.8rem;
+  }
+}
+
+.section__title {
+  font-size: 1.5rem;
+
+  @include mixs.md-screen {
+    font-size: 1.7rem;
+  }
+
+  @include mixs.lg-screen {
+    font-size: 1.9rem;
+  }
+}
+
+.swiper {
+  margin: 0 1.2rem;
+  padding-bottom: 1.5rem;
+}

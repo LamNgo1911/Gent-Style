@@ -16,7 +16,7 @@ const initialState: InitialState = {
   wishlist: [],
 };
 
-const fetchAllProducts = createAsyncThunk<Product[], void>(
+export const fetchAllProducts = createAsyncThunk<Product[], void>(
   "fetchAllProducts",
   async (_, { rejectWithValue }) => {
     try {

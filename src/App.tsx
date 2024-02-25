@@ -9,7 +9,6 @@ import ProductDetail from "./pages/ProductDetail";
 import ShoppingCart from "./pages/ShoppingCart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
-import AboutUs from "./pages/AboutUs/AboutUs";
 import SearchResults from "./pages/SearchResults";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";
@@ -20,6 +19,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import Admin from "./pages/Admin";
 import { useTheme } from "./context/useTheme";
+import Sale from "./pages/Sale";
 
 function App() {
   const { pathname } = useLocation();
@@ -40,7 +40,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductListing />} />
         <Route path="/products/:productId" element={<ProductDetail />} />
-        <Route path="/about-us" element={<AboutUs />} />
+        <Route path="/sale" element={<Sale />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search-results" element={<SearchResults />} />
         <Route path="/wishlist" element={<Wishlist />} />

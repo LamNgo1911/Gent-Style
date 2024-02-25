@@ -123,9 +123,7 @@ export default function Login() {
         {error && <span className="error">{error}</span>}
         <button
           type="submit"
-          className={`submit-btn ${
-            theme === "dark-theme" ? "btn-dark-theme" : "btn-light-theme"
-          }`}
+          className={`submit-btn ${theme}`}
         >
           Log in
         </button>
