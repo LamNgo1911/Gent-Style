@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperClass } from "swiper";
+import { FaHeart } from "react-icons/fa6";
 
 // import Swiper core and required modules
 import { Navigation, Thumbs } from "swiper/modules";
@@ -26,8 +27,7 @@ export default function ProductCard({
 
   const handleSwiperChange = (swiper: SwiperClass) => {
     if (!thumbsSwiper) return; // Guard against null value
-    // Your logic here
-    setThumbsSwiper(swiper);
+    setThumbsSwiper(swiper as SwiperCore); // Cast swiper as SwiperCore
   };
 
   return (
@@ -50,11 +50,11 @@ export default function ProductCard({
           modules={[Navigation, Thumbs]}
           slidesPerView={images?.length}
           className="second-swiper thumbnail-swiper"
-          onSwiper={(swiper: SwiperCore) => handleSwiperChange(swiper)}
+          // onSwiper={handleSwiperChange}
         >
           {images?.map((image, i) => (
             <SwiperSlide key={i}>
-              <img src={image} alt={title} className="circle-image" />
+              <img src={image} alt="thumbnails" className="circle-image" />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -64,7 +64,7 @@ export default function ProductCard({
         <p className="product-price">${price}</p>
       </div>
       <div className="wishlist-icon">
-        <i className="fas fa-heart"></i>
+        <FaHeart />
       </div>
       <button className="add-to-cart-btn">Add to Cart</button>
     </div>

@@ -6,7 +6,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem;
+
+  position: relative;
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -14,15 +17,22 @@
 
   .image-container {
     width: 100%;
-    height: 280px;
+    height: 230px;
     overflow: hidden;
     border-radius: 0.25rem;
+
+    @include mixs.md-screen {
+      height: 250px;
+    }
+
+    @include mixs.lg-screen {
+      height: 280px;
+    }
 
     .main-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 0.25rem;
 
       &:hover {
         transform: scale(1.2);
@@ -41,9 +51,10 @@
         margin-right: 10px;
         object-fit: cover;
         align-self: flex-start;
+        border: 1px solid vars.$primary-color;
 
         &:hover {
-          border: 2px solid vars.$primary-color;
+          border: 1px solid vars.$primary-color;
           transition: border 0.3s ease-in-out;
         }
       }
@@ -51,29 +62,38 @@
   }
 
   .product-info {
-    margin-top: 0.5rem;
     text-align: start;
     width: 100%;
 
     .product-title {
       font-weight: bold;
       font-size: 1rem;
-      margin-bottom: 0.4rem;
     }
 
     .product-price {
-      font-size: rem;
+      font-size: 1rem;
     }
   }
 
   .wishlist-icon {
-    margin-top: 0.5rem;
-    color: #ff6b6b;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    z-index: 150;
+    border: 1px solid vars.$primary-color;
+    border-radius: 40%;
+    padding: 0.2rem 0.5rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: vars.$primary-color;
     cursor: pointer;
 
-    &:hover {
-      color: #ff0000;
-    }
+    // &:hover {
+    //   color: #ff0000;
+    // }
   }
 
   .add-to-cart-btn {
@@ -81,8 +101,4 @@
     align-self: flex-start;
     margin-top: 0.5rem;
   }
-}
-
-.swiper.second-swiper {
-  margin-top: 0.5rem;
 }

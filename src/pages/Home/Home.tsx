@@ -8,6 +8,7 @@ import {
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperClass } from "swiper";
+import { useSelector } from "react-redux";
 
 // import Swiper and modules styles
 import "swiper/css";
@@ -30,7 +31,7 @@ import { axiosApi } from "../../config/axiosApi";
 import ProductCard from "../../components/ProductCard";
 import { fetchAllProducts } from "../../redux/slices/productSlice";
 import { RootState, useAppDispatch } from "../../redux/store";
-import { useSelector } from "react-redux";
+import { productData } from "../../components/data/productData";
 
 export default function Home() {
   const dispatch = useAppDispatch();
@@ -58,9 +59,11 @@ export default function Home() {
   }, [dispatch]);
 
   // get products
-  const products = useSelector((state: RootState) =>
-    state.products.products.slice(3, 10)
-  );
+  // const products = useSelector((state: RootState) =>
+  //   state.products.products.slice(1, 5)
+  // );
+
+  const products = [...productData];
   console.log(products);
   // const handleSwiper = (swiper: SwiperClass) => {
   //   console.log(swiper);
