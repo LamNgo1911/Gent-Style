@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { axiosApi } from "../../config/axiosApi";
 import { errorMessages } from "../../misc/errorMessages";
-import { User, UserState } from "../../misc/typesInRedux";
+import { User, UserState } from "../../misc/types";
 
 const initialState: UserState = {
   user: null,

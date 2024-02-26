@@ -28,3 +28,10 @@ export type Product = {
   category: Category;
   images: string[];
 };
+
+export type TrendingCategory = {
+  id: number;
+  title: string;
+  description: string;
+  image: string;
+};

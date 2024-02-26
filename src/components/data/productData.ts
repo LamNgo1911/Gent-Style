@@ -47,4 +47,20 @@ export const productData = [
       "https://picsum.photos/800/800?random=9",
     ],
   },
+  {
+    id: 4,
+    title: "product4",
+    price: 400,
+    description: "product4",
+    category: {
+      id: 789,
+      name: "t-shirts",
+      image: "https://picsum.photos/800/800?random=4",
+    },
+    images: [
+      "https://picsum.photos/800/800?random=10",
+      "https://picsum.photos/800/800?random=11",
+      "https://picsum.photos/800/800?random=12",
+    ],
+  },
 ];

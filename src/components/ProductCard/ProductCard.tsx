@@ -11,7 +11,7 @@ import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/thumbs";
 
-import { Product } from "../../misc/typesInRedux";
+import { Product } from "../../misc/types";
 import "./ProductCard.scss";
 
 export default function ProductCard({

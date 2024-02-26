@@ -4,8 +4,8 @@ import userSlice from "./slices/userSlice";
 import productReducer from "./slices/productSlice";
 import cartReducer from "./slices/cartSlice";
 
-import productQueries from "./productQuery";
 import { useDispatch } from "react-redux";
+import productQueries from "./productQuery";
 
 export const store = configureStore({
   reducer: {

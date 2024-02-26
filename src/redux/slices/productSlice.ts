@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosApi } from "../../config/axiosApi";
-import { Product } from "../../misc/typesInRedux";
+import { Product } from "../../misc/types";
 
 type InitialState = {
   products: Product[];

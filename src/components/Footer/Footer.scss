@@ -1,0 +1,100 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 3rem;
+  padding: 2rem;
+  margin-top: 1.5rem;
+  padding-bottom: 5rem;
+  border-top: 1px solid;
+
+  @include mixs.lg-screen {
+    padding-bottom: 2rem;
+  }
+
+  .footer-infor {
+    display: flex;
+    justify-content: space-between;
+    gap: 2rem;
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+
+      @include mixs.md-screen {
+        gap: 2rem;
+      }
+
+      @include mixs.lg-screen {
+        gap: 3rem;
+      }
+
+      .footer-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        @include mixs.md-screen {
+          flex-direction: row;
+          gap: 2rem;
+        }
+
+        @include mixs.lg-screen {
+          flex-direction: row;
+          gap: 3rem;
+        }
+
+        .footer-subcontent {
+          h2 {
+            font-size: 0.9rem;
+          }
+          p {
+            font-size: 0.8rem;
+          }
+        }
+      }
+    }
+
+    .footer-icons {
+      font-size: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      @include mixs.md-screen {
+        font-size: 1.7rem;
+      }
+
+      @include mixs.lg-screen {
+        font-size: 1.9rem;
+        flex-direction: row;
+      }
+    }
+  }
+
+  .footer-policy {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    @include mixs.md-screen {
+      flex-direction: row;
+    }
+
+    @include mixs.lg-screen {
+      flex-direction: row;
+    }
+    .footer-policy__content {
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

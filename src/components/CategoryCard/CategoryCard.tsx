@@ -1,5 +1,5 @@
 import "./CategoryCard.scss";
-import { Category } from "../../misc/typesInRedux";
+import { Category } from "../../misc/types";
 
 export default function CategoryCard({ id, image, name }: Category) {
   return (

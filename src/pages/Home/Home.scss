@@ -3,6 +3,10 @@
 @use "../../styles/mixins" as mixs;
 
 .home {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+
   .hero-section {
     position: relative;
     .hero-banner {
@@ -62,10 +66,58 @@
     gap: 0.8rem;
     margin-top: 0.8rem;
   }
+
+  // advertisement section
+  .advertisement-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    font-size: 0.8rem;
+    padding: 2rem;
+    text-align: center;
+    background: linear-gradient(45deg, #ff6b6b, #ffd166, #06d6a0);
+    color: #333;
+    cursor: pointer;
+
+    @include mixs.md-screen {
+      font-size: 0.9rem;
+    }
+
+    @include mixs.lg-screen {
+      font-size: 1rem;
+    }
+  }
+
+  // trending section
+  .trending-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    @include mixs.lg-screen {
+      flex-direction: row;
+    }
+  }
+
+  // new arrivals section
+  .new-arrivals-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
 }
 
-.section__title {
+.section-title {
   font-size: 1.5rem;
+  align-self: flex-start;
+  padding: 0 1.5rem;
 
   @include mixs.md-screen {
     font-size: 1.7rem;

@@ -11,6 +11,8 @@
   font-family: vars.$font-family;
   font-size: vars.$font-size-base;
   position: relative;
+  max-width: 1280px;
+  margin: auto;
 }
 
 .light-theme {
