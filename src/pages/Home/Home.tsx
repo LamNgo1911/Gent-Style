@@ -1,5 +1,11 @@
 // import Swiper core and required modules
-import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
+import {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Thumbs,
+} from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Swiper as SwiperClass } from "swiper";
 
@@ -8,6 +14,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import "swiper/css/thumbs";
 
 // Import Swiper styles
 import "swiper/css";
@@ -92,21 +99,20 @@ export default function Home() {
             modules={[Navigation, Pagination, Scrollbar, A11y]}
             spaceBetween={10}
             slidesPerView={1}
-            // navigation
             pagination={{ clickable: true }}
-            // scrollbar={{ draggable: true }}
             // onSwiper={(swiper: SwiperClass) => console.log(swiper)}
             // onSlideChange={() => console.log("slide change")}
             breakpoints={{
               577: {
                 slidesPerView: 2,
-                spaceBetween: 20,
+                spaceBetween: 15,
               },
               993: {
                 slidesPerView: 3,
-                spaceBetween: 30,
+                spaceBetween: 20,
               },
             }}
+            className="first-swiper"
           >
             {categories?.map((category, i) => (
               <SwiperSlide key={i}>
@@ -125,22 +131,22 @@ export default function Home() {
         <div className="swiper-wrapper">
           <Swiper
             // install Swiper modules
-            modules={[Navigation, Scrollbar]}
+            modules={[Navigation, Scrollbar, Thumbs]}
             spaceBetween={10}
-            slidesPerView={2}
+            slidesPerView={1}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper: SwiperClass) => console.log(swiper)}
             onSlideChange={() => console.log("slide change")}
             breakpoints={{
               577: {
-                slidesPerView: 3,
+                slidesPerView: 2,
                 spaceBetween: 15,
               },
               993: {
-                slidesPerView: 4,
+                slidesPerView: 3,
                 spaceBetween: 20,
               },
             }}
+            className="first-swiper"
           >
             {products?.map((product, i) => (
               <SwiperSlide key={i}>

@@ -6,14 +6,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 0.25rem;
+  padding: 0.5rem;
+
+  &:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
 
   .image-container {
     width: 100%;
     height: 280px;
     overflow: hidden;
     border-radius: 0.25rem;
-    img {
+
+    .main-image {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -22,6 +27,25 @@
       &:hover {
         transform: scale(1.2);
         transition: transform 0.3s ease-in-out;
+      }
+    }
+  }
+
+  .thumbnail-container {
+    align-self: flex-start;
+    .swiper.thumbnail-swiper {
+      .circle-image {
+        width: 2rem;
+        height: 2rem;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        align-self: flex-start;
+
+        &:hover {
+          border: 2px solid vars.$primary-color;
+          transition: border 0.3s ease-in-out;
+        }
       }
     }
   }
@@ -57,4 +81,8 @@
     align-self: flex-start;
     margin-top: 0.5rem;
   }
+}
+
+.swiper.second-swiper {
+  margin-top: 0.5rem;
 }
