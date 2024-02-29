@@ -5,9 +5,10 @@
 .product-card {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   padding: 0.5rem;
+  cursor: pointer;
 
   position: relative;
 
@@ -21,7 +22,6 @@
     height: 230px;
     overflow: hidden;
     border-radius: 0.25rem;
-    cursor: pointer;
 
     @include mixs.md-screen {
       height: 250px;
@@ -42,17 +42,31 @@
     }
   }
 
-  .thumbnail-container {
-    align-self: flex-start;
-    .swiper.thumbnail-swiper {
-      .circle-image {
-        width: 2rem;
-        height: 2rem;
-        border-radius: 50%;
-        margin-right: 10px;
+  .thumbnail-list {
+    display: flex;
+    gap: 0.2rem;
+    .thumbnail-container {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      overflow: hidden;
+      padding: 0.1rem;
+
+      @include mixs.md-screen {
+        width: 2.2rem;
+        height: 2.2rem;
+      }
+
+      @include mixs.lg-screen {
+        width: 2.3rem;
+        height: 2.3rem;
+      }
+
+      .thumbnail {
         object-fit: cover;
-        align-self: flex-start;
+        width: 100%;
         border: 1px solid vars.$primary-color;
+        border-radius: 50%;
 
         &:hover {
           border: 1px solid vars.$primary-color;
@@ -60,23 +74,28 @@
         }
       }
     }
+
+    .thumbnail-container.active {
+      border: 1px solid;
+      box-shadow: 0 2px 4px;
+      transition: border 0.3s ease-in-out;
+    }
   }
 
   .product-info {
-    text-align: start;
-    width: 100%;
-
-    @include mixs.md-screen {
-      font-size: 1.2rem;
-    }
-
-    @include mixs.lg-screen {
-      font-size: 1.5rem;
-    }
-
     .product-title {
       font-weight: bold;
       font-size: 1rem;
+
+      margin-bottom: 0.2rem;
+
+      @include mixs.md-screen {
+        font-size: 1.1rem;
+      }
+
+      @include mixs.lg-screen {
+        font-size: 1.2rem;
+      }
     }
 
     .product-price {
@@ -88,27 +107,18 @@
     position: absolute;
     right: 1rem;
     top: 1rem;
-    z-index: 150;
-    border: 1px solid vars.$primary-color;
+    z-index: 2;
+    border: 1px solid #cacaca;
     border-radius: 40%;
     padding: 0.2rem 0.5rem;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    color: vars.$primary-color;
+    @include mixs.flex-center;
+    color: #cacaca;
     cursor: pointer;
 
-    // &:hover {
-    //   color: #ff0000;
-    // }
-  }
-
-  .add-to-cart-btn {
-    @include mixs.button-style();
-    align-self: flex-start;
-    margin-top: 0.5rem;
-    font-weight: 600;
+    &:hover {
+      color: darken(#cacaca, 20%);
+      border-color: darken(#cacaca, 20%);
+    }
   }
 }

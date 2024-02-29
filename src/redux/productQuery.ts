@@ -1,26 +1,31 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Product } from "../misc/types";
+import { Category, Product } from "../misc/types";
 import { store } from "./store";
 
 const productQueries = createApi({
   //base query for all the api calls inside this createApi
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.escuelajs.co/api/v1/products",
+    baseUrl: "https://api.escuelajs.co/api/v1/",
   }),
-  tagTypes: ["Products"],
+  tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
     /** a hook is created from dispatch, async thunk action -> return data, error, loading*/
     fetchASingleProduct: builder.query<Product, number>({
-      query: (productId: number) => `${productId}`,
+      query: (productId: number) => `products/${productId}`,
       providesTags: (result, error, productId) => [
         { type: "Products", id: productId },
       ],
     }),
 
     fetchProductsbyCategories: builder.query<Product, number>({
-      query: (categoryId: number) => `/?category=${categoryId}`,
+      query: (categoryId: number) => `products/?category=${categoryId}`,
       providesTags: ["Products"],
+    }),
+
+    fetchAllCategories: builder.query<Category[], void>({
+      query: () => `categories`,
+      providesTags: ["Categories"],
     }),
 
     // mutation
@@ -32,7 +37,7 @@ const productQueries = createApi({
         }
 
         return {
-          url: "",
+          url: "products",
           method: "POST",
           body: newProduct,
         };
@@ -49,7 +54,7 @@ const productQueries = createApi({
         }
 
         return {
-          url: `${updatedProduct.id}`,
+          url: `products/${updatedProduct.id}`,
           method: "PUT",
           body: updatedProduct,
         };
@@ -68,7 +73,7 @@ const productQueries = createApi({
         }
 
         return {
-          url: `${productId}`,
+          url: `products/${productId}`,
           method: "DELETE",
         };
       },
@@ -83,6 +88,7 @@ export const {
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useFetchAllCategoriesQuery,
 } = productQueries;
 
 export default productQueries;

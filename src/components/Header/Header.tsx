@@ -9,7 +9,7 @@ import Hamburger from "hamburger-react";
 import SearchBar from "../SearchBar/SearchBar";
 import image from "../../assets/gentStyle-symbol.png";
 import { LuSearch } from "react-icons/lu";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../context/useTheme";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -28,6 +28,7 @@ export default function Header() {
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
+  const pathname = useLocation().pathname;
 
   // keep menu-dropdown open when clicking outside of menu-dropdown ul
   const handleDropdownClick = (event: React.MouseEvent) => {
@@ -46,12 +47,16 @@ export default function Header() {
       });
     };
     handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   return (
     <header
-      className={`header-container ${theme} ${!scroll && "No-scrolling"}`}
+      className={`header-container ${theme} ${
+        !scroll && pathname === "/" && "bg-transparent"
+      }`}
     >
       {/* ---logo and name--- */}
       <Link to="/" className="header__logo-container">

@@ -26,33 +26,26 @@ import heroImgLightTheme from "../../assets/cover-image-dark.jpg";
 import { useTheme } from "../../context/useTheme";
 import CategoryCard from "../../components/CategoryCard";
 import { useEffect, useState } from "react";
-import { Category, Product } from "../../misc/types";
-import { axiosApi } from "../../config/axiosApi";
 import ProductCard from "../../components/ProductCard";
 import { fetchAllProducts } from "../../redux/slices/productSlice";
 import { RootState, useAppDispatch } from "../../redux/store";
 import { productData } from "../../components/data/productData";
 import { trendingData } from "../../components/data/trendingData";
 import TrendingCard from "../../components/TrendingCard";
+import { useFetchAllCategoriesQuery } from "../../redux/productQuery";
+import "react-loading-skeleton/dist/skeleton.css";
+import CategoryCardSkeleton from "../../components/loading/CategoryCardSkeleton";
+import ProductCardSkeleton from "../../components/loading/ProductCardSkeleton";
 
 export default function Home() {
   const dispatch = useAppDispatch();
   const { theme } = useTheme();
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    // fetch categories
-    try {
-      const fetchCategories = async () => {
-        const res = await axiosApi.get("categories");
-        // console.log(res.data);
-        setCategories(res?.data?.slice(0, 5));
-      };
-      fetchCategories();
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const {
+    data: categoryListing = [],
+    isLoading,
+    error,
+  } = useFetchAllCategoriesQuery();
+  console.log(categoryListing);
 
   // use fetchAllProductsAsync
   useEffect(() => {
@@ -61,15 +54,13 @@ export default function Home() {
   }, [dispatch]);
 
   // get products
-  // const products = useSelector((state: RootState) =>
-  //   state.products.products.slice(1, 5)
-  // );
-  const products = [...productData];
+  const products = useSelector((state: RootState) =>
+    state.products.products.slice(1, 5)
+  );
+  const loading = useSelector((state: RootState) => state.products.loading);
+  // const products = [...productData];
   console.log(products);
   const trendingCategories = [...trendingData];
-  // const handleSwiper = (swiper: SwiperClass) => {
-  //   console.log(swiper);
-  // };
 
   return (
     <main className={`home ${theme}`}>
@@ -105,8 +96,6 @@ export default function Home() {
             spaceBetween={10}
             slidesPerView={1}
             pagination={{ clickable: true }}
-            // onSwiper={(swiper: SwiperClass) => console.log(swiper)}
-            // onSlideChange={() => console.log("slide change")}
             breakpoints={{
               577: {
                 slidesPerView: 2,
@@ -119,15 +108,25 @@ export default function Home() {
             }}
             className="first-swiper"
           >
-            {categories?.map((category, i) => (
-              <SwiperSlide key={i}>
-                <CategoryCard
-                  id={category.id}
-                  image={category?.image}
-                  name={category?.name}
-                />
-              </SwiperSlide>
-            ))}
+            {isLoading
+              ? // Display skeletons while loading
+                Array.from({ length: categoryListing.slice(0, 5).length }).map(
+                  (_, i) => (
+                    <SwiperSlide key={i}>
+                      <CategoryCardSkeleton />
+                    </SwiperSlide>
+                  )
+                )
+              : // Display categories once loaded
+                categoryListing.slice(0, 5).map((category, i) => (
+                  <SwiperSlide key={i}>
+                    <CategoryCard
+                      id={category.id}
+                      image={category?.image}
+                      name={category?.name}
+                    />
+                  </SwiperSlide>
+                ))}
           </Swiper>
         </div>
 
@@ -153,18 +152,26 @@ export default function Home() {
             }}
             className="first-swiper"
           >
-            {products?.map((product, i) => (
-              <SwiperSlide key={i}>
-                <ProductCard
-                  id={product?.id}
-                  title={product?.title}
-                  description={product?.description}
-                  price={product?.price}
-                  category={product?.category}
-                  images={product?.images}
-                />
-              </SwiperSlide>
-            ))}
+            {loading
+              ? Array.from({ length: products.slice(0, 5).length }).map(
+                  (_, i) => (
+                    <SwiperSlide key={i}>
+                      <ProductCardSkeleton />
+                    </SwiperSlide>
+                  )
+                )
+              : products?.map((product, i) => (
+                  <SwiperSlide key={i}>
+                    <ProductCard
+                      id={product?.id}
+                      title={product?.title}
+                      description={product?.description}
+                      price={product?.price}
+                      category={product?.category}
+                      images={product?.images}
+                    />
+                  </SwiperSlide>
+                ))}
           </Swiper>
         </div>
       </section>

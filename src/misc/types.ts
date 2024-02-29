@@ -35,3 +35,17 @@ export type TrendingCategory = {
   description: string;
   image: string;
 };
+
+export enum FilterListing {
+  category,
+  Colour,
+  Brand,
+  Size,
+  PriceRange,
+}
+
+export type FilterOption = {
+  label: string;
+  dropdown: JSX.Element;
+  dropdownVisible: boolean;
+};

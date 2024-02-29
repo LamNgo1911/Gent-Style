@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
+import { debounce } from "lodash";
 
 import "./SearchBar.scss";
 
@@ -18,6 +19,7 @@ export default function SearchBar({
   isSmallScreen,
 }: SearchBarProps) {
   const formRef = useRef<HTMLFormElement>(null);
+  const [debouncedSubmitSearch, setDebouncedSubmitSearch] = useState<SubmitHandler<FormValues> | null>(null);
 
   const {
     handleSubmit,
@@ -29,20 +31,36 @@ export default function SearchBar({
   const onSubmitSearch: SubmitHandler<FormValues> = (data, event) => {
     // Handle form submission
     console.log(data.searchQuery);
-    // console.log(event?.target.value)
   };
 
   // close search bar when users click outside
-  const handleClickOutside = (event: MouseEvent) => {
+  const handleClickOutsideSearchBar = (event: MouseEvent) => {
     if (formRef.current && !formRef.current.contains(event.target as Node)) {
       setIsOpenSearchBtn(true);
     }
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutsideSearchBar);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutsideSearchBar);
+    };
+  }, []);
+
+  useEffect(() => {
+    const debouncedHandler = debounce(
+      (data: FormValues) => {
+        if (debouncedSubmitSearch) {
+          debouncedSubmitSearch(data);
+        }
+      },
+      500 // Debounce delay of 500 milliseconds
+    );
+
+    setDebouncedSubmitSearch(() => debouncedHandler);
+
+    return () => {
+      debouncedHandler.cancel();
     };
   }, []);
 
@@ -63,6 +81,7 @@ export default function SearchBar({
           type="text"
           placeholder="Search for products"
           {...register("searchQuery")}
+          onChange={(e) => debouncedSubmitSearch?.({ searchQuery: e.target.value })}
         />
       </div>
     </form>
