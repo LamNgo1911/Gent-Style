@@ -3,6 +3,7 @@ import { FaHeart } from "react-icons/fa6";
 
 import { Product } from "../../misc/types";
 import "./ProductCard.scss";
+import { useNavigate } from "react-router";
 
 export default function ProductCard({
   id,
@@ -12,14 +13,19 @@ export default function ProductCard({
   category,
   images,
 }: Product) {
+  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   const ThumbnailHoverHandler = (index: number) => {
     setCurrentImageIndex(index);
   };
 
+  const clickHandler = () => {
+    navigate(`${id}`);
+  };
+
   return (
-    <div className="product-card">
+    <div className="product-card" onClick={clickHandler}>
       <div className="image-container">
         <img
           src={images[currentImageIndex]}

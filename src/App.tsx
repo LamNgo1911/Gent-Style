@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home/Home";
 import ProductListing from "./pages/ProductListing";
-import ProductDetail from "./pages/ProductDetail";
+import ProductDetail from "./pages/ProductDetail/ProductDetail";
 import ShoppingCart from "./pages/ShoppingCart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";

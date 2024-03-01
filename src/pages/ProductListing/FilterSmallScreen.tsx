@@ -105,7 +105,11 @@ export default function FilterSmallScreen() {
           >
             <h3>FILTER</h3>
             {newFilterLgOptions?.map(({ label }: FilterOption, i) => (
-              <p key={label} onClick={() => openFilterTypeHandler(i)}>
+              <p
+                key={label}
+                onClick={() => openFilterTypeHandler(i)}
+                className="dropdown__btn"
+              >
                 {label}
               </p>
             ))}

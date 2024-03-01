@@ -1,0 +1,21 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.product-detail {
+  padding-top: 4rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.navigation-links {
+  display: flex;
+  gap: 0.2rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  a {
+    text-decoration: none;
+  }
+}

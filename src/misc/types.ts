@@ -49,3 +49,8 @@ export type FilterOption = {
   dropdown: JSX.Element;
   dropdownVisible: boolean;
 };
+
+export type Pagination = {
+  offset: number;
+  limit: number;
+};

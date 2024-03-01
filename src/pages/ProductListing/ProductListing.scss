@@ -45,24 +45,30 @@
         z-index: vars.$z-index-dropdown;
 
         display: none;
+        flex-direction: column;
+        gap: 0.2rem;
         width: 100%;
         border: 1px solid;
         border-radius: 0.5rem;
         padding: 1rem;
 
+        background-color: #d3d3d3;
+        color: #333;
+
         p {
           cursor: pointer;
+          background-color: lighten(#e0e0e0, 7%);
+          padding: 0.5rem 1rem;
         }
 
         &.open {
-          display: block;
+          display: flex;
         }
       }
     }
 
     .filter-container {
       width: 100%;
-
       @include mixs.flex-center;
 
       .filter-dropdown__wrapper {
@@ -82,6 +88,8 @@
 
         .filter-dropdown {
           @include mixs.dropdown-container;
+          background-color: #d3d3d3;
+          color: #333;
 
           &.close {
             display: none;
@@ -90,9 +98,13 @@
 
         .filter-type__wrapper {
           @include mixs.dropdown-container;
+          background-color: #d3d3d3;
+          color: #333;
 
           .filter-type__title {
             @include mixs.flex-center;
+            cursor: pointer;
+            gap: 0.2rem;
             font-weight: 600;
           }
         }
@@ -126,13 +138,14 @@
     text-align: center;
     font-size: 0.85rem;
     font-weight: 300;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
   }
 
   .product-list {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 0.2rem;
+    margin-bottom: 1rem;
 
     @include mixs.md-screen {
       grid-template-columns: repeat(3, 1fr);
@@ -228,11 +241,13 @@
     height: 20vh;
     overflow-y: scroll;
   }
+}
 
-  .dropdown__btn {
-    padding: 0.5rem 1rem;
-    background-color: lighten(#e0e0e0, 7%);
-  }
+.dropdown__btn {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  background-color: lighten(#e0e0e0, 7%);
+  cursor: pointer;
 }
 
 .range-values {
@@ -242,4 +257,31 @@
 
 .dropdown__btn.slider {
   padding: 1rem;
+}
+
+// products pagination
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+}
+
+.pagination-container li {
+  display: inline-block;
+  margin: 0 0.3rem;
+  cursor: pointer;
+}
+
+.pagination-container li a {
+  // color: #333;
+  text-decoration: none;
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #cacaca;
+  border-radius: 0.5rem;
+}
+
+.active-page a {
+  background-color: vars.$primary-color;
+  color: #fff;
 }

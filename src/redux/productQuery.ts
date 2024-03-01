@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { Category, Product } from "../misc/types";
+import { Category, Pagination, Product } from "../misc/types";
 import { store } from "./store";
 
 const productQueries = createApi({
@@ -10,7 +10,10 @@ const productQueries = createApi({
   }),
   tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
-    /** a hook is created from dispatch, async thunk action -> return data, error, loading*/
+    fetchProductsByPagination: builder.query<Product[], Pagination>({
+      query: ({ offset, limit }) => `products?offset=${offset}&limit=${limit}`,
+      providesTags: ["Products"],
+    }),
     fetchASingleProduct: builder.query<Product, number>({
       query: (productId: number) => `products/${productId}`,
       providesTags: (result, error, productId) => [
@@ -83,6 +86,7 @@ const productQueries = createApi({
 });
 
 export const {
+  useFetchProductsByPaginationQuery,
   useFetchASingleProductQuery,
   useFetchProductsbyCategoriesQuery,
   useCreateProductMutation,
