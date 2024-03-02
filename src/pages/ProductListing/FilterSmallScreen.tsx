@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
-import { useTheme } from "../../context/useTheme";
-import { TiTickOutline } from "react-icons/ti";
-import { filterLgOptions } from "../../misc/filterOptions";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import { TiTickOutline } from "react-icons/ti";
+
+import { useTheme } from "../../context/useTheme";
+import { filterLgOptions } from "../../misc/filterOptions";
 import { FilterOption } from "../../misc/types";
 
 export default function FilterSmallScreen() {

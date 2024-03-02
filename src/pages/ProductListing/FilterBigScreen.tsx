@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
+import { IoIosArrowDown } from "react-icons/io";
+
 import { filterOptions } from "../../misc/filterOptions";
 import { FilterOption } from "../../misc/types";
-import { IoIosArrowDown } from "react-icons/io";
 
 export default function FilterBigScreen() {
   const dropdownLgScreenRefs = useRef<HTMLDivElement[]>([]);

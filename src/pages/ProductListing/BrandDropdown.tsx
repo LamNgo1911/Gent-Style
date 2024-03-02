@@ -1,6 +1,7 @@
 import React from "react";
-import { BrandOptions } from "../../misc/filterOptions";
 import { TiTickOutline } from "react-icons/ti";
+
+import { BrandOptions } from "../../misc/filterOptions";
 
 export default function BrandDropdown() {
   return (

@@ -8,11 +8,31 @@
   gap: 1rem;
   align-items: center;
 
+  @include mixs.md-screen {
+    padding: 0 1rem;
+  }
+
+  @include mixs.lg-screen {
+    flex-direction: row;
+    padding: 0 1rem;
+  }
+
   .thumbnails {
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
     order: 2;
+
+    @include mixs.md-screen {
+      order: 2;
+    }
+
+    @include mixs.lg-screen {
+      order: 1;
+
+      flex-direction: column;
+      align-self: flex-start;
+    }
 
     .thumbnail {
       margin-bottom: 5px;
@@ -24,6 +44,14 @@
         height: auto;
         border: none;
         transition: border-color 0.3s ease;
+
+        @include mixs.md-screen {
+          width: 5rem;
+        }
+
+        @include mixs.lg-screen {
+          width: 5rem;
+        }
 
         &:hover {
           border: 2px solid;
@@ -39,8 +67,16 @@
   .main-image {
     position: relative;
 
+    @include mixs.md-screen {
+      order: 1;
+    }
+
+    @include mixs.lg-screen {
+      order: 2;
+    }
+
     img {
-      max-width: 500px;
+      max-width: 100%;
       height: auto;
       cursor: zoom-in;
       transition: transform 0.3s ease;

@@ -4,6 +4,7 @@ import { FaHeart } from "react-icons/fa6";
 import { Product } from "../../misc/types";
 import "./ProductCard.scss";
 import { useNavigate } from "react-router";
+import { useLocation } from "react-router-dom";
 
 export default function ProductCard({
   id,
@@ -14,6 +15,7 @@ export default function ProductCard({
   images,
 }: Product) {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   const ThumbnailHoverHandler = (index: number) => {
@@ -21,7 +23,7 @@ export default function ProductCard({
   };
 
   const clickHandler = () => {
-    navigate(`${id}`);
+    navigate(`/products/${id}`);
   };
 
   return (

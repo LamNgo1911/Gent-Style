@@ -1,6 +1,5 @@
-import React from "react";
-import { ColourOptions } from "../../misc/filterOptions";
 import { TiTickOutline } from "react-icons/ti";
+import { ColourOptions } from "../../misc/filterOptions";
 
 export default function ColourDropdown() {
   return (

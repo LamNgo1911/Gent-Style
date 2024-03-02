@@ -1,6 +1,6 @@
-import React from "react";
-import { SizeOptions } from "../../misc/filterOptions";
 import { TiTickOutline } from "react-icons/ti";
+
+import { SizeOptions } from "../../misc/filterOptions";
 
 export default function SizeDropdown() {
   return (

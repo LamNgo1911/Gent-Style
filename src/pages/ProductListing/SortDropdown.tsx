@@ -1,4 +1,3 @@
-import React from "react";
 import { sortOptions } from "../../misc/filterOptions";
 
 export default function SortDropdown() {

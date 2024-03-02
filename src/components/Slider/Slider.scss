@@ -1,0 +1,41 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.swiper-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0 1rem;
+
+  .swiper-title {
+    font-size: 1.5rem;
+    align-self: flex-start;
+
+    @include mixs.md-screen {
+      font-size: 1.7rem;
+    }
+
+    @include mixs.lg-screen {
+      font-size: 1.9rem;
+    }
+  }
+}
+
+.swiper {
+  padding-bottom: 1.5rem;
+
+  // custom crollbar
+  .swiper-scrollbar {
+    --swiper-scrollbar-drag-bg-color: #b7b7a4;
+    --swiper-scrollbar-size: 6px;
+    background-color: darken(vars.$primary-color, 30%);
+    font-size: 10px;
+  }
+
+  // custom bullet active
+  .swiper-pagination-bullet-active {
+    background-color: darken(vars.$primary-color, 30%);
+  }
+}

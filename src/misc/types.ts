@@ -54,3 +54,14 @@ export type Pagination = {
   offset: number;
   limit: number;
 };
+
+export type SliderProps = {
+  title: string;
+  isLoading: boolean;
+  data: (Product | Category)[];
+  slidesPerViewSm: number;
+  slidesPerViewMd: number;
+  slidesPerViewLg: number;
+  showScrollbar: boolean;
+  showPagination: boolean;
+};

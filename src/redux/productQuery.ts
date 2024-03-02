@@ -21,8 +21,8 @@ const productQueries = createApi({
       ],
     }),
 
-    fetchProductsbyCategories: builder.query<Product, number>({
-      query: (categoryId: number) => `products/?category=${categoryId}`,
+    fetchProductsbyCategories: builder.query<Product[], number>({
+      query: (categoryId: number) => `products/?categoryId=${categoryId}`,
       providesTags: ["Products"],
     }),
 
