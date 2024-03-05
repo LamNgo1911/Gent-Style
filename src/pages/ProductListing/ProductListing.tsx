@@ -8,7 +8,7 @@ import { RootState, useAppDispatch } from "../../redux/store";
 import ProductCardSkeleton from "../../components/loading/ProductCardSkeleton";
 import { fetchAllProducts } from "../../redux/slices/productSlice";
 import FilterBigScreen from "./FilterBigScreen";
-import { productData } from "../../components/data/productData";
+import { productData } from "../../data/productData";
 import FilterSmallScreen from "./FilterSmallScreen";
 import ReactPaginate from "react-paginate";
 import { useFetchProductsByPaginationQuery } from "../../redux/productQuery";

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import "./Cart.scss";
 import { RootState } from "../../redux/store";
 import ItemCard from "../../components/ItemCard";
-import { productData } from "../../components/data/productData";
+import { productData } from "../../data/productData";
 import EmptyCart from "./EmptyCart";
 
 export default function Cart() {
