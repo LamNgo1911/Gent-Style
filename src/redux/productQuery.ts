@@ -11,7 +11,14 @@ const productQueries = createApi({
   tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
     fetchProductsByPagination: builder.query<Product[], Pagination>({
-      query: ({ offset, limit }) => `products?offset=${offset}&limit=${limit}`,
+      query: ({
+        offset,
+        limit,
+        priceMin = "",
+        priceMax = "",
+        categoryId = "",
+      }) =>
+        `products/?offset=${offset}&limit=${limit}&categoryId=${categoryId}&price_min=${priceMin}&price_max=${priceMax}`,
       providesTags: ["Products"],
     }),
     fetchASingleProduct: builder.query<Product, number>({

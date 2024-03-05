@@ -11,9 +11,18 @@ import {
 import ImageCard from "../../components/ImageCard";
 import ProductCard from "../../components/ProductCard";
 import Slider from "../../components/Slider";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/slices/cartSlice";
+import { useEffect, useState } from "react";
+import { TiTickOutline } from "react-icons/ti";
+import { addToWishlist } from "../../redux/slices/productSlice";
+import ImageCardSkeleton from "../../components/loading/ImageCardSkeleton";
+import LoadingError from "../../components/LoadingError";
 
 export default function ProductDetail() {
   const productId = useParams().productId;
+  const dispatch = useDispatch();
+
   const {
     data: product,
     isLoading,
@@ -25,7 +34,43 @@ export default function ProductDetail() {
     error: errorRelevantProducts,
   } = useFetchProductsbyCategoriesQuery(Number(product?.category?.id));
 
-  console.log(productId);
+  const [addedProduct, setAddedProduct] = useState<boolean>(false);
+  const [savedProduct, setSavedProduct] = useState<boolean>(false);
+
+  const addedToCartHandler = () => {
+    if (product) {
+      dispatch(addToCart(product));
+      setAddedProduct(true);
+    }
+  };
+
+  const savedToWishlistHandler = () => {
+    if (product) {
+      dispatch(addToWishlist(product));
+      setSavedProduct(true);
+    }
+  };
+
+  // send added and saved message in 3s
+  useEffect(() => {
+    if (addedProduct) {
+      setTimeout(() => {
+        setAddedProduct(false);
+      }, 2000);
+    }
+
+    if (savedProduct) {
+      setTimeout(() => {
+        setSavedProduct(false);
+      }, 2000);
+    }
+  }, [addedProduct, savedProduct]);
+
+  // handle error
+  if (error || errorRelevantProducts) {
+    return <LoadingError />;
+  }
+
   return (
     <main className="product-detail">
       {/* navigatin links */}
@@ -39,7 +84,11 @@ export default function ProductDetail() {
       </section>
 
       <section className="product-detail__container">
-        <ImageCard images={product?.images || []} />
+        {isLoading ? (
+          <ImageCardSkeleton />
+        ) : (
+          <ImageCard images={product?.images || []} />
+        )}
 
         <div className="product-detail__infor">
           <h3 className="product-detail__title">{product?.title}</h3>
@@ -52,9 +101,18 @@ export default function ProductDetail() {
             <p className={`description-content`}>{product?.description}</p>
           </div>
           <div className="product-detail__btns">
-            <button>Add to cart</button>
-            <span>
-              <FaHeart className="heart-btn" />
+            {addedProduct ? (
+              <button>
+                Added <TiTickOutline className="tick-icon" />
+              </button>
+            ) : (
+              <button onClick={addedToCartHandler}>Add to cart</button>
+            )}
+
+            <span aria-label="Add to Wishlist" onClick={savedToWishlistHandler}>
+              <FaHeart
+                className={`heart-btn ${savedProduct && "save-animation"}`}
+              />
             </span>
           </div>
         </div>

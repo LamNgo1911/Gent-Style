@@ -113,12 +113,6 @@
   }
 }
 
-.filter-type__btn {
-  @include mixs.button-style();
-  width: 100%;
-  font-weight: 600;
-}
-
 .sort-btn,
 .filter-btn {
   @include mixs.flex-center;
@@ -146,6 +140,7 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 0.2rem;
     margin-bottom: 1rem;
+    padding: 0 1rem;
 
     @include mixs.md-screen {
       grid-template-columns: repeat(3, 1fr);
@@ -162,7 +157,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
-  padding: 1rem 1.2rem;
+  padding: 1rem;
   background-color: #e0e0e0;
   color: #333;
 
@@ -284,4 +279,8 @@
 .active-page a {
   background-color: vars.$primary-color;
   color: #fff;
+}
+
+.dropdown__btn.active {
+  background-color: vars.$primary-color;
 }

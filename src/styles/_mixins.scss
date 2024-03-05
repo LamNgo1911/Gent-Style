@@ -2,9 +2,9 @@
 
 // -------- btn style --------
 @mixin button-style() {
-  border-radius: vars.$border-radius;
-  border: none;
-  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  border: 1px solid;
+  padding: 0.5rem 1rem;
   cursor: pointer;
 }
 
@@ -193,6 +193,24 @@
       opacity: 0.5;
     }
     100% {
+      opacity: 1;
+    }
+  }
+}
+
+@mixin heartAnimation {
+  animation: heartAnimation 1s ease-in-out;
+  @keyframes heartAnimation {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.5);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1);
       opacity: 1;
     }
   }

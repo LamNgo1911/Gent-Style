@@ -1,11 +1,14 @@
 import "./CategoryCard.scss";
 import { Category } from "../../misc/types";
 import { useNavigate } from "react-router-dom";
+import { useFilter } from "../../context/useFilter";
 
 export default function CategoryCard({ id, image, name }: Category) {
   const navigate = useNavigate();
+  const { setCategoryId } = useFilter();
 
   const clickHandler = () => {
+    setCategoryId(id.toString());
     navigate(`/products`);
   };
   return (

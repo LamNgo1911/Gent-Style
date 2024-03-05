@@ -111,8 +111,18 @@
           width: 100%;
           cursor: pointer;
 
-          padding: 0.5rem 1rem;
-          border-radius: 0.5rem;
+          @include mixs.button-style();
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 1rem;
+
+          .tick-icon {
+            padding: 0.2rem;
+            border: 1px solid;
+            border-radius: 50%;
+          }
 
           @include mixs.md-screen {
             font-size: 1rem;
@@ -128,6 +138,10 @@
           padding: 0.5rem;
           border-radius: 50%;
           cursor: pointer;
+
+          .save-animation {
+            @include mixs.heartAnimation;
+          }
 
           @include mixs.flex-center;
 

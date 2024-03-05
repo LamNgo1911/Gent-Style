@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 
 export default function Footer() {
-  // const { data: categoryListing, isLoading, error } = useFetchCategoriesQuery();
   return (
     <footer className="footer">
       <div className="footer-infor">
@@ -17,9 +16,6 @@ export default function Footer() {
           <div className="footer-wrapper">
             <div className="footer-subcontent">
               <h2>Explore GentStyle</h2>
-              {/* {categoryListing?.map((category, i) => (
-              <p key={i}>{category?.name}</p>
-            ))} */}
               <p>Contact Info</p>
               <p>Contact Info</p>
               <p>Contact Info</p>

@@ -53,6 +53,9 @@ export type FilterOption = {
 export type Pagination = {
   offset: number;
   limit: number;
+  priceMin?: number;
+  priceMax?: number;
+  categoryId?: number;
 };
 
 export type SliderProps = {
@@ -64,4 +67,13 @@ export type SliderProps = {
   slidesPerViewLg: number;
   showScrollbar: boolean;
   showPagination: boolean;
+};
+
+export type CartItem = Product & {
+  quantity: number;
+};
+
+export type CartState = {
+  items: CartItem[];
+  total: number;
 };

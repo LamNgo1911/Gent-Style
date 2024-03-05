@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home/Home";
 import ProductListing from "./pages/ProductListing";
 import ProductDetail from "./pages/ProductDetail/ProductDetail";
-import ShoppingCart from "./pages/ShoppingCart";
 import Checkout from "./pages/Checkout";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./pages/SearchResults";
@@ -20,6 +19,7 @@ import { RootState } from "./redux/store";
 import Admin from "./pages/Admin";
 import { useTheme } from "./context/useTheme";
 import Sale from "./pages/Sale";
+import Cart from "./pages/Cart";
 
 function App() {
   const { pathname } = useLocation();
@@ -44,7 +44,7 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search-results" element={<SearchResults />} />
         <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/shopping-cart" element={<ShoppingCart />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
         {isAuthenticated && <Route path="/profile" element={<Profile />} />}

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Range } from "react-range";
+import { useFilter } from "../../context/useFilter";
 
 export default function PriceRangeDropdown() {
-  const initialValues = [0, 300];
-  const [priceRange, setPriceRange] = useState<number[]>(initialValues);
+  const initialValues = [0, 999];
+  const { priceRange, setPriceRange } = useFilter();
 
   const handlePriceRangeChange = (values: number[]) => {
     setPriceRange(values);
@@ -19,7 +20,7 @@ export default function PriceRangeDropdown() {
         <Range
           step={0.1}
           min={0}
-          max={300}
+          max={999}
           values={priceRange}
           onChange={handlePriceRangeChange}
           renderTrack={({ props, children }) => (

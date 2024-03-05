@@ -13,6 +13,8 @@ import FilterSmallScreen from "./FilterSmallScreen";
 import ReactPaginate from "react-paginate";
 import { useFetchProductsByPaginationQuery } from "../../redux/productQuery";
 import { useTheme } from "../../context/useTheme";
+import { useFilter } from "../../context/useFilter";
+import LoadingError from "../../components/LoadingError";
 
 export default function ProductListing() {
   const dispatch = useAppDispatch();
@@ -21,13 +23,26 @@ export default function ProductListing() {
 
   const limit = 8;
   const [offset, setOffset] = useState(0);
+  const { categoryId, priceRange, getCategoryName } = useFilter();
 
   const {
     data: productsByPagination,
     isLoading,
     error,
-  } = useFetchProductsByPaginationQuery({ offset, limit });
-  const loading = useSelector((state: RootState) => state.products.loading);
+  } = useFetchProductsByPaginationQuery({
+    offset,
+    limit,
+    categoryId: Number(categoryId),
+    priceMin: Number(priceRange[0]),
+    priceMax: Number(priceRange[1]),
+  });
+
+  // selectors
+  const {
+    products,
+    loading,
+    error: productError,
+  } = useSelector((state: RootState) => state.products);
 
   // use fetchAllProductsAsync
   useEffect(() => {
@@ -36,8 +51,6 @@ export default function ProductListing() {
   }, [dispatch]);
 
   // const products = [...productData];
-  // get products
-  const products = useSelector((state: RootState) => state.products.products);
 
   const pageCount = Math.ceil(products?.length / limit);
 
@@ -52,15 +65,20 @@ export default function ProductListing() {
     setOffset(newOffset);
   };
 
+  // handle error
+  if (error || productError) {
+    return <LoadingError />;
+  }
+
   return (
     <main className={`productListing`}>
-      <h1 className="product-title">Category</h1>
+      <h1 className="product-title">{getCategoryName()}</h1>
 
       {isBigScreen ? <FilterBigScreen /> : <FilterSmallScreen />}
 
       {/* product section */}
       <section className="product-section">
-        <h3>78 styles found</h3>
+        <h3>{products?.length || 0} style(s) found</h3>
 
         {/* product list */}
         <div className="product-list">
@@ -77,6 +95,7 @@ export default function ProductListing() {
                   price={product?.price}
                   category={product?.category}
                   images={product?.images}
+                  product={product}
                 />
               ))}
         </div>

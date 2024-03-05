@@ -13,12 +13,13 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  padding: 0 0.8rem;
+  padding-left: 1rem;
+  padding-right: 0.3rem;
   border-bottom-left-radius: 0.5rem;
   border-bottom-right-radius: 0.5rem;
 
   @include mixs.lg-screen {
-    padding: 0.5rem 0.8rem;
+    padding: 0.5rem 1rem;
   }
 
   .header__logo-container {
@@ -112,7 +113,7 @@
   z-index: 100;
   bottom: 0;
   left: 0;
-  padding: 0.8rem;
+  padding: 1rem;
   width: 100%;
 
   border-top: 1px solid;
@@ -134,4 +135,18 @@
 
 .bg-transparent {
   background-color: transparent;
+}
+
+// small number on the top of the cart icon
+.cart-btn {
+  position: relative;
+  .small-number {
+    position: absolute;
+    top: -20%;
+    right: -30%;
+    transform: translate(-50%, -50%);
+
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
 }

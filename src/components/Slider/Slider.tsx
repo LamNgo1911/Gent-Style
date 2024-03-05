@@ -66,6 +66,7 @@ export default function Slider({
                       price={item.price}
                       category={item.category}
                       images={item.images}
+                      product={item}
                     />
                   ) : (
                     // Type assertion for Category

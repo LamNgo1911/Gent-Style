@@ -46,10 +46,13 @@ export const productSlice = createSlice({
     clearWishlist: (state) => {
       state.wishlist = [];
     },
-    sortProductsbyPrice(state) {
-      const newProductList = [...state.products].sort(
-        (a, b) => a.price - b.price
-      );
+    sortProductsbyPrice(state, action: PayloadAction<string>) {
+      let newProductList = [...state.products];
+      if (action.payload === "Price high to low") {
+        newProductList = [...state.products].sort((a, b) => b.price - a.price);
+      } else if (action.payload === "Price low to high") {
+        newProductList = [...state.products].sort((a, b) => a.price - b.price);
+      }
       state.products = newProductList;
     },
   },

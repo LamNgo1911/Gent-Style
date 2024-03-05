@@ -1,45 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-import { filterOptions } from "../../misc/filterOptions";
+import { filterLgOptions } from "../../misc/filterOptions";
 import { FilterOption } from "../../misc/types";
 
 export default function FilterBigScreen() {
   const dropdownLgScreenRefs = useRef<HTMLDivElement[]>([]);
   const filterContainerRefs = useRef<HTMLDivElement[]>([]);
-  const [newFilterOptions, setNewFilterOptions] =
-    useState<FilterOption[]>(filterOptions);
+  const [newFilterLgOptions, setNewFilterLgOptions] =
+    useState<FilterOption[]>(filterLgOptions);
 
   const handleContainerClick = (i: number) => {
-    const updatedOptions = newFilterOptions.map((option, index) => ({
+    const updatedOptions = newFilterLgOptions.map((option, index) => ({
       ...option,
       dropdownVisible: i === index ? !option.dropdownVisible : false,
     }));
-    setNewFilterOptions(updatedOptions);
+    setNewFilterLgOptions(updatedOptions);
   };
 
   const handleOutsideClick = (event: MouseEvent) => {
     const clickedOnFilterContainer = filterContainerRefs.current.find(
       (ref) => ref && ref.contains(event.target as Node)
     );
-    console.log(clickedOnFilterContainer);
+
     if (!clickedOnFilterContainer) {
-      const updatedOptions = newFilterOptions.map((option) => ({
+      const updatedOptions = newFilterLgOptions.map((option) => ({
         ...option,
         dropdownVisible: false,
       }));
-      setNewFilterOptions(updatedOptions);
+      setNewFilterLgOptions(updatedOptions);
     }
   };
 
   // exit by Esc key
   const handleKeyDown = (event: { key: string }) => {
     if (event.key === "Escape") {
-      const updatedOptions = newFilterOptions.map((option) => ({
+      const updatedOptions = newFilterLgOptions.map((option) => ({
         ...option,
         dropdownVisible: false,
       }));
-      setNewFilterOptions(updatedOptions);
+      setNewFilterLgOptions(updatedOptions);
     }
   };
 
@@ -66,7 +66,7 @@ export default function FilterBigScreen() {
 
   return (
     <section className="filter-section-lg">
-      {newFilterOptions?.map(({ label, dropdown, dropdownVisible }, i) => (
+      {newFilterLgOptions?.map(({ label, dropdown, dropdownVisible }, i) => (
         <div
           className="filter-container-lg"
           key={i}

@@ -1,6 +1,7 @@
 import React from "react";
 import "./TrendingCard.scss";
 import { TrendingCategory } from "../../misc/types";
+import { useNavigate } from "react-router-dom";
 
 export default function TrendingCard({
   id,
@@ -8,8 +9,10 @@ export default function TrendingCard({
   description,
   image,
 }: TrendingCategory) {
+  const navigate = useNavigate();
+
   return (
-    <div className="trending-container">
+    <div className="trending-container" onClick={() => navigate("/products")}>
       <div className="image-container">
         <img src={image} alt={title} className="trending-img" />
       </div>

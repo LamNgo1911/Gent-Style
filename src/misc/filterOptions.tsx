@@ -5,7 +5,7 @@ import PriceRangeDropdown from "../pages/ProductListing/PriceRangeDropdown";
 import SizeDropdown from "../pages/ProductListing/SizeDropdown";
 import SortDropdown from "../pages/ProductListing/SortDropdown";
 
-export const filterOptions = [
+export const filterLgOptions = [
   { label: "Sort", dropdown: <SortDropdown />, dropdownVisible: false },
   { label: "Category", dropdown: <CategoryDropdown />, dropdownVisible: false },
   { label: "Colour", dropdown: <ColourDropdown />, dropdownVisible: false },
@@ -18,7 +18,7 @@ export const filterOptions = [
   },
 ];
 
-export const filterLgOptions = [
+export const filterSmOptions = [
   { label: "Category", dropdown: <CategoryDropdown />, dropdownVisible: false },
   { label: "Colour", dropdown: <ColourDropdown />, dropdownVisible: false },
   { label: "Brand", dropdown: <BrandDropdown />, dropdownVisible: false },

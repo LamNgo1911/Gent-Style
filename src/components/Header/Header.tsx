@@ -21,14 +21,14 @@ export default function Header() {
   const [isOpenSearchBtn, setIsOpenSearchBtn] = useState<boolean>(true);
   const [scroll, setScroll] = useState<boolean>(true);
 
+  const pathname = useLocation().pathname;
   // media query
   const { isSmallScreen, isBigScreen } = useMediaQueries();
-
   const { theme, toggleTheme } = useTheme();
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
-  const pathname = useLocation().pathname;
+  const { items } = useSelector((state: RootState) => state.carts);
 
   // keep menu-dropdown open when clicking outside of menu-dropdown ul
   const handleDropdownClick = (event: React.MouseEvent) => {
@@ -111,8 +111,11 @@ export default function Header() {
           <Link to="/wishlist">
             <RiHeartFill className="header-btn" />
           </Link>
-          <Link to="/shopping-cart">
+          <Link to="/cart" className="cart-btn">
             <AiOutlineShoppingCart className="header-btn" />
+            <small className="small-number">
+              {items?.length > 0 && items?.length}
+            </small>
           </Link>
           <Link
             to={`${
@@ -171,8 +174,12 @@ export default function Header() {
           <Link to="/wishlist">
             <RiHeartFill className="header-btn" />
           </Link>
-          <Link to="/shopping-cart">
+          <Link to="/cart" className="cart-btn">
             <AiOutlineShoppingCart className="header-btn" />
+
+            <small className="small-number">
+              {items?.length > 0 && items?.length}
+            </small>
           </Link>
           {theme === "light-theme" ? (
             <IoIosMoon className="header-btn" onClick={() => toggleTheme()} />

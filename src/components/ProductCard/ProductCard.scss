@@ -3,14 +3,16 @@
 @use "../../styles/mixins" as mixs;
 
 .product-card {
+  position: relative;
+}
+
+.product-card-container {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
   padding: 0.5rem;
   cursor: pointer;
-
-  position: relative;
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -22,6 +24,7 @@
     height: 230px;
     overflow: hidden;
     border-radius: 0.25rem;
+    border: 1px solid;
 
     @include mixs.md-screen {
       height: 250px;
@@ -105,23 +108,24 @@
       font-size: 1rem;
     }
   }
+}
 
-  .wishlist-icon {
-    position: absolute;
-    right: 1rem;
-    top: 1rem;
-    z-index: 2;
-    border: 1px solid #cacaca;
-    border-radius: 40%;
-    padding: 0.2rem 0.5rem;
+.wishlist-icon {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  z-index: 10;
 
-    @include mixs.flex-center;
-    color: #cacaca;
-    cursor: pointer;
+  border: 1px solid #cacaca;
+  border-radius: 40%;
+  padding: 0.2rem 0.5rem;
 
-    &:hover {
-      color: darken(#cacaca, 20%);
-      border-color: darken(#cacaca, 20%);
-    }
+  @include mixs.flex-center;
+  color: #cacaca;
+  cursor: pointer;
+
+  &:hover {
+    color: darken(#cacaca, 20%);
+    border-color: darken(#cacaca, 20%);
   }
 }

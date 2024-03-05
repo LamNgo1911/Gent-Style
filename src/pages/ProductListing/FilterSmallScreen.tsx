@@ -4,8 +4,9 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import { TiTickOutline } from "react-icons/ti";
 
 import { useTheme } from "../../context/useTheme";
-import { filterLgOptions } from "../../misc/filterOptions";
+import { filterSmOptions } from "../../misc/filterOptions";
 import { FilterOption } from "../../misc/types";
+import SortDropdown from "./SortDropdown";
 
 export default function FilterSmallScreen() {
   const filterDropdownRef = useRef<HTMLDivElement>(null);
@@ -17,8 +18,8 @@ export default function FilterSmallScreen() {
     useState<boolean>(false);
   const [openFilterType, setOpenFilterType] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [newFilterLgOptions, setNewFilterLgOptions] =
-    useState<FilterOption[]>(filterLgOptions);
+  const [newFilterSmOptions, setNewFilterSmOptions] =
+    useState<FilterOption[]>(filterSmOptions);
 
   const { theme } = useTheme();
 
@@ -67,7 +68,7 @@ export default function FilterSmallScreen() {
   const clickOutsideHandler = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
-  console.log(newFilterLgOptions[currentIndex].dropdown);
+
   return (
     <section className="filter-section">
       <div ref={sortContainerRef} className="sort-container">
@@ -80,10 +81,7 @@ export default function FilterSmallScreen() {
           ref={sortDropdownRef}
           className={`sort-dropdown ${isSortDropdownOpen && "open"} ${theme}`}
         >
-          <p>Recommended</p>
-          <p>What's new</p>
-          <p>Price high to low</p>
-          <p>Price low to high</p>
+          <SortDropdown />
         </div>
       </div>
 
@@ -105,7 +103,7 @@ export default function FilterSmallScreen() {
             onClick={clickOutsideHandler}
           >
             <h3>FILTER</h3>
-            {newFilterLgOptions?.map(({ label }: FilterOption, i) => (
+            {newFilterSmOptions?.map(({ label }: FilterOption, i) => (
               <p
                 key={label}
                 onClick={() => openFilterTypeHandler(i)}
@@ -114,7 +112,6 @@ export default function FilterSmallScreen() {
                 {label}
               </p>
             ))}
-            <button className="filter-type__btn">Apply</button>
           </div>
 
           {/*  Price Range dropdown*/}
@@ -129,12 +126,11 @@ export default function FilterSmallScreen() {
               >
                 <BiLeftArrowAlt />
                 <span>
-                  {newFilterLgOptions[currentIndex].label.toUpperCase()}
+                  {newFilterSmOptions[currentIndex].label.toUpperCase()}
                 </span>
               </div>
 
-              {newFilterLgOptions[currentIndex].dropdown}
-              <button className="filter-type__btn">Apply</button>
+              {newFilterSmOptions[currentIndex].dropdown}
             </div>
           )}
         </div>
