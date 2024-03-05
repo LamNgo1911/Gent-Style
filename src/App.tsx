@@ -32,7 +32,7 @@ function App() {
   );
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
-
+  console.log(pathname);
   // Redirect to / if user is not authenticated
   useEffect(() => {
     if (!isAuthenticated && pathname === "/profile") {
@@ -41,28 +41,35 @@ function App() {
   }, [isAuthenticated, navigate]);
 
   // Redirect to 404 page if the route doesn't exist
-  useEffect(() => {
-    const validPaths = [
-      "/",
-      "/login",
-      "/register",
-      "/products",
-      "/sale",
-      "/contact-us",
-      "/search-results",
-      "/wishlist",
-      "/cart",
-      "/checkout",
-      "/order-confirmation",
-      "/profile",
-      "/profile/my-details",
-      "/admin",
-    ];
+  // Array of valid paths
+  const validPaths = [
+    "/",
+    "/login",
+    "/register",
+    "/products",
+    "/sale",
+    "/contact-us",
+    "/search-results",
+    "/wishlist",
+    "/cart",
+    "/checkout",
+    "/order-confirmation",
+    "/profile",
+    "/profile/my-details",
+    "/admin",
+  ];
 
-    if (!validPaths.includes(pathname)) {
+  // Check if the pathname matches the pattern
+  const isPathCorrect = /^\/products\/\d+$/.test(pathname);
+
+  // Redirect to 404 page if the route doesn't exist
+  useEffect(() => {
+    if (!validPaths.includes(pathname) && !isPathCorrect) {
+      console.log(pathname);
       navigate("/404");
     }
-  }, [pathname, navigate]);
+  }, [pathname]);
+
   return (
     <div className={`App ${theme}`}>
       {!isAuthPage && <Header />}
