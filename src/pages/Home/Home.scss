@@ -43,6 +43,7 @@
 
         .hero-button {
           @include mixs.button-style();
+          border: none;
           font-weight: 600;
           font-size: 0.75rem;
 

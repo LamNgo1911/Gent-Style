@@ -181,5 +181,9 @@
     gap: 1rem;
 
     text-decoration: none;
+
+    .rotate-icon {
+      @include mixs.spin;
+    }
   }
 }

@@ -1,0 +1,61 @@
+@use "../../styles/functions" as funcs;
+@use "../../styles/variables" as vars;
+@use "../../styles/mixins" as mixs;
+
+.not-found-error {
+  position: relative;
+  max-width: 1280px;
+  margin: auto;
+  color: vars.$dark-text-color;
+  @include mixs.flex-center;
+
+  .not-found-error__img {
+    width: 100%;
+    height: 100vh;
+  }
+
+  .not-found-error__content {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+
+    h1 {
+      font-size: 4rem;
+
+      @include mixs.md-screen {
+        font-size: 4.5rem;
+      }
+
+      @include mixs.lg-screen {
+        font-size: 5rem;
+      }
+    }
+
+    h2 {
+      font-size: 2rem;
+
+      @include mixs.md-screen {
+        font-size: 2.5rem;
+      }
+
+      @include mixs.lg-screen {
+        font-size: 3rem;
+      }
+    }
+
+    button {
+      @include mixs.button-style();
+      margin-top: 1rem;
+
+      @include mixs.md-screen {
+        font-size: 1.2rem;
+      }
+
+      @include mixs.lg-screen {
+        font-size: 1.4rem;
+      }
+    }
+  }
+}

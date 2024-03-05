@@ -91,6 +91,7 @@
 
       .item-card__save-btn,
       .item-card__noti-btn {
+        align-self: flex-start;
         display: flex;
         align-items: center;
         gap: 0.5rem;

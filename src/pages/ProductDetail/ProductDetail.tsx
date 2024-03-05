@@ -18,6 +18,7 @@ import { TiTickOutline } from "react-icons/ti";
 import { addToWishlist } from "../../redux/slices/productSlice";
 import ImageCardSkeleton from "../../components/loading/ImageCardSkeleton";
 import LoadingError from "../../components/LoadingError";
+import ProductDetailSkeleton from "../../components/loading/ProductDetailSkeleton";
 
 export default function ProductDetail() {
   const productId = useParams().productId;
@@ -85,37 +86,44 @@ export default function ProductDetail() {
 
       <section className="product-detail__container">
         {isLoading ? (
-          <ImageCardSkeleton />
+          <>
+            <ImageCardSkeleton />
+            <ProductDetailSkeleton />
+          </>
         ) : (
-          <ImageCard images={product?.images || []} />
+          <>
+            <ImageCard images={product?.images || []} />
+            <div className="product-detail__infor">
+              <h3 className="product-detail__title">{product?.title}</h3>
+              <p className="product-detail__price">Price: {product?.price}$</p>
+              <div className="product-detail__description">
+                <p className="description-btn">
+                  Description <IoIosArrowDown />
+                </p>
+
+                <p className={`description-content`}>{product?.description}</p>
+              </div>
+              <div className="product-detail__btns">
+                {addedProduct ? (
+                  <button>
+                    Added <TiTickOutline className="tick-icon" />
+                  </button>
+                ) : (
+                  <button onClick={addedToCartHandler}>Add to cart</button>
+                )}
+
+                <span
+                  aria-label="Add to Wishlist"
+                  onClick={savedToWishlistHandler}
+                >
+                  <FaHeart
+                    className={`heart-btn ${savedProduct && "save-animation"}`}
+                  />
+                </span>
+              </div>
+            </div>
+          </>
         )}
-
-        <div className="product-detail__infor">
-          <h3 className="product-detail__title">{product?.title}</h3>
-          <p className="product-detail__price">Price: {product?.price}$</p>
-          <div className="product-detail__description">
-            <p className="description-btn">
-              Description <IoIosArrowDown />
-            </p>
-
-            <p className={`description-content`}>{product?.description}</p>
-          </div>
-          <div className="product-detail__btns">
-            {addedProduct ? (
-              <button>
-                Added <TiTickOutline className="tick-icon" />
-              </button>
-            ) : (
-              <button onClick={addedToCartHandler}>Add to cart</button>
-            )}
-
-            <span aria-label="Add to Wishlist" onClick={savedToWishlistHandler}>
-              <FaHeart
-                className={`heart-btn ${savedProduct && "save-animation"}`}
-              />
-            </span>
-          </div>
-        </div>
       </section>
 
       {/* relevant-products section*/}

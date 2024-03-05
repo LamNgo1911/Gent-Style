@@ -13,7 +13,7 @@ export default function EmptyCart() {
       <h1>Your Cart</h1>
       <p>Your cart is empty.</p>
       <Link to="/products" onClick={handleRefreshClick}>
-        <FaSync /> Look for New Products
+        <FaSync className="rotate-icon"/> Look for New Products
       </Link>
     </main>
   );

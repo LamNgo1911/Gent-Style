@@ -32,7 +32,10 @@ export default function Login() {
     const { email, password } = data;
 
     await dispatch(fetchLogin({ email, password }));
-    navigate("/");
+    console.log(user);
+    if (user) {
+      navigate("/");
+    }
   };
 
   const handleSuccess = async (credentialResponse: any) => {
@@ -121,10 +124,7 @@ export default function Login() {
           <small className="forgot-password">Forgot password?</small>
         </div>
         {error && <span className="error">{error}</span>}
-        <button
-          type="submit"
-          className={`submit-btn ${theme}`}
-        >
+        <button type="submit" className={`submit-btn ${theme}`}>
           Log in
         </button>
       </form>
