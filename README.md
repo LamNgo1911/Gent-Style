@@ -38,7 +38,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 ### Installation
 
-- Git command: Git clone https://github.com/LamNgo1911/fs17-Frontend-project.git
+- Git command: Git clone https://github.com/LamNgo1911/Gent-Style.git
 - Navigate to the project directory: cd fs17-Frontend-project.
 - Install the project dependencies: npm install or yarn install.
 
