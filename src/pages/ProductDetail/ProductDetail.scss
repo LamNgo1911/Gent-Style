@@ -110,6 +110,7 @@
         button {
           width: 100%;
           cursor: pointer;
+          font-weight: 700;
 
           @include mixs.button-style();
 
