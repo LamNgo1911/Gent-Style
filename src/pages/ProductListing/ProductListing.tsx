@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import "./ProductListing.scss";
 import ProductCard from "../../components/ProductCard";
-import { useMediaQueries } from "../../components/hooks/useMediaQuery";
+import { useMediaQueries } from "../../hooks/useMediaQuery";
 import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "../../redux/store";
 import ProductCardSkeleton from "../../components/loading/ProductCardSkeleton";

@@ -1,0 +1,66 @@
+@use "../../../styles/functions" as funcs;
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixs;
+
+.profileNav {
+  padding-top: 4rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  width: 100%;
+
+  .profileNav-header {
+    @include mixs.flex-center;
+
+    .profileNav-header__container {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+
+      .profileNav-header__avatar {
+        padding: 2rem;
+        border: 1px solid;
+        border-radius: 50%;
+        cursor: pointer;
+
+        @include mixs.flex-center;
+
+        .profileNav-header__icon {
+          font-size: 3rem;
+        }
+
+        &.text {
+          font-size: 2rem;
+        }
+      }
+    }
+  }
+
+  .profileNav-list {
+    .profileNav-list__container {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+
+      .list-link {
+        padding: 1rem;
+        background-color: #e0e0e0;
+        color: #333;
+        font-size: 1rem;
+        text-decoration: none;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+        cursor: pointer;
+
+        .list-icon {
+          font-size: 1.5rem;
+        }
+      }
+    }
+  }
+}

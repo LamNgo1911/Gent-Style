@@ -10,7 +10,6 @@ import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./pages/SearchResults";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";
-import Profile from "./pages/profile/Profile";
 import MyDetails from "./pages/profile/MyDetails";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -20,8 +19,11 @@ import Admin from "./pages/Admin";
 import { useTheme } from "./context/useTheme";
 import Sale from "./pages/Sale";
 import Cart from "./pages/Cart";
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import NotFound from "./pages/NotFound";
+import { useMediaQueries } from "./hooks/useMediaQuery";
+import ProfileNav from "./pages/profile/ProfileNav";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   const { pathname } = useLocation();
@@ -30,45 +32,29 @@ function App() {
   const { user, isAuthenticated } = useSelector(
     (state: RootState) => state.users
   );
+  const { isSmallScreen, isBigScreen } = useMediaQueries();
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
   console.log(pathname);
+
   // Redirect to / if user is not authenticated
   useEffect(() => {
-    if (!isAuthenticated && pathname === "/profile") {
+    if (
+      !isAuthenticated &&
+      (pathname === "/profile" || pathname === "/profile/my-details")
+    ) {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
 
-  // Redirect to 404 page if the route doesn't exist
-  // Array of valid paths
-  const validPaths = [
-    "/",
-    "/login",
-    "/register",
-    "/products",
-    "/sale",
-    "/contact-us",
-    "/search-results",
-    "/wishlist",
-    "/cart",
-    "/checkout",
-    "/order-confirmation",
-    "/profile",
-    "/profile/my-details",
-    "/admin",
-  ];
-
-  // Check if the pathname matches the pattern
-  const isPathCorrect = /^\/products\/\d+$/.test(pathname);
-
-  // Redirect to 404 page if the route doesn't exist
-  useEffect(() => {
-    if (!validPaths.includes(pathname) && !isPathCorrect) {
-      console.log(pathname);
-      navigate("/404");
-    }
-  }, [pathname]);
+  const ProfileNesting = ({ component }: { component: ReactNode }) => {
+    return (
+      <main className="profile-nesting">
+        <ProfileNav />
+        {component}
+      </main>
+    );
+  };
 
   return (
     <div className={`App ${theme}`}>
@@ -88,16 +74,29 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        {isAuthenticated && (
-          <Route path="/profile" element={<Profile />}>
+        {isAuthenticated && isSmallScreen ? (
+          <>
+            <Route path="/profile" element={<ProfileNav />} />
             <Route path="/profile/my-details" element={<MyDetails />} />
-          </Route>
+          </>
+        ) : (
+          <>
+            <Route
+              path="/profile"
+              element={<ProfileNesting component={<Profile />} />}
+            />
+            <Route
+              path="/profile/my-details"
+              element={<ProfileNesting component={<MyDetails />} />}
+            />
+          </>
         )}
         {isAuthenticated && user?.role === "admin" && (
           <Route path="/admin" element={<Admin />} />
         )}
-        <Route path="/404" element={<NotFound />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
+
       {!isAuthPage && <Footer />}
     </div>
   );

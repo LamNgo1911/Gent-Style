@@ -13,7 +13,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../context/useTheme";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { useMediaQueries } from "../hooks/useMediaQuery";
+import { useMediaQueries } from "../../hooks/useMediaQuery";
 
 export default function Header() {
   // state for mobile version

@@ -1,5 +1,55 @@
 import "./MyDetails.scss";
+import { BsPersonFill } from "react-icons/bs";
+import { IoIosArrowBack } from "react-icons/io";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { useNavigate } from "react-router-dom";
+import { useMediaQueries } from "../../../hooks/useMediaQuery";
 
 export default function MyDetails() {
-  return <div>MyDetails</div>;
+  const { user } = useSelector((state: RootState) => state.users);
+  const { isSmallScreen, isBigScreen } = useMediaQueries();
+  const navigate = useNavigate();
+
+  return (
+    <section className="my-details">
+      {/* detail header */}
+      <section className="my-details__header">
+        <div
+          aria-label="Return to profile"
+          className={`my-details__btn ${!isSmallScreen && "hidden"}`}
+          onClick={() => navigate("/profile")}
+        >
+          <IoIosArrowBack className="my-details__icon" />
+          <BsPersonFill className="my-details__icon" />
+        </div>
+        <h1 className="my-details__title">My Details</h1>
+        <div />
+      </section>
+
+      {/* details info */}
+      <section className="my-details__info">
+        <div className="my-details__info-container">
+          <h2>Name</h2>
+          <div className="credential">
+            <p>{user?.name}</p>
+          </div>
+        </div>
+
+        <div className="my-details__info-container">
+          <h2>Email</h2>
+          <div className="credential">
+            <p>{user?.email}</p>
+          </div>
+        </div>
+
+        <div className="my-details__info-container">
+          <h2>Password</h2>
+          <div className="credential">
+            <p>{user?.password}</p>
+          </div>
+        </div>
+      </section>
+    </section>
+  );
 }

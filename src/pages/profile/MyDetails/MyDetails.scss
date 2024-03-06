@@ -1,0 +1,54 @@
+@use "../../../styles/functions" as funcs;
+@use "../../../styles/variables" as vars;
+@use "../../../styles/mixins" as mixs;
+
+.my-details {
+  padding-top: 4rem;
+  display: flex;
+  flex-direction: column;
+
+  gap: 2rem;
+  width: 100%;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+
+    .my-details__btn {
+      font-size: 1.2rem;
+      padding: 0;
+      cursor: pointer;
+
+      @include mixs.flex-center;
+
+      &.hidden {
+        display: none;
+      }
+    }
+
+    .my-details__title {
+      font-size: 1.3rem;
+    }
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    &-container {
+      h2 {
+        font-size: 1.2rem;
+        padding: 0 1rem;
+      }
+      .credential {
+        padding: 1rem;
+        margin: 0 1rem;
+        background: #cacaca;
+        color: #333;
+      }
+    }
+  }
+}
