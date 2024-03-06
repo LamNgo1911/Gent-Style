@@ -8,17 +8,17 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 - Table of Contents
 - Getting Started
 
-* Prerequisites
-* Installation
-* Setting up the Environment
+   * Prerequisites
+   * Installation
+   * Setting up the Environment
 
 - Usage
 - Features
 - Architecture & Design
 
-* Folder Structure
-* Data Flow
-* Component Structure
+   * Folder Structure
+   * Data Flow
+   * Component Structure
 
 - Testing
 - Deployment
@@ -33,8 +33,8 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 - Git
 - Package Manager: Either npm or Yarn
 
-* npm version: 8.4.1 or higher
-* Yarn version: 1.22.10 or higher
+   * npm version: 8.4.1 or higher
+   * Yarn version: 1.22.10 or higher
 
 ### Installation
 
@@ -67,13 +67,13 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 - src/
 
-* components/: Contains reusable UI components.
-* pages/: Contains the main pages of the application.
-* redux/: Contains Redux-related files (actions, reducers, store).
-* test/: Contains reducer testing files
-* styles/: Contains global styles and styling variables.
-* App.tsx: The root component of the application.
-* index.tsx: Entry point file.
+   * components/: Contains reusable UI components.
+   * pages/: Contains the main pages of the application.
+   * redux/: Contains Redux-related files (actions, reducers, store).
+   * test/: Contains reducer testing files
+   * styles/: Contains global styles and styling variables.
+   * App.tsx: The root component of the application.
+   * index.tsx: Entry point file.
 
 #### Data Flow
 
@@ -84,10 +84,10 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 - The components are organized based on their functionality and can be reused across different pages. The main components include:
 
-* Header: Displays the navigation bar and user-related actions.
-* ProductCard: Displays product information. It includes an image, product name, price, description
-* Slider: Displays a list of products with different swiping styles, such as pagination, scrollbar or navigation.
-* ImageCard: Displays multiple product images, including a main image and thumbnail views. It enables users to have different perspectives and views of a product.
+   * Header: Displays the navigation bar and user-related actions.
+   * ProductCard: Displays product information. It includes an image, product name, price, description
+   * Slider: Displays a list of products with different swiping styles, such as pagination, scrollbar or navigation.
+   * ImageCard: Displays multiple product images, including a main image and thumbnail views. It enables users to have different perspectives and views of a product.
 
 ### Testing
 
@@ -99,7 +99,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 - To deploy the project to a server, follow these general steps:
 
-1. Set up a hosting platform (e.g., Netlify, Vercel, AWS, etc.).
-2. Configure the deployment settings, such as specifying the build command and environment variables.
-3. Connect the hosting platform to the Git repository to enable automatic deployments based on commits or pull requests.
-4. Trigger the deployment process, and the hosting platform will build and deploy the application.
+   1. Set up a hosting platform (e.g., Netlify, Vercel, AWS, etc.).
+   2. Configure the deployment settings, such as specifying the build command and environment variables.
+   3. Connect the hosting platform to the Git repository to enable automatic deployments based on commits or pull requests.
+   4. Trigger the deployment process, and the hosting platform will build and deploy the application.
