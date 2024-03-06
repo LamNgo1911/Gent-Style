@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Register.scss";
 import { axiosApi } from "../../../config/axiosApi";
 import { useTheme } from "../../../context/useTheme";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../redux/store";
+import { checkAvailableEmail } from "../../../redux/slices/userSlice";
 
 export default function Register() {
   const {
@@ -16,9 +19,10 @@ export default function Register() {
 
   const password = watch("password");
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
   const { ref } = register("username");
   const usernameRef = useRef<HTMLInputElement | null>(null);
-  const [isExistingEmail, setIsExistingEmail] = useState(false);
+  const { isAvailableEmail } = useSelector((state: RootState) => state.users);
   const { theme } = useTheme();
 
   // check and store current user
@@ -27,13 +31,9 @@ export default function Register() {
     console.log(email);
     try {
       // check existing email from api
-      const emailCheckingRes = await axiosApi.post("users/is-available", {
-        email,
-      });
-      setIsExistingEmail(emailCheckingRes.data.isAvailable);
-      console.log(emailCheckingRes.data);
+      await dispatch(checkAvailableEmail(email));
       // store new user in api
-      if (!emailCheckingRes.data.isAvailable) {
+      if (!isAvailableEmail) {
         await axiosApi.post("users", {
           name: username,
           email,
@@ -91,7 +91,7 @@ export default function Register() {
               {errors.email.type === "required" && "Email is required"}
             </span>
           )}
-          {isExistingEmail && (
+          {isAvailableEmail && (
             <span className="error">Email already exists</span>
           )}
         </div>

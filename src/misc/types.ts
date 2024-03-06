@@ -12,6 +12,7 @@ export type UserState = {
   isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
+  isAvailableEmail: boolean;
 };
 
 export type Category = {

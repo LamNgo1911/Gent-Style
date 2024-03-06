@@ -35,7 +35,6 @@ function App() {
   const { isSmallScreen, isBigScreen } = useMediaQueries();
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
-  console.log(pathname);
 
   // Redirect to / if user is not authenticated
   useEffect(() => {

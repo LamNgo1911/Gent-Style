@@ -8,6 +8,7 @@ const initialState: UserState = {
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  isAvailableEmail: false,
 };
 
 export type LoginInfo = {
@@ -27,6 +28,20 @@ export const fetchLogin = createAsyncThunk<User, LoginInfo>(
       return userData.data;
     } catch (error: any) {
       return rejectWithValue(errorMessages[error.response.status]);
+    }
+  }
+);
+
+export const checkAvailableEmail = createAsyncThunk<boolean, string>(
+  "user/checkAvailableEmail",
+  async (email, { rejectWithValue }) => {
+    try {
+      const emailCheckingRes = await axiosApi.post("users/is-available", {
+        email,
+      });
+      return emailCheckingRes.data.isAvailable;
+    } catch (error: any) {
+      return rejectWithValue(error.response.message);
     }
   }
 );
@@ -59,8 +74,18 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(checkAvailableEmail.fulfilled, (state, action) => {
+      state.isAvailableEmail = action.payload;
+      state.error = null;
+    });
+    builder.addCase(checkAvailableEmail.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(checkAvailableEmail.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
-      // console.log(action.payload);
       state.user = action.payload;
       state.isAuthenticated = true;
       state.isLoading = false;

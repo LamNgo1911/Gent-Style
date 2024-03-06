@@ -9,7 +9,10 @@ import { AppDispatch, RootState } from "../../../redux/store";
 import GoogleClientId from "../../../config/googleOAuth";
 import "./Login.scss";
 import { axiosApi } from "../../../config/axiosApi";
-import { fetchLogin } from "../../../redux/slices/userSlice";
+import {
+  checkAvailableEmail,
+  fetchLogin,
+} from "../../../redux/slices/userSlice";
 import { dataCredential } from "../../../misc/dataCredential";
 import { useTheme } from "../../../context/useTheme";
 
@@ -24,7 +27,9 @@ export default function Login() {
   const { ref } = register("email");
   const emailRef = useRef<HTMLInputElement | null>(null);
   const dispatch: AppDispatch = useDispatch();
-  const { error, user } = useSelector((state: RootState) => state.users);
+  const { error, user, isAvailableEmail, isAuthenticated } = useSelector(
+    (state: RootState) => state.users
+  );
   const { theme } = useTheme();
 
   const onSubmit = async (data: FieldValues) => {
@@ -32,13 +37,15 @@ export default function Login() {
     const { email, password } = data;
 
     await dispatch(fetchLogin({ email, password }));
-    console.log(user);
+  };
+
+  useEffect(() => {
     if (user) {
       navigate("/");
     }
-  };
+  }, [user]);
 
-  const handleSuccess = async (credentialResponse: any) => {
+  const googleLoginSuccessHandler = async (credentialResponse: any) => {
     if (credentialResponse.credential) {
       const credentialResponseDecode: dataCredential = jwtDecode(
         credentialResponse.credential
@@ -48,12 +55,10 @@ export default function Login() {
       //  create a new user with google oauth 2.0
       try {
         // check existing email from api
-        const emailCheckingRes = await axiosApi.post("users/is-available", {
-          email,
-        });
+        await dispatch(checkAvailableEmail(email));
 
         // checking email if already exist, we can let user login intead creating a new user
-        if (!emailCheckingRes.data.isAvailable) {
+        if (!isAvailableEmail) {
           await axiosApi.post("users", {
             name,
             email,
@@ -132,7 +137,7 @@ export default function Login() {
         <GoogleOAuthProvider clientId={GoogleClientId.clientId}>
           <GoogleLogin
             text="signin_with"
-            onSuccess={handleSuccess}
+            onSuccess={googleLoginSuccessHandler}
             onError={() => handleFailure}
           />
         </GoogleOAuthProvider>
