@@ -2,6 +2,8 @@
 
 The e-commerce application is a platform dedicated to men's fashion, offering a wide range of stylish and trendy products. Its main purpose is to provide a convenient and engaging shopping experience for men aged 20 to 35. With a focus on the latest fashion trends, the application aims to cater specifically to this demographic, allowing them to browse, discover, and purchase high-quality clothing, accessories, and footwear.
 
+Live server: https://gent-style.netlify.app
+
 ## Table of Contents
 
 - Introduction
@@ -38,7 +40,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 ### Installation
 
-- Git command: Git clone https://github.com/LamNgo1911/fs17-Frontend-project.git
+- Git command: Git clone https://github.com/LamNgo1911/Gent-Style.git
 - Navigate to the project directory: cd fs17-Frontend-project.
 - Install the project dependencies: npm install or yarn install.
 
