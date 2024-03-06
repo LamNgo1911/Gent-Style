@@ -54,21 +54,32 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 ### Features
 
 - User authentication and registration
+  
   ![register-img](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/5b58c655-ea02-451a-8d79-0db63b7106e5)
   ![login-img](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/943341d5-1da4-413b-9060-74da26a265d7)
+  
 - Browse products, categories and, search products by product name
+  
   ![product-listing](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/e09098fe-8055-4e78-abac-36c29dea60cb)
   ![product-detail](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/14ba2204-8fd7-47c5-a0ab-9334ffd07582)
+  
 - Add products to the shopping cart
 - Manage the shopping cart (remove items, update quantities)
+  
   ![shopping-cart](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/9be1b329-1224-47f1-b5ee-76d02f568ea8)
+  
 - Wishlist functionality
 - User profile management
+  
   ![user-profile](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/ecd1b7a8-c755-4a5e-b06e-126d9ce8602c)
+  
 - Responsive design for mobile and desktop devices
+  
   ![mobile-version](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/1a51f892-025d-497b-ace0-dc0faadccbb6)
   ![tablet-version](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/cdd6b5a6-a2f8-4237-a764-fad38a0ee05e)
+  
 - Dark/Light mode switch
+  
   ![light-mode](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/8cab40dc-d352-4338-91cd-18f1136c6cc8)
   ![dark-mode](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/71bf8219-06e0-40bc-931f-9aace955a2bc)
 
