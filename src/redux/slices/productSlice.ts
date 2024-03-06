@@ -39,7 +39,7 @@ export const productSlice = createSlice({
     },
     removeFromWishlist(state, action: PayloadAction<Product>) {
       const newWishlist = state.wishlist.filter(
-        (product) => product.id === action.payload.id
+        (product) => product.id !== action.payload.id
       );
       state.wishlist = newWishlist;
     },

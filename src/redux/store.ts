@@ -24,3 +24,17 @@ export type RootState = ReturnType<typeof store.getState>;
 // Inferred type: {products: ProductState,...}
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
+
+export const newStore = () => {
+  return configureStore({
+    reducer: {
+      products: productReducer,
+      carts: cartReducer,
+      users: userSlice,
+      [productQueries.reducerPath]: productQueries.reducer,
+    },
+
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(productQueries.middleware),
+  });
+};

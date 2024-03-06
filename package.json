@@ -6,7 +6,6 @@
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.1",
     "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.80",
@@ -17,6 +16,7 @@
     "hamburger-react": "^2.5.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
+    "msw": "^2.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.50.1",
@@ -37,8 +37,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!@codemirror)/' --coverage",
+    "eject": "react-scripts eject",
+    "test-coverage": "jest --coverage"
   },
   "eslintConfig": {
     "extends": [
@@ -59,6 +60,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^14.2.1",
     "@types/lodash": "^4.14.202",
     "sass": "^1.71.0"
   }
