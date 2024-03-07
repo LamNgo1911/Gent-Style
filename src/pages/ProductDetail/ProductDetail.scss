@@ -18,6 +18,11 @@
     a {
       text-decoration: none;
     }
+
+    p {
+      font-weight: 700;
+      color: vars.$primary-color;
+    }
   }
 
   .product-detail__container {

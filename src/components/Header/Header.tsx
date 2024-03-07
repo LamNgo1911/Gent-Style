@@ -14,7 +14,7 @@ import { useTheme } from "../../context/useTheme";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useMediaQueries } from "../../hooks/useMediaQuery";
-
+import { navLinks } from "../../data/navLinks";
 export default function Header() {
   // state for mobile version
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState<boolean>(false);
@@ -67,10 +67,15 @@ export default function Header() {
       {isBigScreen && (
         <nav className="header-nav">
           <ul className="header-nav__wrapper">
-            <Link to="/">Home</Link>
-            <Link to="/products">Products</Link>
-            <Link to="/sale">Sale</Link>
-            <Link to="/contact-us">ContactUs</Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={pathname === link.path ? "active-link" : ""}
+              >
+                {link.name}
+              </Link>
+            ))}
           </ul>
         </nav>
       )}
@@ -149,10 +154,15 @@ export default function Header() {
                 alt="gentStyle-symbol"
               />
             </Link>
-            <Link to="/">Home</Link>
-            <Link to="/products">Products</Link>
-            <Link to="/sale">Sale</Link>
-            <Link to="/contact-us">Contact Us</Link>
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={pathname === link.path ? "active-link" : ""}
+              >
+                {link.name}
+              </Link>
+            ))}
           </ul>
         </nav>
       )}
