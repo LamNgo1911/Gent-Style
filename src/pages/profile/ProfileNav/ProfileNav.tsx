@@ -5,7 +5,7 @@ import { RiLogoutBoxRLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./ProfileNav.scss";
-import { AppDispatch, RootState } from "../../../redux/store";
+import { RootState } from "../../../redux/store";
 import { Link, useNavigate } from "react-router-dom";
 import { useMediaQueries } from "../../../hooks/useMediaQuery";
 import { clearAccessToken } from "../../../redux/slices/userSlice";

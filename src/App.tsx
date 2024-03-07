@@ -30,7 +30,7 @@ function App() {
   const navigate = useNavigate();
   const { theme } = useTheme();
   const { user, access_token } = useSelector((state: RootState) => state.users);
-  const { isSmallScreen, isBigScreen } = useMediaQueries();
+  const { isSmallScreen } = useMediaQueries();
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
 
@@ -42,7 +42,7 @@ function App() {
     ) {
       navigate("/login");
     }
-  }, [access_token, navigate]);
+  }, [access_token, navigate, pathname]);
 
   const ProfileNesting = ({ component }: { component: ReactNode }) => {
     return (

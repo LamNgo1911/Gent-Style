@@ -22,7 +22,7 @@ const initialState: UserState = {
   isLoading: false,
   error: null,
   isAvailableEmail: false,
-  access_token: accessTokenData,
+  access_token: accessTokenState,
 };
 
 export type LoginInfo = {

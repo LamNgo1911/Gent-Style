@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import { Product } from "../../misc/types";
-import "./ProductCard.scss";
-import { useNavigate } from "react-router";
-import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
+import { Product } from "../../misc/types";
 import { addToWishlist } from "../../redux/slices/productSlice";
+import "./ProductCard.scss";
 
 type ProductProps = Product & {
   product: Product;

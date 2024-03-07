@@ -46,13 +46,13 @@ export default function Login() {
       }
     };
     fetchUserInfo();
-  }, [access_token]);
+  }, [access_token, dispatch]);
 
   useEffect(() => {
     if (user) {
       navigate("/");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const googleLoginSuccessHandler = async (credentialResponse: any) => {
     if (credentialResponse.credential) {

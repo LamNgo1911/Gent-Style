@@ -1,0 +1,23 @@
+{
+  "ignoreUnresolved": [],
+  "ignoreUnused": [
+    "@testing-library/jest-dom",
+    "@testing-library/user-event",
+    "@types/jest",
+    "@types/node",
+    "@types/react-dom",
+    "@types/react-router-dom",
+    "msw",
+    "react-scripts"
+  ],
+  "ignoreUnimported": [
+    "src/components/SearchBar/index.ts",
+    "src/data/categoryData.ts",
+    "src/data/userData.ts",
+    "src/pages/Checkout/index.ts",
+    "src/pages/Home/index.ts",
+    "src/setupTests.ts",
+    "src/test/shared/TestProvider.tsx",
+    "src/test/shared/mockServer.ts"
+  ]
+}

@@ -5,11 +5,9 @@ import { FaHeart } from "react-icons/fa6";
 import "./ProductDetail.scss";
 import {
   useFetchASingleProductQuery,
-  useFetchAllCategoriesQuery,
   useFetchProductsByCategoriesQuery,
 } from "../../redux/productQuery";
 import ImageCard from "../../components/ImageCard";
-import ProductCard from "../../components/ProductCard";
 import Slider from "../../components/Slider";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/slices/cartSlice";
