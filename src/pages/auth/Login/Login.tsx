@@ -1,20 +1,21 @@
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 import { useEffect, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
-import { AppDispatch, RootState } from "../../../redux/store";
 import GoogleClientId from "../../../config/googleOAuth";
-import "./Login.scss";
-import { axiosApi } from "../../../config/axiosApi";
+import { useTheme } from "../../../context/useTheme";
+import { dataCredential } from "../../../misc/dataCredential";
 import {
   checkAvailableEmail,
+  fetchAccessToken,
   fetchLogin,
+  fetchRegister,
 } from "../../../redux/slices/userSlice";
-import { dataCredential } from "../../../misc/dataCredential";
-import { useTheme } from "../../../context/useTheme";
+import { AppDispatch, RootState } from "../../../redux/store";
+import "./Login.scss";
 
 export default function Login() {
   const {
@@ -27,7 +28,7 @@ export default function Login() {
   const { ref } = register("email");
   const emailRef = useRef<HTMLInputElement | null>(null);
   const dispatch: AppDispatch = useDispatch();
-  const { error, user, isAvailableEmail, isAuthenticated } = useSelector(
+  const { error, user, isAvailableEmail, access_token } = useSelector(
     (state: RootState) => state.users
   );
   const { theme } = useTheme();
@@ -35,9 +36,17 @@ export default function Login() {
   const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
     const { email, password } = data;
-
-    await dispatch(fetchLogin({ email, password }));
+    await dispatch(fetchAccessToken({ email, password }));
   };
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      if (access_token) {
+        await dispatch(fetchLogin(access_token));
+      }
+    };
+    fetchUserInfo();
+  }, [access_token]);
 
   useEffect(() => {
     if (user) {
@@ -59,16 +68,17 @@ export default function Login() {
 
         // checking email if already exist, we can let user login intead creating a new user
         if (!isAvailableEmail) {
-          await axiosApi.post("users", {
-            name,
-            email,
-            password: "1234",
-            avatar: picture,
-          });
+          await dispatch(
+            fetchRegister({
+              name,
+              email,
+              password: "1234",
+              avatar: picture,
+            })
+          );
         }
 
-        await dispatch(fetchLogin({ email, password: "1234" }));
-        navigate("/");
+        await dispatch(fetchAccessToken({ email, password: "1234" }));
       } catch (error) {
         console.log(error);
       }

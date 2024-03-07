@@ -25,6 +25,16 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<typeof store.dispatch>();
 
+store.subscribe(() => {
+  const currentState = store.getState();
+  const userInformation = currentState.users.user;
+  const token = currentState.users.access_token;
+  // store user
+  localStorage.setItem("userInformation", JSON.stringify(userInformation));
+  // store token
+  localStorage.setItem("token", JSON.stringify(token));
+});
+
 export const newStore = () => {
   return configureStore({
     reducer: {

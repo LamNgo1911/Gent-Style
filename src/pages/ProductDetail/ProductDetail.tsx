@@ -6,7 +6,7 @@ import "./ProductDetail.scss";
 import {
   useFetchASingleProductQuery,
   useFetchAllCategoriesQuery,
-  useFetchProductsbyCategoriesQuery,
+  useFetchProductsByCategoriesQuery,
 } from "../../redux/productQuery";
 import ImageCard from "../../components/ImageCard";
 import ProductCard from "../../components/ProductCard";
@@ -33,7 +33,7 @@ export default function ProductDetail() {
     data: relevantProducts,
     isLoading: isLoadingRelevantProducts,
     error: errorRelevantProducts,
-  } = useFetchProductsbyCategoriesQuery(Number(product?.category?.id));
+  } = useFetchProductsByCategoriesQuery(Number(product?.category?.id));
 
   const [addedProduct, setAddedProduct] = useState<boolean>(false);
   const [savedProduct, setSavedProduct] = useState<boolean>(false);

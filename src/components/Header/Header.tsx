@@ -21,13 +21,14 @@ export default function Header() {
   const [isOpenSearchBtn, setIsOpenSearchBtn] = useState<boolean>(true);
   const [scroll, setScroll] = useState<boolean>(true);
 
+  localStorage.removeItem("userInformation");
+  localStorage.removeItem("token");
+
   const pathname = useLocation().pathname;
   // media query
   const { isSmallScreen, isBigScreen } = useMediaQueries();
   const { theme, toggleTheme } = useTheme();
-  const { user, isAuthenticated } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { user, access_token } = useSelector((state: RootState) => state.users);
   const { items } = useSelector((state: RootState) => state.carts);
 
   // keep menu-dropdown open when clicking outside of menu-dropdown ul
@@ -124,7 +125,7 @@ export default function Header() {
           </Link>
           <Link
             to={`${
-              isAuthenticated
+              access_token && user
                 ? user?.role === "admin"
                   ? "/admin"
                   : "/profile"
@@ -172,7 +173,7 @@ export default function Header() {
         <div className={`header-down ${theme}`}>
           <Link
             to={`${
-              isAuthenticated
+              access_token && user
                 ? user?.role === "admin"
                   ? "/admin"
                   : "/profile"

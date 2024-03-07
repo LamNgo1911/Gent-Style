@@ -2,20 +2,21 @@ import { FaShoppingCart } from "react-icons/fa";
 import { BsPersonFill } from "react-icons/bs";
 import { FiCreditCard } from "react-icons/fi";
 import { RiLogoutBoxRLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import "./ProfileNav.scss";
-import { RootState } from "../../../redux/store";
+import { AppDispatch, RootState } from "../../../redux/store";
 import { Link, useNavigate } from "react-router-dom";
 import { useMediaQueries } from "../../../hooks/useMediaQuery";
+import { clearAccessToken } from "../../../redux/slices/userSlice";
 
 export default function ProfileNav() {
   const { user } = useSelector((state: RootState) => state.users);
   const { isSmallScreen } = useMediaQueries();
   const navigate = useNavigate();
-  const newName = user?.name?.split(" ");
-  const firstNameLetter = newName?.[0]?.[0];
-  const firstSurNameLetter = newName?.[1]?.[0];
+  const newName = user?.name?.[0].toLocaleUpperCase();
+
+  const dispatch = useDispatch();
 
   const clickOnAvatarHandler = () => {
     if (!isSmallScreen) {
@@ -23,18 +24,23 @@ export default function ProfileNav() {
     }
   };
 
+  const logoutHandler = async () => {
+    dispatch(clearAccessToken());
+    navigate("/login");
+  };
+
   return (
     <section className="profileNav">
       {/* avatar */}
       <div className="profileNav-header">
         <div className="profileNav-header__container">
-          {(firstNameLetter && firstSurNameLetter) || firstNameLetter ? (
-            <h1
-              className="profileNav-header__avatar text"
+          {newName ? (
+            <div
+              className="profileNav-header__avatar img-avatar"
               onClick={clickOnAvatarHandler}
             >
-              {firstNameLetter + firstSurNameLetter}
-            </h1>
+              <img src={user?.avatar} alt="avatar" />
+            </div>
           ) : (
             <div
               className="profileNav-header__avatar"
@@ -62,9 +68,9 @@ export default function ProfileNav() {
           <Link to="/profile/my-orders" className="list-link">
             <FiCreditCard className="list-icon" /> Payment methods
           </Link>
-          <Link to="/profile/my-orders" className="list-link">
+          <button onClick={logoutHandler} className="list-link btn">
             <RiLogoutBoxRLine className="list-icon" /> Sign out
-          </Link>
+          </button>
         </ul>
       </nav>
     </section>

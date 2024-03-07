@@ -29,9 +29,7 @@ function App() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { theme } = useTheme();
-  const { user, isAuthenticated } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { user, access_token } = useSelector((state: RootState) => state.users);
   const { isSmallScreen, isBigScreen } = useMediaQueries();
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
@@ -39,12 +37,12 @@ function App() {
   // Redirect to / if user is not authenticated
   useEffect(() => {
     if (
-      !isAuthenticated &&
+      !access_token &&
       (pathname === "/profile" || pathname === "/profile/my-details")
     ) {
       navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [access_token, navigate]);
 
   const ProfileNesting = ({ component }: { component: ReactNode }) => {
     return (
@@ -73,7 +71,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
-        {isAuthenticated && isSmallScreen ? (
+        {access_token && isSmallScreen ? (
           <>
             <Route path="/profile" element={<ProfileNav />} />
             <Route path="/profile/my-details" element={<MyDetails />} />
@@ -90,7 +88,7 @@ function App() {
             />
           </>
         )}
-        {isAuthenticated && user?.role === "admin" && (
+        {access_token && user?.role === "admin" && (
           <Route path="/admin" element={<Admin />} />
         )}
         <Route path="*" element={<NotFound />} />

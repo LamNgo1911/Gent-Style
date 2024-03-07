@@ -28,7 +28,7 @@ const productQueries = createApi({
       ],
     }),
 
-    fetchProductsbyCategories: builder.query<Product[], number>({
+    fetchProductsByCategories: builder.query<Product[], number>({
       query: (categoryId: number) => `products/?categoryId=${categoryId}`,
       providesTags: ["Products"],
     }),
@@ -60,7 +60,6 @@ const productQueries = createApi({
         const admin = store.getState().users.user?.role === "admin";
         if (!admin) {
           throw new Error("User is not authorized to create products");
-          //  store.getState().products.error === "User is not authorized to create products"
         }
 
         return {
@@ -79,7 +78,6 @@ const productQueries = createApi({
         const admin = store.getState().users.user?.role === "admin";
         if (!admin) {
           throw new Error("User is not authorized to create products");
-          //   store.getState().products.error === "User is not authorized to create products"
         }
 
         return {
@@ -95,7 +93,7 @@ const productQueries = createApi({
 export const {
   useFetchProductsByPaginationQuery,
   useFetchASingleProductQuery,
-  useFetchProductsbyCategoriesQuery,
+  useFetchProductsByCategoriesQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,

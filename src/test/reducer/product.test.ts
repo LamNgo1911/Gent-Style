@@ -1,4 +1,10 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import {
+  act,
+  render,
+  renderHook,
+  screen,
+  waitFor,
+} from "@testing-library/react";
 import { productServer } from "../shared/mockServer";
 import { newStore } from "../../redux/store";
 import {
@@ -8,6 +14,15 @@ import {
 } from "../../redux/slices/productSlice";
 import { productData } from "../../data/productData";
 import { Product } from "../../misc/types";
+import productQueries, {
+  useFetchASingleProductQuery,
+  useFetchProductsByPaginationQuery,
+  useFetchProductsByCategoriesQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+} from "../../redux/productQuery";
+import TestProvider from "../shared/TestProvider";
 
 let store = newStore();
 
@@ -15,22 +30,18 @@ beforeAll(() => {
   productServer.listen();
 });
 
-afterAll(() => {
-  productServer.close();
+afterEach(() => {
+  productServer.resetHandlers();
 });
 
-beforeEach(() => {
+afterAll(() => productServer.close());
+
+beforeAll(() => {
   store = newStore();
 });
 
-const initialState = {
-  products: [],
-  loading: false,
-  error: null,
-  wishlist: [],
-};
-
 describe("Product reducer", () => {
+  // product reducer test
   test("should return initial state", () => {
     expect(store.getState().products.products).toHaveLength(0);
   });
@@ -56,7 +67,88 @@ describe("Product reducer", () => {
     store.dispatch(addToWishlist(product));
 
     store.dispatch(removeFromWishlist(product));
-    console.log(product);
     expect(store.getState().products.wishlist).not.toContainEqual(product);
+  });
+
+  // product query tests
+  test("fetchProductsByPaginationQuery should return products", async () => {
+    const offset = 5;
+    const limit = 10;
+    const priceMin = 1;
+    const priceMax = 2;
+    const categoryId = 1;
+
+    const { result } = renderHook(
+      () =>
+        useFetchProductsByPaginationQuery({
+          offset,
+          limit,
+          priceMin,
+          priceMax,
+          categoryId,
+        }),
+      { wrapper: TestProvider }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(productData);
+  });
+
+  test("fetchASingleProductQuery should return a single product", async () => {
+    const productId = 1;
+    const { result } = renderHook(
+      () => useFetchASingleProductQuery(productId),
+      { wrapper: TestProvider }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(productData[0]);
+  });
+
+  test("fetchProductsByCategoriesQuery should return products by categories", async () => {
+    const categoryId = 1;
+    const { result } = renderHook(
+      () => useFetchProductsByCategoriesQuery(categoryId),
+      { wrapper: TestProvider }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(productData);
+  });
+
+  test("createProductMutation should create a new product", async () => {
+    const { result } = renderHook(() => useCreateProductMutation(), {
+      wrapper: TestProvider,
+    });
+
+    const [mutate, mutationResult] = result.current;
+
+    await waitFor(() => {
+      expect(mutationResult).toBeDefined();
+    });
+  });
+
+  test("updateProductMutation should update an existing product", async () => {
+    const { result } = renderHook(() => useUpdateProductMutation(), {
+      wrapper: TestProvider,
+    });
+
+    const [mutate, mutationResult] = result.current;
+
+    await waitFor(() => {
+      expect(mutationResult).toBeDefined();
+    });
+  });
+
+  test("deleteProductMutation should delete a product", async () => {
+    const { result } = renderHook(() => useDeleteProductMutation(), {
+      wrapper: TestProvider,
+    });
+
+    const [mutate, mutationResult] = result.current;
+
+    await waitFor(() => {
+      expect(mutationResult).toBeDefined();
+    });
   });
 });

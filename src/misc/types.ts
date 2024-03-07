@@ -7,12 +7,19 @@ export type User = {
   avatar: string;
 };
 
+export type UserRegistration = {
+  name: string;
+  email: string;
+  password: string;
+  avatar: string;
+};
+
 export type UserState = {
   user: User | null;
-  isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
   isAvailableEmail: boolean;
+  access_token: string | null;
 };
 
 export type Category = {

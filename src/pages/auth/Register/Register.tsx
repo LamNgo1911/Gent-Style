@@ -1,13 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 
 import "./Register.scss";
-import { axiosApi } from "../../../config/axiosApi";
 import { useTheme } from "../../../context/useTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
-import { checkAvailableEmail } from "../../../redux/slices/userSlice";
+import {
+  checkAvailableEmail,
+  fetchRegister,
+} from "../../../redux/slices/userSlice";
 
 export default function Register() {
   const {
@@ -22,7 +24,9 @@ export default function Register() {
   const dispatch: AppDispatch = useDispatch();
   const { ref } = register("username");
   const usernameRef = useRef<HTMLInputElement | null>(null);
-  const { isAvailableEmail } = useSelector((state: RootState) => state.users);
+  const { isAvailableEmail, error } = useSelector(
+    (state: RootState) => state.users
+  );
   const { theme } = useTheme();
 
   // check and store current user
@@ -34,18 +38,21 @@ export default function Register() {
       await dispatch(checkAvailableEmail(email));
       // store new user in api
       if (!isAvailableEmail) {
-        await axiosApi.post("users", {
-          name: username,
-          email,
-          password,
-          avatar: "https://picsum.photos/800",
-        });
+        await dispatch(
+          fetchRegister({
+            name: username,
+            email,
+            password,
+            avatar: "https://picsum.photos/800",
+          })
+        );
       }
     } catch (error: any) {
       console.log(error);
     }
-
-    navigate("/login");
+    if (!error) {
+      navigate("/login");
+    }
   };
 
   // focus on username input when users navigate the register page
@@ -69,7 +76,7 @@ export default function Register() {
             placeholder="Enter your username"
             ref={(e) => {
               ref(e);
-              usernameRef.current = e; // you can still assign to ref
+              usernameRef.current = e;
             }}
           />
           {errors.username && (
@@ -146,6 +153,7 @@ export default function Register() {
             <span className="error">Please accept the terms</span>
           )}
         </div>
+        {error && <span className="error">{error}</span>}
         <button type="submit" className={`submit-btn ${theme}`}>
           Create account
         </button>

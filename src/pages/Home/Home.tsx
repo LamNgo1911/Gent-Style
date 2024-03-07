@@ -65,6 +65,7 @@ export default function Home() {
               className={`hero-button ${
                 theme === "dark-theme" ? "btn-dark-theme" : "btn-light-theme"
               }`}
+              onClick={() => navigate("/products")}
             >
               Shop Now
             </button>

@@ -21,7 +21,6 @@ const ProductCard: React.FC<ProductProps> = ({
   product,
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
   const dispatch = useDispatch();
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
@@ -34,7 +33,6 @@ const ProductCard: React.FC<ProductProps> = ({
   };
 
   const savedToWishlistHandler = () => {
-    console.log("Hello");
     dispatch(addToWishlist(product));
   };
 
