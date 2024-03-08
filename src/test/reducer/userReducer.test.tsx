@@ -1,13 +1,7 @@
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
 import { userServer } from "../shared/mockServer";
 import { newStore } from "../../redux/store";
-import { User, UserRegistration, UserState } from "../../misc/types";
+import { UserRegistration } from "../../misc/types";
 import {
   LoginInfo,
   checkAvailableEmail,
