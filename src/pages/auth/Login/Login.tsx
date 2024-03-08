@@ -13,6 +13,7 @@ import {
   fetchAccessToken,
   fetchLogin,
   fetchRegister,
+  setError,
 } from "../../../redux/slices/userSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
 import "./Login.scss";
@@ -79,14 +80,12 @@ export default function Login() {
         }
 
         await dispatch(fetchAccessToken({ email, password: "1234" }));
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
   };
-  console.log(user);
+
   const handleFailure = (error: any) => {
-    console.log("Google login failure:", error);
+    setError(error.message);
   };
 
   // focus on email input when users navigate the register page

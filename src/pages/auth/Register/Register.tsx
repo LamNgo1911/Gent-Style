@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from "../../../redux/store";
 import {
   checkAvailableEmail,
   fetchRegister,
+  setError,
 } from "../../../redux/slices/userSlice";
 
 export default function Register() {
@@ -32,7 +33,7 @@ export default function Register() {
   // check and store current user
   const onSubmit = async (data: FieldValues) => {
     const { username, email, password } = data;
-    console.log(email);
+
     try {
       // check existing email from api
       await dispatch(checkAvailableEmail(email));
@@ -48,7 +49,7 @@ export default function Register() {
         );
       }
     } catch (error: any) {
-      console.log(error);
+      setError(error.message);
     }
     if (!error) {
       navigate("/login");
@@ -59,7 +60,7 @@ export default function Register() {
   useEffect(() => {
     usernameRef.current?.focus();
   }, []);
-  console.log(errors);
+
   return (
     <div className="register-container">
       <h2 className="register__title">Create your account</h2>
