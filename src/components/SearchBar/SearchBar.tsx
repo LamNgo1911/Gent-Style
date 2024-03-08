@@ -19,7 +19,8 @@ export default function SearchBar({
   isSmallScreen,
 }: SearchBarProps) {
   const formRef = useRef<HTMLFormElement>(null);
-  const [debouncedSubmitSearch, setDebouncedSubmitSearch] = useState<SubmitHandler<FormValues> | null>(null);
+  const [debouncedSubmitSearch, setDebouncedSubmitSearch] =
+    useState<SubmitHandler<FormValues> | null>(null);
 
   const {
     handleSubmit,
@@ -30,7 +31,6 @@ export default function SearchBar({
 
   const onSubmitSearch: SubmitHandler<FormValues> = (data, event) => {
     // Handle form submission
-    console.log(data.searchQuery);
   };
 
   // close search bar when users click outside
@@ -81,7 +81,9 @@ export default function SearchBar({
           type="text"
           placeholder="Search for products"
           {...register("searchQuery")}
-          onChange={(e) => debouncedSubmitSearch?.({ searchQuery: e.target.value })}
+          onChange={(e) =>
+            debouncedSubmitSearch?.({ searchQuery: e.target.value })
+          }
         />
       </div>
     </form>

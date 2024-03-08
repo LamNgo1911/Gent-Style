@@ -53,14 +53,11 @@ export const productHandler = [
     const pathname = url.pathname;
     const categoryId = pathname.split("/").pop();
 
-    console.log(categoryId);
-
     if (!categoryId) {
       return new HttpResponse(null, { status: 404 });
     }
 
     const response = await HttpResponse.json(productData, { status: 200 });
-    console.log("hi", response.status);
 
     return response;
   }),

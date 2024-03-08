@@ -57,11 +57,6 @@ export default function ProductListing() {
   // Invoke when user click to request another page.
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = event.selected * limit;
-    console.log(
-      `User requested page number ${
-        event.selected + 1
-      }, which is offset ${newOffset}`
-    );
     setOffset(newOffset);
   };
 
