@@ -50,8 +50,6 @@ export default function ProductListing() {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-  // const products = [...productData];
-
   const pageCount = Math.ceil(products?.length / limit);
 
   // Invoke when user click to request another page.
