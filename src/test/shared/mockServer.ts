@@ -118,10 +118,8 @@ export const productHandler = [
 
     return HttpResponse.json(true, { status: 204 });
   }),
-];
 
-// category
-export const categoryHandler = [
+  // category
   http.get(`${baseUrl}categories`, () => {
     return HttpResponse.json(categoryData, { status: 200 });
   }),
@@ -174,5 +172,4 @@ export const userHandler = [
 ];
 
 export const productServer = setupServer(...productHandler);
-export const categoryServer = setupServer(...categoryHandler);
 export const userServer = setupServer(...userHandler);

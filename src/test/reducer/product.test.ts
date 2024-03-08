@@ -1,10 +1,4 @@
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { renderHook, waitFor } from "@testing-library/react";
 import { productServer } from "../shared/mockServer";
 import { newStore } from "../../redux/store";
 import {
@@ -14,15 +8,17 @@ import {
 } from "../../redux/slices/productSlice";
 import { productData } from "../../data/productData";
 import { Product } from "../../misc/types";
-import productQueries, {
+import {
   useFetchASingleProductQuery,
   useFetchProductsByPaginationQuery,
   useFetchProductsByCategoriesQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useFetchAllCategoriesQuery,
 } from "../../redux/productQuery";
 import TestProvider from "../shared/TestProvider";
+import { categoryData } from "../../data/categoryData";
 
 let store = newStore();
 
@@ -34,7 +30,9 @@ afterEach(() => {
   productServer.resetHandlers();
 });
 
-afterAll(() => productServer.close());
+afterAll(() => {
+  productServer.close();
+});
 
 beforeAll(() => {
   store = newStore();
@@ -150,5 +148,13 @@ describe("Product reducer", () => {
     await waitFor(() => {
       expect(mutationResult).toBeDefined();
     });
+  });
+
+  test("should fetch all categories from API", async () => {
+    const { result } = renderHook(() => useFetchAllCategoriesQuery(), {
+      wrapper: TestProvider,
+    });
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    expect(result.current.data).toEqual(categoryData);
   });
 });
