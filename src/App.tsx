@@ -15,7 +15,7 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
-import Admin from "./pages/Admin";
+import Admin from "./pages/admin/Dashboard";
 import { useTheme } from "./context/useTheme";
 import Sale from "./pages/Sale";
 import Cart from "./pages/Cart";
@@ -24,6 +24,8 @@ import NotFound from "./pages/NotFound";
 import { useMediaQueries } from "./hooks/useMediaQuery";
 import ProfileNav from "./pages/profile/ProfileNav";
 import Profile from "./pages/profile/Profile";
+import AdminNav from "./pages/admin/AdminNav";
+import AdminHeader from "./pages/admin/AdminHeader";
 
 function App() {
   const { pathname } = useLocation();
@@ -34,28 +36,42 @@ function App() {
   const isAuthPage =
     pathname === "/login" || pathname === "/register" || pathname === "/404";
 
-  // Redirect to / if user is not authenticated
-  useEffect(() => {
-    if (
-      !access_token &&
-      (pathname === "/profile" || pathname === "/profile/my-details")
-    ) {
-      navigate("/login");
-    }
-  }, [access_token, navigate, pathname]);
+  // Redirect to /login if user is not authenticated
+  // useEffect(() => {
+  //   if (
+  //     !access_token &&
+  //     (pathname.startsWith("/profile") || pathname.startsWith("/admin"))
+  //   ) {
+  //     navigate("/login");
+  //   }
+  // }, [access_token, navigate, pathname]);
 
+  // profile
   const ProfileNesting = ({ component }: { component: ReactNode }) => {
     return (
-      <main className="profile-nesting">
+      <div className="profile-nesting">
         <ProfileNav />
         {component}
-      </main>
+      </div>
+    );
+  };
+
+  // admin
+  const AdminNesting = ({ component }: { component: ReactNode }) => {
+    return (
+      <div className="admin-nesting">
+        <AdminNav />
+        <div>
+          <AdminHeader />
+        </div>
+        {component}
+      </div>
     );
   };
 
   return (
     <div className={`App ${theme}`}>
-      {!isAuthPage && <Header />}
+      {/* {!isAuthPage && <Header />} */}
       <Routes>
         {/* auth */}
         <Route path="/login" element={<Login />} />
@@ -88,13 +104,33 @@ function App() {
             />
           </>
         )}
-        {access_token && user?.role === "admin" && (
-          <Route path="/admin" element={<Admin />} />
-        )}
+        {/* {access_token && user?.role === "admin" && (
+          <>
+            <Route
+              path="/admin"
+              element={<AdminNesting component={<Admin />} />}
+            />
+            <Route
+              path="/admin/products"
+              element={<AdminNesting component={<MyDetails />} />}
+            />
+          </>
+        )} */}
+
+        <>
+          <Route
+            path="/admin"
+            element={<AdminNesting component={<Admin />} />}
+          />
+          <Route
+            path="/admin/products"
+            element={<AdminNesting component={<MyDetails />} />}
+          />
+        </>
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {!isAuthPage && <Footer />}
+      {/* {!isAuthPage && <Footer />} */}
     </div>
   );
 }

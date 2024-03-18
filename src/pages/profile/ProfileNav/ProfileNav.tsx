@@ -14,7 +14,6 @@ export default function ProfileNav() {
   const { user } = useSelector((state: RootState) => state.users);
   const { isSmallScreen } = useMediaQueries();
   const navigate = useNavigate();
-  const newName = user?.name?.[0].toLocaleUpperCase();
 
   const dispatch = useDispatch();
 
@@ -30,25 +29,16 @@ export default function ProfileNav() {
   };
 
   return (
-    <section className="profileNav">
+    <div className="profileNav">
       {/* avatar */}
       <div className="profileNav-header">
         <div className="profileNav-header__container">
-          {newName ? (
-            <div
-              className="profileNav-header__avatar img-avatar"
-              onClick={clickOnAvatarHandler}
-            >
-              <img src={user?.avatar} alt="avatar" />
-            </div>
-          ) : (
-            <div
-              className="profileNav-header__avatar"
-              onClick={clickOnAvatarHandler}
-            >
-              <BsPersonFill className="profileNav-header__icon" />
-            </div>
-          )}
+          <div
+            className="profileNav-header__avatar img-avatar"
+            onClick={clickOnAvatarHandler}
+          >
+            <img src={user?.avatar} alt="avatar" />
+          </div>
           <div className="profileNav-header__greetings">
             <p>Hello,</p>
             <h2>{user?.name}</h2>
@@ -73,6 +63,6 @@ export default function ProfileNav() {
           </button>
         </ul>
       </nav>
-    </section>
+    </div>
   );
 }

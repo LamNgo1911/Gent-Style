@@ -12,7 +12,7 @@ export default function MyDetails() {
   const navigate = useNavigate();
 
   return (
-    <section className="my-details">
+    <main className="my-details">
       {/* detail header */}
       <section className="my-details__header">
         <div
@@ -50,6 +50,6 @@ export default function MyDetails() {
           </div>
         </div>
       </section>
-    </section>
+    </main>
   );
 }

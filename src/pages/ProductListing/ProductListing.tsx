@@ -23,7 +23,8 @@ export default function ProductListing() {
 
   const limit = 8;
   const [offset, setOffset] = useState(0);
-  const { categoryId, priceRange, getCategoryName } = useFilter();
+  const { categoryId, priceRange, getCategoryName, setCategoryId } =
+    useFilter();
 
   const {
     data: productsByPagination,
@@ -49,6 +50,11 @@ export default function ProductListing() {
     // logic
     dispatch(fetchAllProducts());
   }, [dispatch]);
+
+  // reset category
+  useEffect(() => {
+    setCategoryId("");
+  }, []);
 
   // const products = [...productData];
 

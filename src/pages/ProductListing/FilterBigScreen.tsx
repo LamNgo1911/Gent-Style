@@ -7,6 +7,7 @@ import { FilterOption } from "../../misc/types";
 export default function FilterBigScreen() {
   const dropdownLgScreenRefs = useRef<HTMLDivElement[]>([]);
   const filterContainerRefs = useRef<HTMLDivElement[]>([]);
+
   const [newFilterLgOptions, setNewFilterLgOptions] =
     useState<FilterOption[]>(filterLgOptions);
 
