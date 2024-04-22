@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { useMediaQueries } from "../../../hooks/useMediaQuery";
 import SearchBar from "../../../components/SearchBar";
-import "./AdminHeader.scss"
+import "./AdminHeader.scss";
 
 export default function AdminHeader() {
   const { user } = useSelector((state: RootState) => state.users);
@@ -15,7 +15,7 @@ export default function AdminHeader() {
   return (
     <header className="header-container">
       <div className="header-greeting">
-        <h1>Hello {user?.name}</h1>
+        <h1>Hello {user?.username}</h1>
         <p>Let's check your stats today</p>
       </div>
 
@@ -28,7 +28,7 @@ export default function AdminHeader() {
       )}
 
       <div className="header-avatar">
-        <img src={user?.avatar} alt="avatar" className="img-avatar" />
+        <img src="###" alt="avatar" className="img-avatar" />
       </div>
     </header>
   );

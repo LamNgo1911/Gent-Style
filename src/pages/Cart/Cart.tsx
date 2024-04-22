@@ -26,10 +26,11 @@ export default function Cart() {
                 <ItemCard
                   key={i}
                   id={item.id}
-                  title={item.title}
+                  name={item.name}
                   price={item.price}
                   description={item.description}
                   category={item.category}
+                  variants={item.variants}
                   images={item.images}
                   quantity={item.quantity}
                 />

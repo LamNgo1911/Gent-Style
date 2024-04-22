@@ -1,12 +1,14 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { axiosApi } from "../../config/axiosApi";
 import { Product } from "../../misc/types";
+import { ProductData } from "../productQuery";
 
 type InitialState = {
   products: Product[];
   loading: boolean;
   error: string | null;
   wishlist: Product[];
+  count: number;
 };
 
 const initialState: InitialState = {
@@ -14,15 +16,16 @@ const initialState: InitialState = {
   loading: false,
   error: null,
   wishlist: [],
+  count: 0,
 };
 
-export const fetchAllProducts = createAsyncThunk<Product[], void>(
+export const fetchAllProducts = createAsyncThunk<ProductData, void>(
   "fetchAllProducts",
   async (_, { rejectWithValue }) => {
     try {
       const result = await axiosApi.get("/products");
-      const data: Product[] = result.data;
-      return data;
+
+      return result.data;
     } catch (error: any) {
       return rejectWithValue(error.response.message);
     }
@@ -46,22 +49,14 @@ export const productSlice = createSlice({
     clearWishlist: (state) => {
       state.wishlist = [];
     },
-    sortProductsbyPrice(state, action: PayloadAction<string>) {
-      let newProductList = [...state.products];
-      if (action.payload === "Price high to low") {
-        newProductList = [...state.products].sort((a, b) => b.price - a.price);
-      } else if (action.payload === "Price low to high") {
-        newProductList = [...state.products].sort((a, b) => a.price - b.price);
-      }
-      state.products = newProductList;
-    },
   },
   extraReducers: (builder) => {
     // fetchAllProducts
     builder.addCase(
       fetchAllProducts.fulfilled,
-      (state, action: PayloadAction<Product[]>) => {
-        state.products = action.payload;
+      (state, action: PayloadAction<ProductData>) => {
+        state.products = action.payload.products;
+        state.count = action.payload.count;
         state.loading = false;
         state.error = null;
       }
@@ -77,10 +72,6 @@ export const productSlice = createSlice({
 });
 
 const productReducer = productSlice.reducer;
-export const {
-  addToWishlist,
-  removeFromWishlist,
-  clearWishlist,
-  sortProductsbyPrice,
-} = productSlice.actions;
+export const { addToWishlist, removeFromWishlist, clearWishlist } =
+  productSlice.actions;
 export default productReducer;

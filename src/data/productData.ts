@@ -1,66 +1,52 @@
+import { Size } from "../misc/types";
+
 export const productData = [
   {
-    id: 1,
-    title: "product1",
-    price: 100,
-    description: "product1",
+    id: "123456789",
+    name: "Sample Product",
+    price: 29.99,
+    description: "This is a sample product description.",
     category: {
-      id: 123,
-      name: "clothes",
-      image: "https://picsum.photos/800/800?random=1",
+      id: "987654321",
+      name: "Sample Category",
+      image: "category-image.jpg",
     },
-    images: [
-      "https://picsum.photos/800/800?random=1",
-      "https://picsum.photos/800/800?random=2",
-      "https://picsum.photos/800/800?random=3",
+    variants: [
+      {
+        color: "Red",
+        size: Size.M,
+        stock: 10,
+      },
+      {
+        color: "Blue",
+        size: Size.L,
+        stock: 5,
+      },
     ],
+    images: ["product-image1.jpg", "product-image2.jpg"],
   },
   {
-    id: 2,
-    title: "product2",
-    price: 200,
-    description: "product2",
+    id: "123456789123",
+    name: "Sample Product",
+    price: 29.99,
+    description: "This is a sample product description.",
     category: {
-      id: 456,
-      name: "shorts",
-      image: "https://picsum.photos/800/800?random=2",
+      id: "987654321",
+      name: "Sample Category",
+      image: "category-image.jpg",
     },
-    images: [
-      "https://picsum.photos/800/800?random=4",
-      "https://picsum.photos/800/800?random=5",
-      "https://picsum.photos/800/800?random=6",
+    variants: [
+      {
+        color: "Red",
+        size: Size.M,
+        stock: 10,
+      },
+      {
+        color: "Blue",
+        size: Size.L,
+        stock: 5,
+      },
     ],
-  },
-  {
-    id: 3,
-    title: "product3",
-    price: 300,
-    description: "product3",
-    category: {
-      id: 789,
-      name: "t-shirts",
-      image: "https://picsum.photos/800/800?random=3",
-    },
-    images: [
-      "https://picsum.photos/800/800?random=7",
-      "https://picsum.photos/800/800?random=8",
-      "https://picsum.photos/800/800?random=9",
-    ],
-  },
-  {
-    id: 4,
-    title: "product4",
-    price: 400,
-    description: "product4",
-    category: {
-      id: 789,
-      name: "t-shirts",
-      image: "https://picsum.photos/800/800?random=4",
-    },
-    images: [
-      "https://picsum.photos/800/800?random=10",
-      "https://picsum.photos/800/800?random=11",
-      "https://picsum.photos/800/800?random=12",
-    ],
+    images: ["product-image1.jpg", "product-image2.jpg"],
   },
 ];

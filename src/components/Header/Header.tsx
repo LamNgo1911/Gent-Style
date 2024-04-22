@@ -126,7 +126,7 @@ export default function Header() {
           <Link
             to={`${
               access_token && user
-                ? user?.role === "admin"
+                ? user?.role === "ADMIN"
                   ? "/admin"
                   : "/profile"
                 : "/login"
@@ -174,7 +174,7 @@ export default function Header() {
           <Link
             to={`${
               access_token && user
-                ? user?.role === "admin"
+                ? user?.role === "ADMIN"
                   ? "/admin"
                   : "/profile"
                 : "/login"

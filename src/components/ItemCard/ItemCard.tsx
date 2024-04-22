@@ -10,9 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 export default function ItemCard({
   id,
-  title,
+  name,
   price,
   description,
+  category,
+  variants,
   images,
   quantity,
 }: CartItem) {
@@ -64,7 +66,7 @@ export default function ItemCard({
             className="item-card__title"
             onClick={clickOnImageAndTitleHandler}
           >
-            {title}
+            {name}
           </h3>
           <p className="item-card__price">{price}$</p>
           <div className="item-card__quantity">

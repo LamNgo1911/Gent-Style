@@ -1,5 +1,4 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
 import { useEffect, useRef } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,12 +6,10 @@ import { Link, useNavigate } from "react-router-dom";
 
 import GoogleClientId from "../../../config/googleOAuth";
 import { useTheme } from "../../../context/useTheme";
-import { dataCredential } from "../../../misc/dataCredential";
 import {
-  checkAvailableEmail,
-  fetchAccessToken,
+  clearError,
   fetchLogin,
-  fetchRegister,
+  fetchLoginGoogle,
   setError,
 } from "../../../redux/slices/userSlice";
 import { AppDispatch, RootState } from "../../../redux/store";
@@ -23,13 +20,19 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
   } = useForm();
+
+  const email = watch("email");
+  const password = watch("password");
 
   const navigate = useNavigate();
   const { ref } = register("email");
   const emailRef = useRef<HTMLInputElement | null>(null);
   const dispatch: AppDispatch = useDispatch();
-  const { error, user, isAvailableEmail, access_token } = useSelector(
+  const dispatchAction = useDispatch();
+
+  const { error, user, access_token } = useSelector(
     (state: RootState) => state.users
   );
   const { theme } = useTheme();
@@ -37,50 +40,16 @@ export default function Login() {
   const onSubmit = async (data: FieldValues) => {
     // Validate credentials and handle login
     const { email, password } = data;
-    await dispatch(fetchAccessToken({ email, password }));
-  };
+    const userData = await dispatch(fetchLogin({ email, password }));
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      if (access_token) {
-        await dispatch(fetchLogin(access_token));
-      }
-    };
-    fetchUserInfo();
-  }, [access_token, dispatch]);
-
-  useEffect(() => {
-    if (user) {
+    if (userData.type === "user/fetchLogin/fulfilled") {
       navigate("/");
     }
-  }, [user, navigate]);
+  };
 
   const googleLoginSuccessHandler = async (credentialResponse: any) => {
     if (credentialResponse.credential) {
-      const credentialResponseDecode: dataCredential = jwtDecode(
-        credentialResponse.credential
-      );
-      const { name, email, picture } = credentialResponseDecode;
-
-      //  create a new user with google oauth 2.0
-      try {
-        // check existing email from api
-        await dispatch(checkAvailableEmail(email));
-
-        // checking email if already exist, we can let user login intead creating a new user
-        if (!isAvailableEmail) {
-          await dispatch(
-            fetchRegister({
-              name,
-              email,
-              password: "1234",
-              avatar: picture,
-            })
-          );
-        }
-
-        await dispatch(fetchAccessToken({ email, password: "1234" }));
-      } catch (error) {}
+      await dispatch(fetchLoginGoogle());
     }
   };
 
@@ -92,6 +61,10 @@ export default function Login() {
   useEffect(() => {
     emailRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    dispatchAction(clearError());
+  }, [email, password]);
 
   return (
     <div className="login-container">

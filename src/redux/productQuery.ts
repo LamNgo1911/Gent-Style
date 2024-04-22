@@ -2,23 +2,36 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Category, Pagination, Product } from "../misc/types";
 import { store } from "./store";
 
+type CategoryData = {
+  categories: Category[];
+};
+
+export type ProductData = {
+  count: number;
+  products: Product[];
+};
+
 const productQueries = createApi({
   //base query for all the api calls inside this createApi
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://api.escuelajs.co/api/v1/",
+    baseUrl: "http://localhost:8080/api/v1/",
   }),
   tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
-    fetchProductsByPagination: builder.query<Product[], Pagination>({
+    fetchProductsByPagination: builder.query<ProductData, Pagination>({
       query: ({
-        offset,
+        sort,
+        skip,
         limit,
-        priceMin = "",
-        priceMax = "",
-        categoryId = "",
+        size,
+        color,
+        search,
+        category,
+        priceMin,
+        priceMax,
       }) =>
-        `products/?offset=${offset}&limit=${limit}&categoryId=${categoryId}&price_min=${priceMin}&price_max=${priceMax}`,
+        `products?sort=${sort}&skip=${skip}&limit=${limit}&size=${size}&color=${color}&search=${search}&category=${category}&priceMin=${priceMin}&priceMax=${priceMax}`,
       providesTags: ["Products"],
     }),
     fetchASingleProduct: builder.query<Product, number>({
@@ -28,12 +41,12 @@ const productQueries = createApi({
       ],
     }),
 
-    fetchProductsByCategories: builder.query<Product[], number>({
+    fetchProductsByCategories: builder.query<ProductData, number>({
       query: (categoryId: number) => `products/?categoryId=${categoryId}`,
       providesTags: ["Products"],
     }),
 
-    fetchAllCategories: builder.query<Category[], void>({
+    fetchAllCategories: builder.query<CategoryData, void>({
       query: () => `categories`,
       providesTags: ["Categories"],
     }),
@@ -41,7 +54,7 @@ const productQueries = createApi({
     // mutation
     createProduct: builder.mutation<Product, Partial<Product>>({
       query: (newProduct) => {
-        const admin = store.getState().users.user?.role === "admin";
+        const admin = store.getState().users.user?.role === "ADMIN";
         if (!admin) {
           throw new Error("User is not authorized to create products");
         }
@@ -57,7 +70,7 @@ const productQueries = createApi({
 
     updateProduct: builder.mutation<Product, Partial<Product>>({
       query: (updatedProduct) => {
-        const admin = store.getState().users.user?.role === "admin";
+        const admin = store.getState().users.user?.role === "ADMIN";
         if (!admin) {
           throw new Error("User is not authorized to create products");
         }
@@ -75,7 +88,7 @@ const productQueries = createApi({
 
     deleteProduct: builder.mutation<boolean, number>({
       query: (productId) => {
-        const admin = store.getState().users.user?.role === "admin";
+        const admin = store.getState().users.user?.role === "ADMIN";
         if (!admin) {
           throw new Error("User is not authorized to create products");
         }

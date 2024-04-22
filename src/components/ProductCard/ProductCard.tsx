@@ -12,10 +12,11 @@ type ProductProps = Product & {
 
 const ProductCard: React.FC<ProductProps> = ({
   id,
-  title,
-  description,
+  name,
   price,
+  description,
   category,
+  variants,
   images,
   product,
 }) => {
@@ -41,7 +42,7 @@ const ProductCard: React.FC<ProductProps> = ({
         <div className="image-container">
           <img
             src={images[currentImageIndex]}
-            alt={title}
+            alt={name}
             className="main-image"
           />
         </div>
@@ -65,7 +66,7 @@ const ProductCard: React.FC<ProductProps> = ({
         </div>
 
         <div className="product-info">
-          <h3 className="product-title">{title}</h3>
+          <h3 className="product-title">{name}</h3>
           <p className="product-price">${price}</p>
         </div>
       </div>

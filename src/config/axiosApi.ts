@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const axiosApi = axios.create({
-  baseURL: "https://api.escuelajs.co/api/v1/",
+  baseURL: "http://localhost:8080/api/v1/",
 });

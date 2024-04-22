@@ -47,7 +47,7 @@ export default function Slider({
           className="swiper"
         >
           {isLoading
-            ? Array.from({ length: data.slice(0, 5).length }).map((_, i) => (
+            ? Array.from({ length: data?.length }).map((_, i) => (
                 <SwiperSlide key={i}>
                   {title === "Categories" ? (
                     <CategoryCardSkeleton />
@@ -56,15 +56,16 @@ export default function Slider({
                   )}
                 </SwiperSlide>
               ))
-            : data?.slice(0, 5).map((item, i) => (
+            : data?.map((item, i) => (
                 <SwiperSlide key={i}>
-                  {"title" in item ? ( // Type assertion for Product
+                  {"images" in item ? ( // Type assertion for Product
                     <ProductCard
                       id={item.id}
-                      title={item.title}
-                      description={item.description}
+                      name={item.name}
                       price={item.price}
+                      description={item.description}
                       category={item.category}
+                      variants={item.variants}
                       images={item.images}
                       product={item}
                     />

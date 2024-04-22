@@ -7,7 +7,7 @@ import { useTheme } from "../../../context/useTheme";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../redux/store";
 import {
-  checkAvailableEmail,
+  clearError,
   fetchRegister,
   setError,
 } from "../../../redux/slices/userSlice";
@@ -20,38 +20,32 @@ export default function Register() {
     watch,
   } = useForm();
 
+  const username = watch("username");
+  const email = watch("email");
   const password = watch("password");
+  const confirmPassword = watch("confirmPassword");
+
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
+  const dispatchAction = useDispatch();
   const { ref } = register("username");
   const usernameRef = useRef<HTMLInputElement | null>(null);
-  const { isAvailableEmail, error } = useSelector(
-    (state: RootState) => state.users
-  );
+  const { error, user } = useSelector((state: RootState) => state.users);
+
   const { theme } = useTheme();
 
   // check and store current user
   const onSubmit = async (data: FieldValues) => {
     const { username, email, password } = data;
 
-    try {
-      // check existing email from api
-      await dispatch(checkAvailableEmail(email));
-      // store new user in api
-      if (!isAvailableEmail) {
-        await dispatch(
-          fetchRegister({
-            name: username,
-            email,
-            password,
-            avatar: "https://picsum.photos/800",
-          })
-        );
-      }
-    } catch (error: any) {
-      setError(error.message);
-    }
-    if (!error) {
+    const userData = await dispatch(
+      fetchRegister({
+        username,
+        email,
+        password,
+      })
+    );
+    if (userData.type === "user/register/fulfilled") {
       navigate("/login");
     }
   };
@@ -60,6 +54,10 @@ export default function Register() {
   useEffect(() => {
     usernameRef.current?.focus();
   }, []);
+
+  useEffect(() => {
+    dispatchAction(clearError());
+  }, [username, email, password, confirmPassword]);
 
   return (
     <div className="register-container">
@@ -98,9 +96,6 @@ export default function Register() {
             <span className="error">
               {errors.email.type === "required" && "Email is required"}
             </span>
-          )}
-          {isAvailableEmail && (
-            <span className="error">Email already exists</span>
           )}
         </div>
         <div className="form-group">

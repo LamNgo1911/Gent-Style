@@ -17,6 +17,7 @@ import { addToWishlist } from "../../redux/slices/productSlice";
 import ImageCardSkeleton from "../../components/loading/ImageCardSkeleton";
 import LoadingError from "../../components/LoadingError";
 import ProductDetailSkeleton from "../../components/loading/ProductDetailSkeleton";
+import { Product } from "../../misc/types";
 
 export default function ProductDetail() {
   const productId = useParams().productId;
@@ -79,7 +80,7 @@ export default function ProductDetail() {
           {product?.category?.name.toLocaleLowerCase()}
         </Link>
         <span>/</span>
-        <p> {product?.title.toLocaleLowerCase()}</p>
+        <p> {product?.name.toLocaleLowerCase()}</p>
       </section>
 
       <section className="product-detail__container">
@@ -92,7 +93,7 @@ export default function ProductDetail() {
           <>
             <ImageCard images={product?.images || []} />
             <div className="product-detail__infor">
-              <h3 className="product-detail__title">{product?.title}</h3>
+              <h3 className="product-detail__title">{product?.name}</h3>
               <p className="product-detail__price">Price: {product?.price}$</p>
               <div className="product-detail__description">
                 <p className="description-btn">
@@ -127,7 +128,7 @@ export default function ProductDetail() {
       {/* relevant-products section*/}
       <Slider
         title="Relevant products"
-        data={relevantProducts || []}
+        data={relevantProducts?.products as Product[]}
         isLoading={isLoadingRelevantProducts}
         slidesPerViewSm={2}
         slidesPerViewMd={3}
@@ -139,7 +140,7 @@ export default function ProductDetail() {
       {/* recently-viewed section */}
       <Slider
         title="Recently viewed"
-        data={relevantProducts || []}
+        data={relevantProducts?.products as Product[]}
         isLoading={isLoadingRelevantProducts}
         slidesPerViewSm={2}
         slidesPerViewMd={3}

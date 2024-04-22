@@ -37,11 +37,11 @@ export default function ProfileNav() {
             className="profileNav-header__avatar img-avatar"
             onClick={clickOnAvatarHandler}
           >
-            <img src={user?.avatar} alt="avatar" />
+            <img src="###" alt="avatar" />
           </div>
           <div className="profileNav-header__greetings">
             <p>Hello,</p>
-            <h2>{user?.name}</h2>
+            <h2>{user?.username}</h2>
           </div>
         </div>
       </div>

@@ -1,50 +1,71 @@
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 import "./Home.scss";
 import heroImgDarkTheme from "../../assets/cover-image-light.jpg";
 import heroImgLightTheme from "../../assets/cover-image-dark.jpg";
 import { useTheme } from "../../context/useTheme";
-import { useEffect, useState } from "react";
 import { fetchAllProducts } from "../../redux/slices/productSlice";
-import { RootState, useAppDispatch } from "../../redux/store";
-import { productData } from "../../data/productData";
+import { AppDispatch, RootState, useAppDispatch } from "../../redux/store";
 import { trendingData } from "../../data/trendingData";
 import TrendingCard from "../../components/TrendingCard";
-import { useFetchAllCategoriesQuery } from "../../redux/productQuery";
+import {
+  useFetchAllCategoriesQuery,
+  useFetchProductsByPaginationQuery,
+} from "../../redux/productQuery";
 import "react-loading-skeleton/dist/skeleton.css";
 import Slider from "../../components/Slider";
 import { useNavigate } from "react-router-dom";
-import { createSelector } from "reselect";
 import LoadingError from "../../components/LoadingError";
+import { Category, Product } from "../../misc/types";
 
 export default function Home() {
-  const dispatch = useAppDispatch();
+  const dispatch: AppDispatch = useAppDispatch();
   const navigate = useNavigate();
   const { theme } = useTheme();
   const {
-    data: categoryListing = [],
+    data: categoryListing,
     isLoading,
     error,
   } = useFetchAllCategoriesQuery();
 
-  // use fetchAllProductsAsync
+  // selectors
+  const { loading, error: productError } = useSelector(
+    (state: RootState) => state.products
+  );
+
+  const products: Product[] = useSelector(
+    (state: RootState) => state.products.products
+  );
+
+  // Todo: use fetchAllProductsAsync
   useEffect(() => {
-    // logic
-    dispatch(fetchAllProducts());
+    const getProducts = async () => {
+      // logic
+      const productData = await dispatch(fetchAllProducts());
+    };
+    getProducts();
   }, [dispatch]);
 
-  // selectors
   const {
-    products,
-    loading,
-    error: productError,
-  } = useSelector((state: RootState) => state.products);
-
-  // const products = [...productData];
+    data: RelevantProducts,
+    isLoading: isLoadingRelevantProducts,
+    error: errorRelevantProducts,
+  } = useFetchProductsByPaginationQuery({
+    sort: "Latest added",
+    skip: 0,
+    limit: 10,
+    size: "",
+    color: "",
+    search: "",
+    category: "",
+    priceMin: 0,
+    priceMax: 999,
+  });
 
   const trendingCategories = [...trendingData];
 
-  if (error || productError) {
+  if (error || productError || errorRelevantProducts) {
     return <LoadingError />;
   }
 
@@ -76,7 +97,7 @@ export default function Home() {
       {/* Categories section*/}
       <Slider
         title="Categories"
-        data={categoryListing}
+        data={categoryListing?.categories as Category[]}
         isLoading={isLoading}
         slidesPerViewSm={1}
         slidesPerViewMd={2}
@@ -116,6 +137,7 @@ export default function Home() {
             <TrendingCard
               id={cate?.id}
               title={cate.title}
+              category={cate.category}
               description={cate.description}
               image={cate.image}
             />
@@ -126,9 +148,9 @@ export default function Home() {
       {/* new arrivals section */}
       <Slider
         title="New arrivals"
-        data={products}
+        data={RelevantProducts?.products as Product[]}
         // data={productData}
-        isLoading={loading}
+        isLoading={isLoadingRelevantProducts}
         slidesPerViewSm={1}
         slidesPerViewMd={2}
         slidesPerViewLg={3}

@@ -69,9 +69,7 @@
       .thumbnail {
         object-fit: cover;
         width: 100%;
-        border: 1px solid vars.$primary-color;
-        border-radius: 50%;
-
+        border: 1px solid;
         &:hover {
           border: 1px solid vars.$primary-color;
           transition: border 0.3s ease-in-out;
@@ -81,7 +79,7 @@
 
     .thumbnail-container.active {
       border: 1px solid;
-      box-shadow: 0 2px 4px;
+      box-shadow: 0 1px 4px;
       transition: border 0.3s ease-in-out;
     }
   }

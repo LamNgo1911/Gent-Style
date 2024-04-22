@@ -6,14 +6,23 @@ import React, {
   SetStateAction,
   Dispatch,
 } from "react";
-import { useFetchAllCategoriesQuery } from "../redux/productQuery";
+
+import { RootState } from "../redux/store";
+import { useSelector } from "react-redux";
 
 type FilterContextProps = {
-  categoryId: string;
+  sort: string;
+  setSort: Dispatch<SetStateAction<string>>;
+  size: string;
+  setSize: Dispatch<SetStateAction<string>>;
+  color: string;
+  setColor: Dispatch<SetStateAction<string>>;
+  search: string;
+  setSearch: Dispatch<SetStateAction<string>>;
+  categoryName: string;
+  setCategoryName: Dispatch<SetStateAction<string>>;
   priceRange: number[];
-  setCategoryId: Dispatch<SetStateAction<string>>;
   setPriceRange: Dispatch<SetStateAction<number[]>>;
-  getCategoryName: () => string;
 };
 
 const FilterContext = createContext<FilterContextProps | undefined>(undefined);
@@ -31,22 +40,27 @@ type FilterProviderProps = {
 };
 
 export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
-  const [categoryId, setCategoryId] = useState<string>("");
-  const [priceRange, setPriceRange] = useState<number[]>([1, 999]);
-  const { data, isLoading, error } = useFetchAllCategoriesQuery();
+  const [sort, setSort] = useState<string>("");
+  const [size, setSize] = useState<string>("");
+  const [color, setColor] = useState<string>("");
+  const [search, setSearch] = useState<string>("");
+  const [categoryName, setCategoryName] = useState<string>("");
 
-  const getCategoryName = () => {
-    const category = data?.find((cate) => cate.id === Number(categoryId));
-    if (category) return category.name;
-    return "All";
-  };
+  const [priceRange, setPriceRange] = useState<number[]>([0, 999]);
 
   const value: FilterContextProps = {
-    categoryId,
+    sort,
+    setSort,
+    size,
+    setSize,
+    color,
+    setColor,
+    search,
+    setSearch,
+    categoryName,
+    setCategoryName,
     priceRange,
-    setCategoryId,
     setPriceRange,
-    getCategoryName,
   };
 
   return (

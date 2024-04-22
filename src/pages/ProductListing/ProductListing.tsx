@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { SetStateAction, useEffect, useRef, useState } from "react";
 
 import "./ProductListing.scss";
 import ProductCard from "../../components/ProductCard";
@@ -21,80 +21,82 @@ export default function ProductListing() {
   const { isBigScreen } = useMediaQueries();
   const { theme } = useTheme();
 
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [count, setCount] = useState(0);
+
+  const {
+    categoryName,
+    priceRange,
+    sort,
+    size,
+    color,
+    search,
+    setCategoryName,
+  } = useFilter();
+
   const limit = 8;
-  const [offset, setOffset] = useState(0);
-  const { categoryId, priceRange, getCategoryName, setCategoryId } =
-    useFilter();
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset the current page when the filters change
+  }, [sort, size, color, search, categoryName, priceRange]);
+
+  const skip = (currentPage - 1) * limit;
 
   const {
     data: productsByPagination,
     isLoading,
     error,
   } = useFetchProductsByPaginationQuery({
-    offset,
+    sort,
+    skip,
     limit,
-    categoryId: Number(categoryId),
+    size,
+    color,
+    search,
+    category: categoryName,
     priceMin: Number(priceRange[0]),
     priceMax: Number(priceRange[1]),
   });
 
-  // selectors
-  const {
-    products,
-    loading,
-    error: productError,
-  } = useSelector((state: RootState) => state.products);
-
-  // use fetchAllProductsAsync
   useEffect(() => {
-    // logic
-    dispatch(fetchAllProducts());
-  }, [dispatch]);
+    setCount(productsByPagination?.count as number);
+  }, [productsByPagination]);
 
-  // reset category
-  useEffect(() => {
-    setCategoryId("");
-  }, []);
-
-  // const products = [...productData];
-
-  const pageCount = Math.ceil(products?.length / limit);
-
-  // Invoke when user click to request another page.
-  const handlePageClick = (event: { selected: number }) => {
-    const newOffset = event.selected * limit;
-    setOffset(newOffset);
+  const handlePageClick = (selectedPage: { selected: number }) => {
+    setCurrentPage(selectedPage.selected + 1);
+    window.scrollTo(0, 0);
   };
 
   // handle error
-  if (error || productError) {
+  if (error) {
     return <LoadingError />;
   }
 
   return (
     <main className={`productListing`}>
-      <h1 className="product-title">{getCategoryName()}</h1>
+      <h1 className="product-title">{categoryName}</h1>
 
       {isBigScreen ? <FilterBigScreen /> : <FilterSmallScreen />}
 
       {/* product section */}
       <section className="product-section">
-        <h3>{products?.length || 0} style(s) found</h3>
+        <h3>{productsByPagination?.count || 0} style(s) found</h3>
 
         {/* product list */}
         <div className="product-list">
-          {loading
-            ? Array.from({ length: products?.length })?.map((_, i) => (
-                <ProductCardSkeleton key={i} />
-              ))
-            : productsByPagination?.map((product, i) => (
+          {isLoading
+            ? Array.from({
+                length: count,
+              })?.map((_, i) => <ProductCardSkeleton key={i} />)
+            : productsByPagination?.products?.map((product, i) => (
                 <ProductCard
                   key={i}
                   id={product?.id}
-                  title={product?.title}
+                  name={product?.name}
                   description={product?.description}
                   price={product?.price}
                   category={product?.category}
+                  variants={product?.variants}
                   images={product?.images}
                   product={product}
                 />
@@ -106,7 +108,8 @@ export default function ProductListing() {
           onPageChange={handlePageClick}
           pageRangeDisplayed={2}
           marginPagesDisplayed={1}
-          pageCount={pageCount}
+          pageCount={Math.ceil(count / limit) || 0}
+          forcePage={currentPage - 1}
           previousLabel="<"
           renderOnZeroPageCount={null}
           containerClassName={`pagination-container ${theme}`}

@@ -70,20 +70,28 @@ describe("Product reducer", () => {
 
   // product query tests
   test("fetchProductsByPaginationQuery should return products", async () => {
-    const offset = 5;
+    const sort = "";
+    const skip = 5;
     const limit = 10;
+    const size = "";
+    const color = "";
+    const search = "";
+    const category = "Hoodies";
     const priceMin = 1;
     const priceMax = 2;
-    const categoryId = 1;
 
     const { result } = renderHook(
       () =>
         useFetchProductsByPaginationQuery({
-          offset,
+          sort,
+          skip,
           limit,
+          size,
+          color,
+          search,
+          category,
           priceMin,
           priceMax,
-          categoryId,
         }),
       { wrapper: TestProvider }
     );

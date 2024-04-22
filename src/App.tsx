@@ -71,7 +71,7 @@ function App() {
 
   return (
     <div className={`App ${theme}`}>
-      {/* {!isAuthPage && <Header />} */}
+      {!isAuthPage && <Header />}
       <Routes>
         {/* auth */}
         <Route path="/login" element={<Login />} />
@@ -79,7 +79,7 @@ function App() {
         {/* main content */}
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductListing />} />
-        <Route path="/products/:productId" element={<ProductDetail />} />
+        {/* <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/sale" element={<Sale />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search-results" element={<SearchResults />} />
@@ -103,7 +103,7 @@ function App() {
               element={<ProfileNesting component={<MyDetails />} />}
             />
           </>
-        )}
+        )} */}
         {/* {access_token && user?.role === "admin" && (
           <>
             <Route
@@ -117,7 +117,7 @@ function App() {
           </>
         )} */}
 
-        <>
+        {/* <>
           <Route
             path="/admin"
             element={<AdminNesting component={<Admin />} />}
@@ -126,11 +126,11 @@ function App() {
             path="/admin/products"
             element={<AdminNesting component={<MyDetails />} />}
           />
-        </>
+        </> */}
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {/* {!isAuthPage && <Footer />} */}
+      {!isAuthPage && <Footer />}
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function MyDetails() {
         <div className="my-details__info-container">
           <h2>Name</h2>
           <div className="credential">
-            <p>{user?.name}</p>
+            <p>{user?.username}</p>
           </div>
         </div>
 
@@ -40,13 +40,6 @@ export default function MyDetails() {
           <h2>Email</h2>
           <div className="credential">
             <p>{user?.email}</p>
-          </div>
-        </div>
-
-        <div className="my-details__info-container">
-          <h2>Password</h2>
-          <div className="credential">
-            <p>{user?.password}</p>
           </div>
         </div>
       </section>

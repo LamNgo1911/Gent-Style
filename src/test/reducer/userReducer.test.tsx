@@ -1,19 +1,12 @@
-import {
-  act,
-  render,
-  renderHook,
-  screen,
-  waitFor,
-} from "@testing-library/react";
+import { waitFor } from "@testing-library/react";
+
 import { userServer } from "../shared/mockServer";
 import { newStore } from "../../redux/store";
-import { User, UserRegistration, UserState } from "../../misc/types";
+import { Role, User, UserRegistration, UserStatus } from "../../misc/types";
 import {
   LoginInfo,
-  checkAvailableEmail,
   clearAccessToken,
   clearError,
-  fetchAccessToken,
   fetchLogin,
   fetchRegister,
   setError,
@@ -44,23 +37,11 @@ describe("user reducer", () => {
   });
 
   test("should handle LOGIN_USER success", async () => {
-    const access_token =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImlhdCI6MTY3Mjc2NjAyOCwiZXhwIjoxNjc0NDk0MDI4fQ.kCak9sLJr74frSRVQp0_27BY4iBCgQSmoT3vQVWKzJg";
-    await store.dispatch(fetchLogin(access_token));
-
-    await waitFor(async () => {
-      expect(store.getState().users.isLoading).toBe(true);
-    });
-
-    expect(store.getState().users.user).not.toBeNull;
-  });
-
-  test("should handle ACCESS_TOKEN success", async () => {
     const loginInfo: LoginInfo = {
       email: "lamngo123@gmail.com",
       password: "1234",
     };
-    await store.dispatch(fetchAccessToken(loginInfo));
+    await store.dispatch(fetchLogin(loginInfo));
 
     await waitFor(() => {
       expect(store.getState().users.access_token).not.toBeNull;
@@ -68,22 +49,13 @@ describe("user reducer", () => {
     });
   });
 
-  test("should handle CHECK_AVAILABLE_EMAIL success", async () => {
-    const email = "test@test.com";
-    await store.dispatch(checkAvailableEmail(email));
-
-    await waitFor(() => {
-      expect(store.getState().users.error).toBeNull();
-    });
-  });
-
   test("should handle FETCH_REGISTER success", async () => {
     const userRegistration: UserRegistration = {
-      name: "testuser",
+      username: "testuser",
       email: "test@test.com",
       password: "testpass",
-      avatar: "https://picsum.photos/800",
     };
+
     await store.dispatch(fetchRegister(userRegistration));
 
     await waitFor(() => {
@@ -94,20 +66,29 @@ describe("user reducer", () => {
 
 describe("user actions", () => {
   test("should set user and clear error", () => {
-    const user = {
-      avatar: "####",
-      email: "test@test.com",
-      id: 123,
-      name: "Test User",
-      password: "password",
-      role: "user",
+    const sampleUser: User = {
+      id: "123456789",
+      username: "john_doe",
+      email: "johndoe@example.com",
+      status: UserStatus.ACTIVE,
+      role: Role.ADMIN,
+      resetToken: null,
+      resetTokenExpiresAt: null,
+      shippingAddress: {
+        street: "123 Main Street",
+        city: "New York",
+        state: "NY",
+        postalCode: "10001",
+        country: "USA",
+      },
+      orders: [],
     };
 
-    store.dispatch(setUser(user));
+    store.dispatch(setUser(sampleUser));
 
     const { user: userState, isLoading, error } = store.getState().users;
 
-    expect(userState).toEqual(user);
+    expect(userState).toEqual(sampleUser);
     expect(isLoading).toBe(false);
     expect(error).toBeNull();
   });

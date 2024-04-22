@@ -1,20 +1,17 @@
-import { useDispatch } from "react-redux";
 import { sortOptions } from "../../misc/filterOptions";
-import { sortProductsbyPrice } from "../../redux/slices/productSlice";
+import { useFilter } from "../../context/useFilter";
 
 export default function SortDropdown() {
-  const dispatch = useDispatch();
-  const sortPriceHandler = (label: string) => {
-    dispatch(sortProductsbyPrice(label));
-  };
+  const { setSort, sort } = useFilter();
+
   return (
     <div className="dropdown">
       <div className="dropdown__content">
         {sortOptions?.map(({ label }, i) => (
           <div
-            className="dropdown__btn"
+            className={`dropdown__btn ${label === sort && "active"}`}
             key={i}
-            onClick={() => sortPriceHandler(label)}
+            onClick={() => setSort(label === sort ? "" : label)}
           >
             <p>{label}</p>
           </div>

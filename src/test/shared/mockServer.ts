@@ -89,7 +89,7 @@ export const productHandler = [
     const product = (await request.json()) as Product;
     const updateProduct: Product = {
       ...product,
-      id: 100,
+      id: "ads131",
     };
 
     if (!updateProduct || !productId) {

@@ -21,7 +21,6 @@ const initialState: UserState = {
   user: userState,
   isLoading: false,
   error: null,
-  isAvailableEmail: false,
   access_token: accessTokenState,
 };
 
@@ -30,56 +29,68 @@ export type LoginInfo = {
   password: string;
 };
 
-export const fetchLogin = createAsyncThunk<User, string>(
-  "user/fetchLogin",
-  async (access_token, { rejectWithValue }) => {
-    try {
-      const userData = await axiosApi.get("auth/profile", {
-        headers: { Authorization: `Bearer ${access_token}` },
-      });
-      return userData.data;
-    } catch (error: any) {
-      return rejectWithValue(errorMessages[error.response.status]);
-    }
-  }
-);
+export type UserInformation = {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+};
 
-export const fetchAccessToken = createAsyncThunk<string, LoginInfo>(
-  "user/fetchAccessToken",
-  async (loginInfo, { rejectWithValue }) => {
-    try {
-      const tokenData = await axiosApi.post("auth/login", {
-        email: loginInfo.email,
-        password: loginInfo.password,
-      });
+export type UserInformationGoogle = {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+};
 
-      return tokenData.data.access_token;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
-
-export const checkAvailableEmail = createAsyncThunk<boolean, string>(
-  "user/checkAvailableEmail",
-  async (email, { rejectWithValue }) => {
-    try {
-      const emailCheckingRes = await axiosApi.post("users/is-available", {
-        email,
-      });
-      return emailCheckingRes.data.isAvailable;
-    } catch (error: any) {
-      return rejectWithValue(error.response.data.message);
-    }
-  }
-);
+// export const fetchLogin = createAsyncThunk<User, string>(
+//   "user/fetchLogin",
+//   async (access_token, { rejectWithValue }) => {
+//     try {
+//       const userData = await axiosApi.get("auth/profile", {
+//         headers: { Authorization: `Bearer ${access_token}` },
+//       });
+//       return userData.data;
+//     } catch (error: any) {
+//       return rejectWithValue(errorMessages[error.response.status]);
+//     }
+//   }
+// );
 
 export const fetchRegister = createAsyncThunk<User, UserRegistration>(
   "user/register",
   async (user, { rejectWithValue }) => {
     try {
-      const response = await axiosApi.post("users/", user);
-      return response.data;
+      const response = await axiosApi.post("users/register", user);
+
+      return response.data.newUser;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const fetchLogin = createAsyncThunk<UserInformation, LoginInfo>(
+  "user/fetchLogin",
+  async (loginInfo, { rejectWithValue }) => {
+    try {
+      const userData = await axiosApi.post("users/login", {
+        email: loginInfo.email,
+        password: loginInfo.password,
+      });
+
+      return userData.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+export const fetchLoginGoogle = createAsyncThunk<UserInformation>(
+  "user/fetchLoginGoogle",
+  async (_, { rejectWithValue }) => {
+    try {
+      const userData = await axiosApi.post("users/google-authenticate", {});
+
+      return userData.data;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
     }
@@ -113,22 +124,26 @@ export const userSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    // check email available
-    builder.addCase(checkAvailableEmail.fulfilled, (state, action) => {
-      state.isAvailableEmail = action.payload;
+    // regiter
+    builder.addCase(fetchRegister.fulfilled, (state, action) => {
+      state.user = null;
+      state.isLoading = false;
       state.error = null;
     });
-    builder.addCase(checkAvailableEmail.pending, (state) => {
+    builder.addCase(fetchRegister.pending, (state) => {
+      state.user = null;
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(checkAvailableEmail.rejected, (state, action) => {
+    builder.addCase(fetchRegister.rejected, (state, action) => {
+      state.user = null;
       state.error = action.payload as string;
     });
 
     // login
     builder.addCase(fetchLogin.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.user;
+      state.access_token = action.payload.access_token;
       state.isLoading = false;
       state.error = null;
     });
@@ -140,28 +155,19 @@ export const userSlice = createSlice({
       state.error = action.payload as string;
     });
 
-    // regiter
-    builder.addCase(fetchRegister.pending, (state) => {
-      state.isLoading = true;
-      state.error = null;
-    });
-    builder.addCase(fetchRegister.rejected, (state, action) => {
-      state.error = action.payload as string;
-    });
-
-    // access-token
-    builder.addCase(fetchAccessToken.fulfilled, (state, action) => {
-      state.access_token = action.payload;
+    // login google
+    builder.addCase(fetchLoginGoogle.fulfilled, (state, action) => {
+      state.user = action.payload.user;
+      state.access_token = action.payload.access_token;
       state.isLoading = false;
       state.error = null;
     });
-    builder.addCase(fetchAccessToken.pending, (state) => {
+    builder.addCase(fetchLoginGoogle.pending, (state) => {
       state.isLoading = true;
       state.error = null;
     });
-    builder.addCase(fetchAccessToken.rejected, (state, action) => {
+    builder.addCase(fetchLoginGoogle.rejected, (state, action) => {
       state.error = action.payload as string;
-      state.isLoading = false;
     });
   },
 });

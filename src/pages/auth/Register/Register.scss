@@ -42,10 +42,6 @@
         width: 100%;
         @include mixs.input;
       }
-
-      .error {
-        @include mixs.error-text;
-      }
     }
 
     .form-terms {
@@ -65,10 +61,6 @@
       label {
         font-size: 0.8rem;
         color: vars.$secondary-color;
-      }
-
-      .error {
-        @include mixs.error-text;
       }
     }
 
@@ -98,4 +90,8 @@
       font-size: 0.9rem;
     }
   }
+}
+
+.error {
+  @include mixs.error-text;
 }

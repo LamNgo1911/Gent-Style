@@ -5,10 +5,10 @@ import { useFilter } from "../../context/useFilter";
 
 export default function CategoryCard({ id, image, name }: Category) {
   const navigate = useNavigate();
-  const { setCategoryId } = useFilter();
+  const { setCategoryName } = useFilter();
 
   const clickHandler = () => {
-    setCategoryId(id.toString());
+    setCategoryName(name);
     navigate(`/products`);
   };
   return (

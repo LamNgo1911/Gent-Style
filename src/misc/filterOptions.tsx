@@ -1,4 +1,3 @@
-import BrandDropdown from "../pages/ProductListing/BrandDropdown";
 import CategoryDropdown from "../pages/ProductListing/CategoryDropdown";
 import ColourDropdown from "../pages/ProductListing/ColourDropdown";
 import PriceRangeDropdown from "../pages/ProductListing/PriceRangeDropdown";
@@ -9,7 +8,7 @@ export const filterLgOptions = [
   { label: "Sort", dropdown: <SortDropdown />, dropdownVisible: false },
   { label: "Category", dropdown: <CategoryDropdown />, dropdownVisible: false },
   { label: "Colour", dropdown: <ColourDropdown />, dropdownVisible: false },
-  { label: "Brand", dropdown: <BrandDropdown />, dropdownVisible: false },
+
   { label: "Size", dropdown: <SizeDropdown />, dropdownVisible: false },
   {
     label: "Price Range",
@@ -21,7 +20,6 @@ export const filterLgOptions = [
 export const filterSmOptions = [
   { label: "Category", dropdown: <CategoryDropdown />, dropdownVisible: false },
   { label: "Colour", dropdown: <ColourDropdown />, dropdownVisible: false },
-  { label: "Brand", dropdown: <BrandDropdown />, dropdownVisible: false },
   { label: "Size", dropdown: <SizeDropdown />, dropdownVisible: false },
   {
     label: "Price Range",
@@ -31,26 +29,19 @@ export const filterSmOptions = [
 ];
 
 export const sortOptions = [
-  { label: "Recommended" },
-  { label: "What's New" },
-  { label: "Price high to low" },
-  { label: "Price low to high" },
+  { label: "Latest added" },
+  { label: "Most relevant" },
+  { label: "Lowest price" },
+  { label: "Highest price" },
 ];
 
 export const ColourOptions = [
-  { label: "Blue" },
-  { label: "Black" },
-  { label: "Grey" },
-  { label: "Brown" },
-  { label: "Neutral" },
-];
-
-export const BrandOptions = [
-  { label: "Adidas" },
-  { label: "Nike" },
-  { label: "Puma" },
-  { label: "Topman" },
-  { label: "Levi's" },
+  { label: "BLACK" },
+  { label: "ORANGE" },
+  { label: "RED" },
+  { label: "BLUE" },
+  { label: "KHAKI" },
+  { label: "NONE" },
 ];
 
 export const SizeOptions = [
