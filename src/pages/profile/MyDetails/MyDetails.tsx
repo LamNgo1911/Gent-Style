@@ -31,7 +31,7 @@ export default function MyDetails() {
   const [newPassword, setNewPassword] = useState("");
 
   const handleSubmitUserInfo = async () => {
-    await dispatch(
+    const data = await dispatch(
       updateUser({
         username: editedUsername || user?.username,
         email: editedEmail || user?.email,
@@ -39,11 +39,13 @@ export default function MyDetails() {
         userId: user.id,
       })
     );
-    setEditModeUserInfo(false);
+    if (data.type === "user/updateUser/fulfilled") {
+      setEditModeUserInfo(false);
+    }
   };
 
   const handleSubmitPassword = async () => {
-    await dispatch(
+    const data = await dispatch(
       updatePassword({
         oldPassword,
         newPassword,
@@ -51,18 +53,10 @@ export default function MyDetails() {
         userId: user.id,
       })
     );
-
-    console.log(
-      await dispatch(
-        updatePassword({
-          oldPassword,
-          newPassword,
-          access_token,
-          userId: user.id,
-        })
-      )
-    );
-    setEditModePassword(false);
+    if (data.type === "user/updatePassword/fulfilled") {
+      alert("Password updated successufully!");
+      setEditModePassword(false);
+    }
   };
 
   return (
