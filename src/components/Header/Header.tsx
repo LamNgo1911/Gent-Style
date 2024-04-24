@@ -11,20 +11,19 @@ import image from "../../assets/gentStyle-symbol.png";
 import { LuSearch } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../../context/useTheme";
-import { useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../redux/store";
 import { useMediaQueries } from "../../hooks/useMediaQuery";
 import { navLinks } from "../../data/navLinks";
+import { getAllCartItemsByUserId } from "../../redux/slices/cartSlice";
 export default function Header() {
   // state for mobile version
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState<boolean>(false);
   const [isOpenSearchBtn, setIsOpenSearchBtn] = useState<boolean>(true);
   const [scroll, setScroll] = useState<boolean>(true);
 
-  localStorage.removeItem("userInformation");
-  localStorage.removeItem("token");
-
   const pathname = useLocation().pathname;
+  const dispatch: AppDispatch = useDispatch();
   // media query
   const { isSmallScreen, isBigScreen } = useMediaQueries();
   const { theme, toggleTheme } = useTheme();
@@ -52,6 +51,14 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  // Todo: Fetch all cartItems count.
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      await dispatch(getAllCartItemsByUserId(access_token as string));
+    };
+    fetchCartItems();
+  }, [dispatch, access_token]);
 
   return (
     <header

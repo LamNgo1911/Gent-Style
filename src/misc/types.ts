@@ -50,6 +50,14 @@ export type Category = {
   image: string;
 };
 
+export type TrendingCategory = {
+  id: number;
+  title: string;
+  category: string;
+  description: string;
+  image: string;
+};
+
 // ------------- Product -------------
 
 export enum Size {
@@ -77,13 +85,14 @@ export type Product = {
   images: string[];
 };
 
-export type TrendingCategory = {
-  id: number;
-  title: string;
-  category: string;
-  description: string;
-  image: string;
+// ------------- Color -------------
+
+export type ColorOptions = {
+  label: string;
+  code: string;
 };
+
+// ------------- Filter -------------
 
 export enum FilterListing {
   category,
@@ -99,6 +108,8 @@ export type FilterOption = {
   dropdownVisible: boolean;
 };
 
+// ------------- Pagination -------------
+
 export type Pagination = {
   sort: string;
   skip: number;
@@ -111,6 +122,8 @@ export type Pagination = {
   priceMax: number;
 };
 
+// ------------- Slider -------------
+
 export type SliderProps = {
   title: string;
   isLoading: boolean;
@@ -122,16 +135,29 @@ export type SliderProps = {
   showPagination: boolean;
 };
 
-export type CartItem = Product & {
+// ------------- Cart -------------
+
+export type CartItem = {
+  id: string;
+  userId: string;
+  product: Product;
+  color: string;
+  size: string;
+  image: string;
   quantity: number;
 };
 
-export type CartState = {
-  items: CartItem[];
-  total: number;
+export type CartItemInput = {
+  userId: string;
+  product: string;
+  color: string;
+  size: string;
+  image: string;
+  quantity: number;
 };
 
 // ------------- Order -------------
+
 export enum OrderStatus {
   PAID = "PAID",
   PROCESSING = "PROCESSING",

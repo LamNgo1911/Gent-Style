@@ -8,7 +8,6 @@ export const filterLgOptions = [
   { label: "Sort", dropdown: <SortDropdown />, dropdownVisible: false },
   { label: "Category", dropdown: <CategoryDropdown />, dropdownVisible: false },
   { label: "Colour", dropdown: <ColourDropdown />, dropdownVisible: false },
-
   { label: "Size", dropdown: <SizeDropdown />, dropdownVisible: false },
   {
     label: "Price Range",
@@ -36,12 +35,12 @@ export const sortOptions = [
 ];
 
 export const ColourOptions = [
-  { label: "BLACK" },
-  { label: "ORANGE" },
-  { label: "RED" },
-  { label: "BLUE" },
-  { label: "KHAKI" },
-  { label: "NONE" },
+  { label: "BLACK", code: "#000000" },
+  { label: "ORANGE", code: "#FFA500" },
+  { label: "RED", code: "#ff0000" },
+  { label: "BLUE", code: "#0000ff" },
+  { label: "KHAKI", code: "#F0E68C" },
+  { label: "NONE", code: "#ffffff" },
 ];
 
 export const SizeOptions = [

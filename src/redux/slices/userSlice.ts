@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { axiosApi } from "../../config/axiosApi";
-import { errorMessages } from "../../misc/errorMessages";
 import { User, UserRegistration, UserState } from "../../misc/types";
 
 let userState: User | null = null;
@@ -14,7 +13,7 @@ if (userData) {
 }
 
 if (accessTokenData) {
-  accessTokenState = accessTokenData;
+  accessTokenState = JSON.parse(accessTokenData);
 }
 
 const initialState: UserState = {
@@ -40,20 +39,6 @@ export type UserInformationGoogle = {
   access_token: string;
   refresh_token: string;
 };
-
-// export const fetchLogin = createAsyncThunk<User, string>(
-//   "user/fetchLogin",
-//   async (access_token, { rejectWithValue }) => {
-//     try {
-//       const userData = await axiosApi.get("auth/profile", {
-//         headers: { Authorization: `Bearer ${access_token}` },
-//       });
-//       return userData.data;
-//     } catch (error: any) {
-//       return rejectWithValue(errorMessages[error.response.status]);
-//     }
-//   }
-// );
 
 export const fetchRegister = createAsyncThunk<User, UserRegistration>(
   "user/register",
@@ -89,6 +74,66 @@ export const fetchLoginGoogle = createAsyncThunk<UserInformation>(
   async (_, { rejectWithValue }) => {
     try {
       const userData = await axiosApi.post("users/google-authenticate", {});
+
+      return userData.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+type UpdateInfo = {
+  username: string;
+  email: string;
+  access_token: string;
+  userId: string;
+};
+
+type UserData = {
+  user: User;
+  access_token: string;
+};
+
+export const updateUser = createAsyncThunk<UserData, UpdateInfo>(
+  "user/updateUser",
+  async ({ username, email, access_token, userId }, { rejectWithValue }) => {
+    try {
+      const userData = await axiosApi.put(
+        `users/${userId}`,
+        { username, email },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
+
+      return userData.data;
+    } catch (error: any) {
+      return rejectWithValue(error.response.data.message);
+    }
+  }
+);
+
+type UpdatePassword = {
+  oldPassword: string;
+  newPassword: string;
+  access_token: string;
+  userId: string;
+};
+
+export const updatePassword = createAsyncThunk<UserData, UpdatePassword>(
+  "user/updatePassword",
+  async (
+    { oldPassword, newPassword, access_token, userId },
+    { rejectWithValue }
+  ) => {
+    try {
+      const userData = await axiosApi.put(
+        `users/${userId}/update-password`,
+        { oldPassword, newPassword },
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
 
       return userData.data;
     } catch (error: any) {
@@ -141,12 +186,15 @@ export const userSlice = createSlice({
     });
 
     // login
-    builder.addCase(fetchLogin.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.access_token = action.payload.access_token;
-      state.isLoading = false;
-      state.error = null;
-    });
+    builder.addCase(
+      fetchLogin.fulfilled,
+      (state, action: PayloadAction<UserInformation>) => {
+        state.user = action.payload.user;
+        state.access_token = action.payload.access_token;
+        state.isLoading = false;
+        state.error = null;
+      }
+    );
     builder.addCase(fetchLogin.pending, (state) => {
       state.isLoading = true;
       state.error = null;
@@ -167,6 +215,42 @@ export const userSlice = createSlice({
       state.error = null;
     });
     builder.addCase(fetchLoginGoogle.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+
+    // update user info
+    builder.addCase(
+      updateUser.fulfilled,
+      (state, action: PayloadAction<UserData>) => {
+        state.user = action.payload.user;
+        state.access_token = action.payload.access_token;
+        state.isLoading = false;
+        state.error = null;
+      }
+    );
+    builder.addCase(updateUser.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updateUser.rejected, (state, action) => {
+      state.error = action.payload as string;
+    });
+
+    // update user password
+    builder.addCase(
+      updatePassword.fulfilled,
+      (state, action: PayloadAction<UserData>) => {
+        state.user = action.payload.user;
+        state.access_token = action.payload.access_token;
+        state.isLoading = false;
+        state.error = null;
+      }
+    );
+    builder.addCase(updatePassword.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    });
+    builder.addCase(updatePassword.rejected, (state, action) => {
       state.error = action.payload as string;
     });
   },

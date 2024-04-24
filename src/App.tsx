@@ -26,6 +26,7 @@ import ProfileNav from "./pages/profile/ProfileNav";
 import Profile from "./pages/profile/Profile";
 import AdminNav from "./pages/admin/AdminNav";
 import AdminHeader from "./pages/admin/AdminHeader";
+import AdminProducts from "./pages/admin/AdminProducts";
 
 function App() {
   const { pathname } = useLocation();
@@ -34,17 +35,20 @@ function App() {
   const { user, access_token } = useSelector((state: RootState) => state.users);
   const { isSmallScreen } = useMediaQueries();
   const isAuthPage =
-    pathname === "/login" || pathname === "/register" || pathname === "/404";
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/404" ||
+    pathname.startsWith("/admin");
 
   // Redirect to /login if user is not authenticated
-  // useEffect(() => {
-  //   if (
-  //     !access_token &&
-  //     (pathname.startsWith("/profile") || pathname.startsWith("/admin"))
-  //   ) {
-  //     navigate("/login");
-  //   }
-  // }, [access_token, navigate, pathname]);
+  useEffect(() => {
+    if (
+      !access_token &&
+      (pathname.startsWith("/profile") || pathname.startsWith("/admin"))
+    ) {
+      navigate("/login");
+    }
+  }, [access_token, navigate, pathname]);
 
   // profile
   const ProfileNesting = ({ component }: { component: ReactNode }) => {
@@ -62,9 +66,9 @@ function App() {
       <div className="admin-nesting">
         <AdminNav />
         <div>
-          <AdminHeader />
+          {/* <AdminHeader /> */}
+          {component}
         </div>
-        {component}
       </div>
     );
   };
@@ -79,7 +83,7 @@ function App() {
         {/* main content */}
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductListing />} />
-        {/* <Route path="/products/:productId" element={<ProductDetail />} />
+        <Route path="/products/:productId" element={<ProductDetail />} />
         <Route path="/sale" element={<Sale />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search-results" element={<SearchResults />} />
@@ -103,8 +107,8 @@ function App() {
               element={<ProfileNesting component={<MyDetails />} />}
             />
           </>
-        )} */}
-        {/* {access_token && user?.role === "admin" && (
+        )}
+        {access_token && user?.role === "ADMIN" && (
           <>
             <Route
               path="/admin"
@@ -112,21 +116,10 @@ function App() {
             />
             <Route
               path="/admin/products"
-              element={<AdminNesting component={<MyDetails />} />}
+              element={<AdminNesting component={<AdminProducts />} />}
             />
           </>
-        )} */}
-
-        {/* <>
-          <Route
-            path="/admin"
-            element={<AdminNesting component={<Admin />} />}
-          />
-          <Route
-            path="/admin/products"
-            element={<AdminNesting component={<MyDetails />} />}
-          />
-        </> */}
+        )}
         <Route path="*" element={<NotFound />} />
       </Routes>
 

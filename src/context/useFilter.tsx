@@ -45,7 +45,6 @@ export const FilterProvider: React.FC<FilterProviderProps> = ({ children }) => {
   const [color, setColor] = useState<string>("");
   const [search, setSearch] = useState<string>("");
   const [categoryName, setCategoryName] = useState<string>("");
-
   const [priceRange, setPriceRange] = useState<number[]>([0, 999]);
 
   const value: FilterContextProps = {

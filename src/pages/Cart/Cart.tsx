@@ -1,12 +1,26 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
 import "./Cart.scss";
-import { RootState } from "../../redux/store";
+import { AppDispatch, RootState } from "../../redux/store";
 import ItemCard from "../../components/ItemCard";
-import { productData } from "../../data/productData";
 import EmptyCart from "./EmptyCart";
+import { CartItem } from "../../misc/types";
+import { useEffect } from "react";
+import { getAllCartItemsByUserId } from "../../redux/slices/cartSlice";
 
 export default function Cart() {
   const { items, total } = useSelector((state: RootState) => state.carts);
+  const access_token = useSelector(
+    (state: RootState) => state.users.access_token
+  ) as string;
+  const dispatch: AppDispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchCartItems = async () => {
+      await dispatch(getAllCartItemsByUserId(access_token));
+    };
+    fetchCartItems();
+  }, [dispatch, access_token]);
 
   return (
     <>
@@ -26,13 +40,13 @@ export default function Cart() {
                 <ItemCard
                   key={i}
                   id={item.id}
-                  name={item.name}
-                  price={item.price}
-                  description={item.description}
-                  category={item.category}
-                  variants={item.variants}
-                  images={item.images}
+                  userId={item.userId}
+                  product={item.product}
+                  color={item.color}
+                  size={item.size}
+                  image={item.image}
                   quantity={item.quantity}
+                  item={item as CartItem}
                 />
               ))}
             </div>
@@ -45,7 +59,7 @@ export default function Cart() {
             <div className="cart-total__container">
               <div className="cart-total__subtotal">
                 <h3>Sub-total</h3>
-                <p>{total || 100}$</p>
+                <p>{total || 0}$</p>
               </div>
 
               <div className="cart-total__delivery">

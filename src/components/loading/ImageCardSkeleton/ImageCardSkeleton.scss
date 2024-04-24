@@ -69,12 +69,14 @@
     @include mixs.pulse;
 
     @include mixs.md-screen {
-      width: 330px;
+      width: 380px;
+      height: 500px;
       order: 1;
     }
 
     @include mixs.lg-screen {
-      width: 420px;
+      width: 500px;
+      height: 600px;
       order: 2;
     }
   }

@@ -3,7 +3,7 @@
 @use "../../styles/mixins" as mixs;
 
 .product-detail {
-  padding-top: 4rem;
+  padding-top: 5rem;
 
   display: flex;
   flex-direction: column;
@@ -41,12 +41,30 @@
       justify-content: baseline;
     }
 
+    .product-detail_images {
+      @include mixs.md-screen {
+        width: 65%;
+      }
+
+      @include mixs.lg-screen {
+        width: 65%;
+      }
+    }
+
     .product-detail__infor {
       padding: 0 1rem;
 
       display: flex;
       flex-direction: column;
       gap: 1rem;
+
+      @include mixs.md-screen {
+        width: 35%;
+      }
+
+      @include mixs.lg-screen {
+        width: 35%;
+      }
 
       .product-detail__title {
         font-weight: 400;
@@ -74,6 +92,58 @@
         }
       }
 
+      .product-detail__color {
+        font-size: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        @include mixs.md-screen {
+          font-size: 1.2rem;
+        }
+
+        @include mixs.lg-screen {
+          font-size: 1.3rem;
+        }
+      }
+
+      .product-detail__size {
+        font-size: 1rem;
+
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+
+        .product-detail__size-error {
+          font-size: 0.85rem;
+          color: red;
+
+          @include mixs.shake-short;
+
+          @include mixs.md-screen {
+            font-size: 0.95rem;
+          }
+
+          @include mixs.lg-screen {
+            font-size: 1.05rem;
+          }
+        }
+
+        .product-detail__size-array {
+          display: flex;
+          gap: 0.4rem;
+        }
+
+        @include mixs.md-screen {
+          font-size: 1.2rem;
+        }
+
+        @include mixs.lg-screen {
+          font-size: 1.3rem;
+        }
+      }
+
       .product-detail__description {
         display: flex;
         flex-direction: column;
@@ -83,14 +153,14 @@
           display: flex;
           align-items: center;
           gap: 0.2rem;
-          font-size: 0.9rem;
+          font-size: 1rem;
 
           @include mixs.md-screen {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
           }
 
           @include mixs.lg-screen {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
           }
         }
 
@@ -128,6 +198,7 @@
             padding: 0.2rem;
             border: 1px solid;
             border-radius: 50%;
+            @include mixs.heartAnimation;
           }
 
           @include mixs.md-screen {
@@ -162,4 +233,50 @@
       }
     }
   }
+}
+
+.cirle-color {
+  height: 2.2rem;
+  width: 2.2rem;
+  border-radius: 50%;
+  border: 1px solid vars.$primary-color;
+  cursor: pointer;
+
+  @include mixs.md-screen {
+    height: 2.3rem;
+    width: 2.3rem;
+  }
+
+  @include mixs.lg-screen {
+    height: 2.4rem;
+    width: 2.4rem;
+  }
+}
+
+.cirle-color.active {
+  border: 1px solid;
+}
+
+.cirle-size {
+  padding: 0.2rem 1rem;
+  border-radius: 2rem;
+  border: 1px solid vars.$primary-color;
+  font-size: 0.85rem;
+  cursor: pointer;
+
+  @include mixs.flex-center;
+
+  @include mixs.md-screen {
+    padding: 0.2rem 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  @include mixs.lg-screen {
+    padding: 0.2rem 1.8rem;
+    font-size: 1.05rem;
+  }
+}
+
+.cirle-size.active {
+  border: 1px solid;
 }

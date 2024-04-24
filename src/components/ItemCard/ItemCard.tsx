@@ -1,37 +1,57 @@
 import { FaHeart } from "react-icons/fa";
 import { IoCloseOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./ItemCard.scss";
 import { CartItem } from "../../misc/types";
-import { useDispatch } from "react-redux";
-import { removeFromCart, updateQuantity } from "../../redux/slices/cartSlice";
-import { useEffect, useState } from "react";
+import {
+  deleteCartItem,
+  getAllCartItemsByUserId,
+  updateCartItem,
+} from "../../redux/slices/cartSlice";
 import { TiTickOutline } from "react-icons/ti";
-import { useNavigate } from "react-router-dom";
+import { AppDispatch, RootState } from "../../redux/store";
+
+type ItemCardProps = CartItem & {
+  item: CartItem;
+};
 
 export default function ItemCard({
   id,
-  name,
-  price,
-  description,
-  category,
-  variants,
-  images,
+  userId,
+  product,
+  color,
+  size,
+  image,
   quantity,
-}: CartItem) {
-  const dispatch = useDispatch();
+  item,
+}: ItemCardProps) {
   const navigate = useNavigate();
   const [savedItem, setSavedItem] = useState<boolean>(false);
 
-  const removeCartItemHandler = () => {
-    dispatch(removeFromCart(id));
+  const access_token = useSelector(
+    (state: RootState) => state.users.access_token
+  ) as string;
+  const dispatch: AppDispatch = useDispatch();
+
+  const removeCartItemHandler = async () => {
+    await dispatch(deleteCartItem({ cartItemId: id, access_token }));
+    await dispatch(getAllCartItemsByUserId(access_token));
   };
 
-  const changeQuantityHandler = (
+  const changeQuantityHandler = async (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    dispatch(
-      updateQuantity({ productId: id, quantity: Number(event?.target?.value) })
+    await dispatch(
+      updateCartItem({
+        access_token,
+        cartItemId: id,
+        updateInfo: { quantity: Number(event.target.value) },
+      })
     );
+    await dispatch(getAllCartItemsByUserId(access_token));
   };
 
   const saveForLaterHandler = () => {
@@ -46,10 +66,9 @@ export default function ItemCard({
     if (savedItem) {
       setTimeout(() => {
         setSavedItem(false);
-        dispatch(removeFromCart(id));
       }, 2000);
     }
-  }, [savedItem]);
+  }, [savedItem, item, dispatch]);
 
   return (
     <div className="item-card">
@@ -58,7 +77,7 @@ export default function ItemCard({
           className="item-card__image-container"
           onClick={clickOnImageAndTitleHandler}
         >
-          <img src={images[0]} alt="item" className="item-card__image" />
+          <img src={image} alt="item" className="item-card__image" />
         </div>
 
         <div className="item-card__info">
@@ -66,9 +85,18 @@ export default function ItemCard({
             className="item-card__title"
             onClick={clickOnImageAndTitleHandler}
           >
-            {name}
+            {product?.name}
           </h3>
-          <p className="item-card__price">{price}$</p>
+          <p className="item-card__price">{product?.price}$</p>
+          <div className="item-card__color-wrapper">
+            <div
+              className="item-card__color-cirle"
+              style={{ background: color }}
+            />
+            <p className="item-card__color">{color}</p>/{" "}
+            <p className="item-card__size">{size}</p>
+          </div>
+
           <div className="item-card__quantity">
             <label htmlFor="qty">Qty</label>
             <select

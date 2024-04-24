@@ -30,6 +30,7 @@ const ProductCard: React.FC<ProductProps> = ({
 
   const clickHandler = () => {
     navigate(`/products/${id}`);
+    window.scrollTo(0, 0);
   };
 
   const savedToWishlistHandler = () => {

@@ -15,11 +15,13 @@ import { useFetchProductsByPaginationQuery } from "../../redux/productQuery";
 import { useTheme } from "../../context/useTheme";
 import { useFilter } from "../../context/useFilter";
 import LoadingError from "../../components/LoadingError";
+import { useLocation } from "react-router-dom";
 
 export default function ProductListing() {
   const dispatch = useAppDispatch();
   const { isBigScreen } = useMediaQueries();
   const { theme } = useTheme();
+  const location = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1); // Track the current page
   const [count, setCount] = useState(0);
@@ -31,7 +33,11 @@ export default function ProductListing() {
     size,
     color,
     search,
+    setSort,
+    setSize,
+    setColor,
     setCategoryName,
+    setPriceRange,
   } = useFilter();
 
   const limit = 8;
@@ -66,6 +72,15 @@ export default function ProductListing() {
     setCurrentPage(selectedPage.selected + 1);
     window.scrollTo(0, 0);
   };
+
+  // Todo: reset all filter and sort when user navigate to a new page
+  useEffect(() => {
+    setSort("");
+    setSize("");
+    setColor("");
+    setCategoryName("");
+    setPriceRange([0, 999]);
+  }, [location]);
 
   // handle error
   if (error) {
@@ -102,19 +117,21 @@ export default function ProductListing() {
                 />
               ))}
         </div>
-        <ReactPaginate
-          breakLabel="..."
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={2}
-          marginPagesDisplayed={1}
-          pageCount={Math.ceil(count / limit) || 0}
-          forcePage={currentPage - 1}
-          previousLabel="<"
-          renderOnZeroPageCount={null}
-          containerClassName={`pagination-container ${theme}`}
-          activeClassName="active-page"
-        />
+        {Math.ceil(count / limit) > 1 && (
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={1}
+            pageCount={Math.ceil(count / limit) || 0}
+            forcePage={currentPage - 1}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            containerClassName={`pagination-container ${theme}`}
+            activeClassName="active-page"
+          />
+        )}
       </section>
     </main>
   );

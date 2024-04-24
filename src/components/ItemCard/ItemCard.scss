@@ -71,6 +71,31 @@
         }
       }
 
+      .item-card__color-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+
+        .item-card__color-cirle {
+          height: 1rem;
+          width: 1rem;
+          border-radius: 50%;
+        }
+
+        .item-card__color,
+        .item-card__size {
+          font-size: 0.85rem;
+
+          @include mixs.md-screen {
+            font-size: 0.9rem;
+          }
+
+          @include mixs.lg-screen {
+            font-size: 1rem;
+          }
+        }
+      }
+
       .item-card__quantity {
         display: flex;
         align-items: center;

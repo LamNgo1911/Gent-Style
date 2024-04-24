@@ -11,7 +11,6 @@ import { Product } from "../../misc/types";
 import {
   useFetchASingleProductQuery,
   useFetchProductsByPaginationQuery,
-  useFetchProductsByCategoriesQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
@@ -101,25 +100,14 @@ describe("Product reducer", () => {
   });
 
   test("fetchASingleProductQuery should return a single product", async () => {
-    const productId = 1;
+    const productId = "1";
     const { result } = renderHook(
-      () => useFetchASingleProductQuery(productId),
+      () => useFetchASingleProductQuery(productId as string),
       { wrapper: TestProvider }
     );
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(result.current.data).toEqual(productData[0]);
-  });
-
-  test("fetchProductsByCategoriesQuery should return products by categories", async () => {
-    const categoryId = 1;
-    const { result } = renderHook(
-      () => useFetchProductsByCategoriesQuery(categoryId),
-      { wrapper: TestProvider }
-    );
-
-    await waitFor(() => expect(result.current.isSuccess).toBe(true));
-    expect(result.current.data).toEqual(productData);
   });
 
   test("createProductMutation should create a new product", async () => {

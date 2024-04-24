@@ -42,6 +42,52 @@
       width: 4rem;
     }
   }
+  .product-detail__color-array-skeleton {
+    display: flex;
+    gap: 1rem;
+
+    .product-detail__color-skeleton {
+      width: 2.2rem;
+      height: 2.2rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 50%;
+
+      background-color: #cacaca;
+
+      @include mixs.md-screen {
+        width: 2.3rem;
+        height: 2.3rem;
+      }
+
+      @include mixs.lg-screen {
+        width: 2.4rem;
+        height: 2.4rem;
+      }
+    }
+  }
+  .product-detail__size-array-skeleton {
+    display: flex;
+    gap: 1rem;
+
+    .product-detail__size-skeleton {
+      width: 3rem;
+      height: 2rem;
+      border: 1px solid #e0e0e0;
+      border-radius: 2rem;
+
+      background-color: #cacaca;
+
+      @include mixs.md-screen {
+        width: 3.2rem;
+        height: 2.2rem;
+      }
+
+      @include mixs.lg-screen {
+        width: 3.4rem;
+        height: 2.4rem;
+      }
+    }
+  }
 
   .product-detail__description-skeleton {
     display: flex;

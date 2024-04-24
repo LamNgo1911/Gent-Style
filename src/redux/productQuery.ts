@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Category, Pagination, Product } from "../misc/types";
 import { store } from "./store";
+import { ProductInput } from "../pages/admin/AdminProducts/AdminProducts";
 
 type CategoryData = {
   categories: Category[];
@@ -9,6 +10,10 @@ type CategoryData = {
 export type ProductData = {
   count: number;
   products: Product[];
+};
+
+export type SingleProductData = {
+  product: Product;
 };
 
 const productQueries = createApi({
@@ -34,16 +39,12 @@ const productQueries = createApi({
         `products?sort=${sort}&skip=${skip}&limit=${limit}&size=${size}&color=${color}&search=${search}&category=${category}&priceMin=${priceMin}&priceMax=${priceMax}`,
       providesTags: ["Products"],
     }),
-    fetchASingleProduct: builder.query<Product, number>({
-      query: (productId: number) => `products/${productId}`,
+
+    fetchASingleProduct: builder.query<SingleProductData, string>({
+      query: (productId: string) => `products/${productId}`,
       providesTags: (result, error, productId) => [
         { type: "Products", id: productId },
       ],
-    }),
-
-    fetchProductsByCategories: builder.query<ProductData, number>({
-      query: (categoryId: number) => `products/?categoryId=${categoryId}`,
-      providesTags: ["Products"],
     }),
 
     fetchAllCategories: builder.query<CategoryData, void>({
@@ -52,17 +53,19 @@ const productQueries = createApi({
     }),
 
     // mutation
-    createProduct: builder.mutation<Product, Partial<Product>>({
+    createProduct: builder.mutation<Product, FormData>({
       query: (newProduct) => {
-        const admin = store.getState().users.user?.role === "ADMIN";
-        if (!admin) {
-          throw new Error("User is not authorized to create products");
-        }
+        const access_token = store.getState().users.access_token as string;
+
+        const headers = {
+          Authorization: `Bearer ${access_token}`,
+        };
 
         return {
           url: "products",
           method: "POST",
           body: newProduct,
+          headers,
         };
       },
       invalidatesTags: ["Products"],
@@ -106,7 +109,6 @@ const productQueries = createApi({
 export const {
   useFetchProductsByPaginationQuery,
   useFetchASingleProductQuery,
-  useFetchProductsByCategoriesQuery,
   useCreateProductMutation,
   useUpdateProductMutation,
   useDeleteProductMutation,
