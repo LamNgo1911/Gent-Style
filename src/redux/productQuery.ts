@@ -20,7 +20,7 @@ const productQueries = createApi({
   //base query for all the api calls inside this createApi
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api/v1/",
+    baseUrl: "https://gent-style-backend.onrender.com/api/v1/",
   }),
   tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
