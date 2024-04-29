@@ -6,7 +6,7 @@ export default function SortDropdown() {
 
   return (
     <div className="dropdown">
-      <div className="dropdown__content">
+      <div className="dropdown__content sort">
         {sortOptions?.map(({ label }, i) => (
           <div
             className={`dropdown__btn ${label === sort && "active"}`}
