@@ -1,16 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RiLogoutBoxRLine } from "react-icons/ri";
+import { BsPersonCircle } from "react-icons/bs";
+import Hamburger from "hamburger-react";
+import React, { useEffect, useState } from "react";
 
 import "./AdminNav.scss";
 import { RootState } from "../../../redux/store";
 import { useMediaQueries } from "../../../hooks/useMediaQuery";
 import { adminLinks } from "../../../data/navLinks";
-import React, { useEffect, useState } from "react";
 import { useTheme } from "../../../context/useTheme";
 import logo from "../../../assets/gentStyle-symbol.png";
 import { clearAccessToken } from "../../../redux/slices/userSlice";
-import Hamburger from "hamburger-react";
 
 export default function AdminNav() {
   const { user } = useSelector((state: RootState) => state.users);
@@ -42,7 +43,7 @@ export default function AdminNav() {
         <div className={`adminNav ${theme}`}>
           {/* logo */}
           <div className="adminNav-header__logo" onClick={clickOnLogoHandler}>
-            <img src={logo} alt="logo" className="img-logo" />
+            <BsPersonCircle className="header-avatar" />
           </div>
 
           {/* content */}
@@ -66,7 +67,7 @@ export default function AdminNav() {
         <div className={`adminNav ${theme}`}>
           {/* logo */}
           <div className="adminNav-header__logo" onClick={clickOnLogoHandler}>
-            <img src={logo} alt="logo" className="img-logo" />
+            <BsPersonCircle className="header-avatar" />
           </div>
 
           {/* content */}

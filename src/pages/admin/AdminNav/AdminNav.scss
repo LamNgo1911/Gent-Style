@@ -19,18 +19,8 @@
   }
 
   .adminNav-header__logo {
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-    border: 1px solid;
-    overflow: hidden;
-    cursor: pointer;
-
-    @include mixs.flex-center;
-
-    .img-logo {
-      width: 100%;
-      height: 100%;
+    .header-avatar {
+      font-size: 3rem;
     }
   }
 
