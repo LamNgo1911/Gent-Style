@@ -10,7 +10,6 @@ import Home from "./pages/Home/Home";
 import ProductListing from "./pages/ProductListing";
 import ProductDetail from "./pages/ProductDetail";
 import Checkout from "./pages/Checkout/Checkout";
-import OrderConfirmation from "./pages/OrderConfirmation";
 import SearchResults from "./pages/SearchResults";
 import ContactUs from "./pages/ContactUs";
 import Wishlist from "./pages/Wishlist";

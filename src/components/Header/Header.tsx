@@ -16,6 +16,7 @@ import { AppDispatch, RootState } from "../../redux/store";
 import { useMediaQueries } from "../../hooks/useMediaQuery";
 import { navLinks } from "../../data/navLinks";
 import { getAllCartItemsByUserId } from "../../redux/slices/cartSlice";
+
 export default function Header() {
   // state for mobile version
   const [isOpenDropdownMenu, setIsOpenDropdownMenu] = useState<boolean>(false);

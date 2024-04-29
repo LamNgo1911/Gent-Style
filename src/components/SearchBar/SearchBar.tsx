@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { LuSearch } from "react-icons/lu";
 import { debounce } from "lodash";
 
 import "./SearchBar.scss";
+import { useFilter } from "../../context/useFilter";
+import { useNavigate } from "react-router-dom";
 
 type SearchBarProps = {
   setIsOpenSearchBtn: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,22 +20,29 @@ export default function SearchBar({
   setIsOpenSearchBtn,
   isSmallScreen,
 }: SearchBarProps) {
+  const { search, setSearch } = useFilter();
+  const navigate = useNavigate();
+
   const formRef = useRef<HTMLFormElement>(null);
-  const [debouncedSubmitSearch, setDebouncedSubmitSearch] =
-    useState<SubmitHandler<FormValues> | null>(null);
+  const debouncedSubmitSearchRef = useRef<SubmitHandler<FormValues> | null>(
+    null
+  );
 
   const {
     handleSubmit,
     register,
-    watch,
     formState: { errors },
+    reset,
   } = useForm<FormValues>();
 
-  const onSubmitSearch: SubmitHandler<FormValues> = (data, event) => {
+  const onSubmitSearch: SubmitHandler<FormValues> = (data) => {
     // Handle form submission
+    setSearch(data.searchQuery);
+    navigate("/search-results");
+    reset(); // Reset the form after submission
   };
 
-  // close search bar when users click outside
+  // Close search bar when users click outside
   const handleClickOutsideSearchBar = (event: MouseEvent) => {
     if (formRef.current && !formRef.current.contains(event.target as Node)) {
       setIsOpenSearchBtn(true);
@@ -45,19 +54,19 @@ export default function SearchBar({
     return () => {
       document.removeEventListener("mousedown", handleClickOutsideSearchBar);
     };
-  }, []);
+  }, [setIsOpenSearchBtn]);
 
   useEffect(() => {
     const debouncedHandler = debounce(
       (data: FormValues) => {
-        if (debouncedSubmitSearch) {
-          debouncedSubmitSearch(data);
+        if (debouncedSubmitSearchRef.current) {
+          debouncedSubmitSearchRef.current(data);
         }
       },
-      500 // Debounce delay of 500 milliseconds
+      300 // Debounce delay of 300 milliseconds
     );
 
-    setDebouncedSubmitSearch(() => debouncedHandler);
+    debouncedSubmitSearchRef.current = debouncedHandler;
 
     return () => {
       debouncedHandler.cancel();
@@ -81,9 +90,6 @@ export default function SearchBar({
           type="text"
           placeholder="Search for products"
           {...register("searchQuery")}
-          onChange={(e) =>
-            debouncedSubmitSearch?.({ searchQuery: e.target.value })
-          }
         />
       </div>
     </form>
