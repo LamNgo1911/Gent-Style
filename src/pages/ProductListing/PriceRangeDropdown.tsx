@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Range } from "react-range";
 import { useFilter } from "../../context/useFilter";
 

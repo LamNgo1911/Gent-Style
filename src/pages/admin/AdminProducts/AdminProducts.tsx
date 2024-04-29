@@ -1,8 +1,18 @@
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useForm, useFieldArray } from "react-hook-form";
+import { FaEdit, FaTrash } from "react-icons/fa";
+
 import { RootState } from "../../../redux/store";
-import { useCreateProductMutation } from "../../../redux/productQuery";
+import { useFetchProductsByPaginationQuery } from "../../../redux/productQuery";
+import "./AdminProducts.scss";
+import { useFilter } from "../../../context/useFilter";
+import { useEffect, useState } from "react";
+import LoadingError from "../../../components/LoadingError";
+import ReactPaginate from "react-paginate";
+import { useMediaQueries } from "../../../hooks/useMediaQuery";
+import { useTheme } from "../../../context/useTheme";
+import { useLocation } from "react-router-dom";
+import AdminCreateProduct from "./AdminCreateProduct";
+import AdminUpdateProduct from "./AdminUpdateProduct";
 
 type Variant = {
   color: string;
@@ -20,134 +30,183 @@ export type ProductInput = {
 };
 
 export default function AdminProducts() {
+  const { isBigScreen } = useMediaQueries();
+  const { theme } = useTheme();
+  const location = useLocation();
+
+  const [openCreateProduct, setOpenCreateProduct] = useState(false);
+  const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
+  const [productId, setProductId] = useState("");
+
   const dispatch = useDispatch();
+  const [currentPage, setCurrentPage] = useState(1); // Track the current page
+  const [count, setCount] = useState(0);
+  const limit = 8;
+
+  const {
+    categoryName,
+    priceRange,
+    sort,
+    size,
+    color,
+    search,
+    setSort,
+    setSize,
+    setColor,
+    setCategoryName,
+    setPriceRange,
+  } = useFilter();
+
+  useEffect(() => {
+    setCurrentPage(1); // Reset the current page when the filters change
+  }, [sort, size, color, search, categoryName, priceRange]);
+
+  const skip = (currentPage - 1) * limit;
+
+  const {
+    data: productsByPagination,
+    isLoading,
+    error: productsError,
+  } = useFetchProductsByPaginationQuery({
+    sort,
+    skip,
+    limit,
+    size,
+    color,
+    search,
+    category: categoryName,
+    priceMin: Number(priceRange[0]),
+    priceMax: Number(priceRange[1]),
+  });
 
   const { error } = useSelector((state: RootState) => state.products);
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<ProductInput>();
+  useEffect(() => {
+    setCount(productsByPagination?.count as number);
+  }, [productsByPagination]);
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "variants",
-  });
-
-  const [createProductMutation, { isLoading, error: createProductError }] =
-    useCreateProductMutation(); // Destructure the mutation function and isLoading flag
-  const onSubmit = async (data: ProductInput) => {
-    try {
-      const formData = new FormData();
-      formData.append("name", data.name);
-      formData.append("price", data.price.toString());
-      formData.append("description", data.description);
-      formData.append("category", data.category);
-
-      data.variants.forEach((variant, index) => {
-        formData.append(`variants[${index}][color]`, variant.color);
-        formData.append(`variants[${index}][size]`, variant.size);
-        formData.append(`variants[${index}][stock]`, variant.stock.toString());
-      });
-
-      if (data.images) {
-        for (let i = 0; i < data.images.length; i++) {
-          formData.append("images", data.images[i]);
-        }
-      }
-      console.log("Form Data:");
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
-      await createProductMutation(formData);
-      alert("Product created successfully!");
-    } catch (error) {
-      // Handle the error
-      alert("Sth went Wrong. Please try it again");
-    }
+  const handlePageClick = (selectedPage: { selected: number }) => {
+    setCurrentPage(selectedPage.selected + 1);
+    window.scrollTo(0, 0);
   };
 
+  useEffect(() => {
+    setSort("");
+    setSize("");
+    setColor("");
+    setCategoryName("");
+    setPriceRange([0, 999]);
+  }, [location]);
+
+  const handleCreateProduct = () => {
+    setOpenCreateProduct(true);
+  };
+
+  const handleUpdateProduct = (productId: string) => {
+    setProductId(productId);
+    setOpenUpdateProduct(true);
+  };
+
+  const handleDeleteProduct = () => {};
+
+  // handle error
+  if (error) {
+    return <LoadingError />;
+  }
+  console.log(openCreateProduct, openUpdateProduct);
+
   return (
-    <div>
-      <h1>Create Product</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Name:</label>
-          <input type="text" {...register("name", { required: true })} />
-          {errors.name && <span>This field is required</span>}
-        </div>
-        <div>
-          <label>Price:</label>
-          <input type="text" {...register("price", { required: true })} />
-          {errors.price && <span>This field is required</span>}
-        </div>
-        <div>
-          <label>Description:</label>
-          <input type="text" {...register("description", { required: true })} />
-          {errors.description && <span>This field is required</span>}
-        </div>
-        <div>
-          <label>Category:</label>
-          <input type="text" {...register("category", { required: true })} />
-          {errors.category && <span>This field is required</span>}
-        </div>
-        <div>
-          <label>Variants:</label>
-          {fields.map((field, index) => (
-            <div key={field.id}>
-              <label>Color:</label>
-              <input
-                type="text"
-                {...register(`variants.${index}.color`, { required: true })}
-              />
-              {errors.variants?.[index]?.color && (
-                <span>This field is required</span>
-              )}
+    <>
+      <div className="admin-product">
+        <button className="create-btn" onClick={handleCreateProduct}>
+          Create Product
+        </button>
+        {(productsByPagination?.products?.length as number) > 0 ? (
+          <div className="table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>image</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
 
-              <label>Size:</label>
-              <input
-                type="text"
-                {...register(`variants.${index}.size`, { required: true })}
-              />
-              {errors.variants?.[index]?.size && (
-                <span>This field is required</span>
-              )}
+              <tbody>
+                {productsByPagination?.products?.map((product) => (
+                  <tr key={product.id}>
+                    <td>{product.id}</td>
+                    <td>{product.name}</td>
+                    <td>{product.price}</td>
+                    <td>{product.category.id}</td>
+                    <td>
+                      <img
+                        className="product-img"
+                        src={product.images[0]}
+                        alt="product"
+                      />
+                    </td>
+                    <td>
+                      <div className="actions-btns">
+                        <FaEdit
+                          onClick={() => handleUpdateProduct(product.id)}
+                          className="actions-btn"
+                        />{" "}
+                        {/* Update icon */}
+                        <FaTrash
+                          onClick={handleDeleteProduct}
+                          className="actions-btn"
+                        />{" "}
+                        {/* Delete icon */}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="not-found">
+            <p>No items found!</p>
+          </div>
+        )}
+        {Math.ceil(count / limit) > 1 && (
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={2}
+            marginPagesDisplayed={1}
+            pageCount={Math.ceil(count / limit) || 0}
+            forcePage={currentPage - 1}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            containerClassName={`pagination-container ${theme}`}
+            activeClassName="active-page"
+          />
+        )}
+      </div>
 
-              <label>Stock:</label>
-              <input
-                type="text"
-                {...register(`variants.${index}.stock`, {
-                  required: true,
-                })}
-              />
-              {errors.variants?.[index]?.stock && (
-                <span>This field is required</span>
-              )}
-
-              <button type="button" onClick={() => remove(index)}>
-                Remove Variant
-              </button>
-            </div>
-          ))}
-
-          <button
-            type="button"
-            onClick={() => append({ color: "", size: "", stock: 0 })}
-          >
-            Add Variant
-          </button>
-
-          {errors.variants && <span>At least one variant is required</span>}
+      <div className={`create-product-dropdown ${openCreateProduct && "open"}`}>
+        <div className="create-product-dropdown-wrapper">
+          <AdminCreateProduct
+            openCreateProduct={openCreateProduct}
+            setOpenCreateProduct={setOpenCreateProduct}
+          />
         </div>
-        <div>
-          <label>Images:</label>
-          <input type="file" {...register("images")} multiple />
-          {errors.images && <span>This field is required</span>}
+      </div>
+
+      <div className={`update-product-dropdown ${openUpdateProduct && "open"}`}>
+        <div className="update-product-dropdown-wrapper">
+          <AdminUpdateProduct
+            setOpenUpdateProduct={setOpenUpdateProduct}
+            productId={productId}
+          />
         </div>
-        <button type="submit">Create Product</button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }

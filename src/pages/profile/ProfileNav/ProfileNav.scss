@@ -69,9 +69,18 @@
         }
 
         &.list-link.btn {
+          margin-left: 0;
           border: none;
+          border-radius: 0%;
         }
       }
     }
   }
+}
+
+.hamburger {
+  position: fixed;
+  top: 3px;
+  right: 3px;
+  z-index: 999;
 }

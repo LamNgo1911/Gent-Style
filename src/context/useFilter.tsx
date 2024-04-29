@@ -7,9 +7,6 @@ import React, {
   Dispatch,
 } from "react";
 
-import { RootState } from "../redux/store";
-import { useSelector } from "react-redux";
-
 type FilterContextProps = {
   sort: string;
   setSort: Dispatch<SetStateAction<string>>;

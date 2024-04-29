@@ -1,4 +1,8 @@
 import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { ReactNode, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -13,13 +17,11 @@ import Wishlist from "./pages/Wishlist";
 import MyDetails from "./pages/profile/MyDetails";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import { useSelector } from "react-redux";
-import { RootState } from "./redux/store";
+import { AppDispatch, RootState } from "./redux/store";
 import Admin from "./pages/admin/Dashboard";
 import { useTheme } from "./context/useTheme";
 import Sale from "./pages/Sale";
 import Cart from "./pages/Cart";
-import { ReactNode, useEffect } from "react";
 import NotFound from "./pages/NotFound";
 import { useMediaQueries } from "./hooks/useMediaQuery";
 import ProfileNav from "./pages/profile/ProfileNav";
@@ -27,12 +29,37 @@ import Profile from "./pages/profile/Profile";
 import AdminNav from "./pages/admin/AdminNav";
 import AdminHeader from "./pages/admin/AdminHeader";
 import AdminProducts from "./pages/admin/AdminProducts";
+import {
+  clearMessage,
+  createPaymentIntent,
+  setMessage,
+} from "./redux/slices/orderSlice";
+import { User } from "./misc/types";
+import Message from "./components/Message";
+import MyOrders from "./pages/profile/MyOrders";
+
+const stripePromise = loadStripe(
+  "pk_test_51MJsP5KH2yzWbNLa477iwDtwOcwH6ZPsv4AjCJ0dcO0CbRN6PrPdX540JwI8XuKiSirYCm0usOoKdPy0vl2i2nTO00oGAmXqS9"
+);
 
 function App() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
+  const location = useLocation();
+  const dispatchAction = useDispatch();
+
   const { theme } = useTheme();
-  const { user, access_token } = useSelector((state: RootState) => state.users);
+
+  const { access_token } = useSelector((state: RootState) => state.users);
+  const user = useSelector((state: RootState) => state.users.user) as User;
+  const { total } = useSelector((state: RootState) => state.carts);
+  const clientSecret = useSelector(
+    (state: RootState) => state.orders.clientSecret
+  ) as string;
+
+  const message = useSelector((state: RootState) => state.orders.message);
+
   const { isSmallScreen } = useMediaQueries();
   const isAuthPage =
     pathname === "/login" ||
@@ -65,13 +92,31 @@ function App() {
     return (
       <div className="admin-nesting">
         <AdminNav />
-        <div>
-          {/* <AdminHeader /> */}
+        <div className="admin-content">
+          <AdminHeader />
           {component}
         </div>
       </div>
     );
   };
+  useEffect(() => {
+    const getPaymentIntent = async () => {
+      await dispatch(createPaymentIntent({ userId: user?.id, total }));
+    };
+    getPaymentIntent();
+  }, [total, user?.id, dispatch]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const successParam = params.get("success");
+
+    if (successParam === "true") {
+      dispatchAction(setMessage("Payment succeeded!"));
+      setTimeout(() => {
+        dispatchAction(clearMessage());
+      }, 3000);
+    }
+  }, [location, dispatchAction]);
 
   return (
     <div className={`App ${theme}`}>
@@ -89,12 +134,21 @@ function App() {
         <Route path="/search-results" element={<SearchResults />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        {clientSecret && total > 0.5 && (
+          <Route
+            path="/checkout"
+            element={[
+              <Elements options={{ clientSecret }} stripe={stripePromise}>
+                <Checkout />
+              </Elements>,
+            ]}
+          />
+        )}
         {access_token && isSmallScreen ? (
           <>
             <Route path="/profile" element={<ProfileNav />} />
             <Route path="/profile/my-details" element={<MyDetails />} />
+            <Route path="/profile/my-orders" element={<MyOrders />} />
           </>
         ) : (
           <>
@@ -105,6 +159,10 @@ function App() {
             <Route
               path="/profile/my-details"
               element={<ProfileNesting component={<MyDetails />} />}
+            />
+            <Route
+              path="/profile/my-orders"
+              element={<ProfileNesting component={<MyOrders />} />}
             />
           </>
         )}
@@ -124,6 +182,9 @@ function App() {
       </Routes>
 
       {!isAuthPage && <Footer />}
+
+      {/* Message */}
+      {message && <Message text={message} />}
     </div>
   );
 }

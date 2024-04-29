@@ -17,16 +17,14 @@ export default function MyDetails() {
   ) as string;
   const error = useSelector((state: RootState) => state.users.error) as string;
 
-  console.log(error);
-
-  const { isSmallScreen, isBigScreen } = useMediaQueries();
+  const { isSmallScreen } = useMediaQueries();
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
 
   const [editModeUserInfo, setEditModeUserInfo] = useState(false);
   const [editModePassword, setEditModePassword] = useState(false);
-  const [editedUsername, setEditedUsername] = useState("");
-  const [editedEmail, setEditedEmail] = useState("");
+  const [editedUsername, setEditedUsername] = useState(user?.username || "");
+  const [editedEmail, setEditedEmail] = useState(user?.email || "");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
@@ -83,6 +81,7 @@ export default function MyDetails() {
             <input
               type="text"
               value={editedUsername}
+              className="credential"
               onChange={(e) => setEditedUsername(e.target.value)}
             />
           ) : (
@@ -99,6 +98,7 @@ export default function MyDetails() {
           <h2>Email</h2>
           {editModeUserInfo ? (
             <input
+              className="credential"
               type="email"
               value={editedEmail}
               onChange={(e) => setEditedEmail(e.target.value)}
@@ -118,12 +118,19 @@ export default function MyDetails() {
         {/* update info */}
         <div>
           {editModeUserInfo ? (
-            <div>
-              <button onClick={handleSubmitUserInfo}>Save</button>
-              <button onClick={() => setEditModeUserInfo(false)}>Cancel</button>
+            <div className="save-cancel-btns">
+              <button className="btn" onClick={handleSubmitUserInfo}>
+                Save
+              </button>
+              <button
+                className="btn"
+                onClick={() => setEditModeUserInfo(false)}
+              >
+                Cancel
+              </button>
             </div>
           ) : (
-            <button onClick={() => setEditModeUserInfo(true)}>
+            <button className="btn" onClick={() => setEditModeUserInfo(true)}>
               Update your information
             </button>
           )}
@@ -133,27 +140,38 @@ export default function MyDetails() {
       {/* update password */}
       <div>
         {editModePassword ? (
-          <div>
+          <div className="password-update">
             <input
               type="password"
               placeholder="Old Password"
               value={oldPassword}
               onChange={(e) => setOldPassword(e.target.value)}
+              className="credential"
             />
             <input
               type="password"
               placeholder="New Password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
+              className="credential"
             />
             {error && editModePassword && (
               <span className="error">{error}</span>
             )}
-            <button onClick={handleSubmitPassword}>Save</button>
-            <button onClick={() => setEditModePassword(false)}>Cancel</button>
+            <div className="save-cancel-btns">
+              <button className="btn" onClick={handleSubmitPassword}>
+                Save
+              </button>
+              <button
+                className="btn"
+                onClick={() => setEditModePassword(false)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         ) : (
-          <button onClick={() => setEditModePassword(true)}>
+          <button className="btn" onClick={() => setEditModePassword(true)}>
             Change your password
           </button>
         )}

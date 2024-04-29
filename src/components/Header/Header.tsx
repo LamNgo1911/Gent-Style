@@ -54,10 +54,12 @@ export default function Header() {
 
   // Todo: Fetch all cartItems count.
   useEffect(() => {
-    const fetchCartItems = async () => {
-      await dispatch(getAllCartItemsByUserId(access_token as string));
-    };
-    fetchCartItems();
+    if (access_token) {
+      const fetchCartItems = async () => {
+        await dispatch(getAllCartItemsByUserId(access_token));
+      };
+      fetchCartItems();
+    }
   }, [dispatch, access_token]);
 
   return (

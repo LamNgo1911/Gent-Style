@@ -1,24 +1,19 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { useLocation } from "react-router-dom";
 
 import "./ProductListing.scss";
 import ProductCard from "../../components/ProductCard";
 import { useMediaQueries } from "../../hooks/useMediaQuery";
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch } from "../../redux/store";
 import ProductCardSkeleton from "../../components/loading/ProductCardSkeleton";
-import { fetchAllProducts } from "../../redux/slices/productSlice";
 import FilterBigScreen from "./FilterBigScreen";
-import { productData } from "../../data/productData";
 import FilterSmallScreen from "./FilterSmallScreen";
-import ReactPaginate from "react-paginate";
 import { useFetchProductsByPaginationQuery } from "../../redux/productQuery";
 import { useTheme } from "../../context/useTheme";
 import { useFilter } from "../../context/useFilter";
 import LoadingError from "../../components/LoadingError";
-import { useLocation } from "react-router-dom";
 
 export default function ProductListing() {
-  const dispatch = useAppDispatch();
   const { isBigScreen } = useMediaQueries();
   const { theme } = useTheme();
   const location = useLocation();

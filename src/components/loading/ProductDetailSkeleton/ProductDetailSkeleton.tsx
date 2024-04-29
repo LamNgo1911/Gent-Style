@@ -1,4 +1,3 @@
-import { ColorOptions } from "../../../misc/types";
 import "./ProductDetailSkeleton.scss";
 
 export default function ProductDetailSkeleton() {

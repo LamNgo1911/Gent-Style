@@ -3,7 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./slices/userSlice";
 import productReducer from "./slices/productSlice";
 import cartReducer from "./slices/cartSlice";
-
+import orderReducer from "./slices/orderSlice";
 import { useDispatch } from "react-redux";
 import productQueries from "./productQuery";
 
@@ -12,6 +12,7 @@ export const store = configureStore({
     products: productReducer,
     carts: cartReducer,
     users: userSlice,
+    orders: orderReducer,
     [productQueries.reducerPath]: productQueries.reducer,
   },
 
@@ -41,6 +42,7 @@ export const newStore = () => {
       products: productReducer,
       carts: cartReducer,
       users: userSlice,
+      orderReducer,
       [productQueries.reducerPath]: productQueries.reducer,
     },
 

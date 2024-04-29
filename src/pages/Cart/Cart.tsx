@@ -4,23 +4,39 @@ import "./Cart.scss";
 import { AppDispatch, RootState } from "../../redux/store";
 import ItemCard from "../../components/ItemCard";
 import EmptyCart from "./EmptyCart";
-import { CartItem } from "../../misc/types";
+import { CartItem, User } from "../../misc/types";
 import { useEffect } from "react";
 import { getAllCartItemsByUserId } from "../../redux/slices/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { createPaymentIntent } from "../../redux/slices/orderSlice";
 
 export default function Cart() {
+  const navigate = useNavigate();
   const { items, total } = useSelector((state: RootState) => state.carts);
   const access_token = useSelector(
     (state: RootState) => state.users.access_token
   ) as string;
+  const user = useSelector((state: RootState) => state.users.user) as User;
   const dispatch: AppDispatch = useDispatch();
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      await dispatch(getAllCartItemsByUserId(access_token));
-    };
-    fetchCartItems();
+    if (access_token) {
+      const fetchCartItems = async () => {
+        await dispatch(getAllCartItemsByUserId(access_token));
+      };
+      fetchCartItems();
+    }
   }, [dispatch, access_token]);
+
+  const handleCheckout = async () => {
+    const PaymentIntentData = await dispatch(
+      createPaymentIntent({ userId: user?.id, total })
+    );
+
+    if (PaymentIntentData.type === "order/createPaymentIntent/fulfilled") {
+      navigate("/checkout");
+    }
+  };
 
   return (
     <>
@@ -67,7 +83,9 @@ export default function Cart() {
                 <p>10$</p>
               </div>
             </div>
-            <button className="cart-total__btn">CHECKOUT</button>
+            <button onClick={handleCheckout} className="cart-total__btn">
+              CHECKOUT
+            </button>
           </section>
         </main>
       ) : (

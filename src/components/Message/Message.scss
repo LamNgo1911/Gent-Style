@@ -1,0 +1,31 @@
+.message {
+  background: linear-gradient(45deg, #ffcc00, #ff3366);
+  color: #333;
+  padding: 1.5rem;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  text-align: center;
+  position: fixed;
+  z-index: 999;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  max-width: 90%;
+
+  &.show-message {
+    animation: fade-in 0.5s ease-in-out forwards;
+  }
+
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+  }
+}

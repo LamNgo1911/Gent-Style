@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { Category, Pagination, Product } from "../misc/types";
 import { store } from "./store";
-import { ProductInput } from "../pages/admin/AdminProducts/AdminProducts";
+import { axiosApi, url } from "../config/axiosApi";
 
 type CategoryData = {
   categories: Category[];
@@ -16,11 +16,16 @@ export type SingleProductData = {
   product: Product;
 };
 
+export type updateProductData = {
+  data: FormData;
+  productId: string;
+};
+
 const productQueries = createApi({
   //base query for all the api calls inside this createApi
   reducerPath: "productApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://gent-style-backend.onrender.com/api/v1/",
+    baseUrl: url,
   }),
   tagTypes: ["Products", "Categories"],
   endpoints: (builder) => ({
@@ -36,19 +41,19 @@ const productQueries = createApi({
         priceMin,
         priceMax,
       }) =>
-        `products?sort=${sort}&skip=${skip}&limit=${limit}&size=${size}&color=${color}&search=${search}&category=${category}&priceMin=${priceMin}&priceMax=${priceMax}`,
+        `/products?sort=${sort}&skip=${skip}&limit=${limit}&size=${size}&color=${color}&search=${search}&category=${category}&priceMin=${priceMin}&priceMax=${priceMax}`,
       providesTags: ["Products"],
     }),
 
     fetchASingleProduct: builder.query<SingleProductData, string>({
-      query: (productId: string) => `products/${productId}`,
+      query: (productId: string) => `/products/${productId}`,
       providesTags: (result, error, productId) => [
         { type: "Products", id: productId },
       ],
     }),
 
     fetchAllCategories: builder.query<CategoryData, void>({
-      query: () => `categories`,
+      query: () => `/categories`,
       providesTags: ["Categories"],
     }),
 
@@ -62,7 +67,7 @@ const productQueries = createApi({
         };
 
         return {
-          url: "products",
+          url: "/products",
           method: "POST",
           body: newProduct,
           headers,
@@ -71,21 +76,23 @@ const productQueries = createApi({
       invalidatesTags: ["Products"],
     }),
 
-    updateProduct: builder.mutation<Product, Partial<Product>>({
-      query: (updatedProduct) => {
-        const admin = store.getState().users.user?.role === "ADMIN";
-        if (!admin) {
-          throw new Error("User is not authorized to create products");
-        }
+    updateProduct: builder.mutation<Product, updateProductData>({
+      query: (updatedProductData) => {
+        const access_token = store.getState().users.access_token as string;
+
+        const headers = {
+          Authorization: `Bearer ${access_token}`,
+        };
 
         return {
-          url: `products/${updatedProduct.id}`,
+          url: `/products/${updatedProductData.productId}`,
           method: "PUT",
-          body: updatedProduct,
+          body: updatedProductData.data,
+          headers,
         };
       },
-      invalidatesTags: (result, error, updatedProduct) => [
-        { type: "Products", id: updatedProduct.id },
+      invalidatesTags: (result, error, updatedProductData) => [
+        { type: "Products", id: updatedProductData.productId },
       ],
     }),
 
@@ -97,7 +104,7 @@ const productQueries = createApi({
         }
 
         return {
-          url: `products/${productId}`,
+          url: `/products/${productId}`,
           method: "DELETE",
         };
       },

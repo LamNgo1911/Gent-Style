@@ -43,12 +43,33 @@
         font-size: 1.2rem;
         padding: 0 1rem;
       }
-      .credential {
-        padding: 1rem;
-        margin: 0 1rem;
-        background: #cacaca;
-        color: #333;
-      }
     }
   }
+}
+
+.btn {
+  margin-left: 1rem;
+  @include mixs.button-style();
+  padding: 0.6rem 1rem;
+}
+
+.save-cancel-btns {
+  display: flex;
+  gap: 2rem;
+}
+
+.password-update {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.credential {
+  padding: 1rem;
+  margin: 0 1rem;
+  background: #cacaca;
+  color: #333;
+  outline: none;
+  border: none;
+  width: 60%;
 }

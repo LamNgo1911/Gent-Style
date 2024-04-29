@@ -170,19 +170,23 @@ export type Shipment = {
   method: string;
   trackingNumber: string;
   address: ShippingAddress;
-};
-
-export type OrderItem = {
-  id: string;
-  quantity: number;
-  product: Product[];
-};
+}
 
 export type Order = {
   id: string;
   userId: string;
   shipment: Shipment;
   priceSum: number;
-  orderItems: OrderItem[];
+  clientSecret: string;
+  orderItems: CartItem[];
+  status: OrderStatus;
+};
+
+export type OrderInput = {
+  userId: string;
+  shipment: Shipment;
+  priceSum: number;
+  clientSecret: string;
+  orderItems: CartItem[];
   status: OrderStatus;
 };

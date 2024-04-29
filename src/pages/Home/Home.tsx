@@ -42,7 +42,7 @@ export default function Home() {
   useEffect(() => {
     const getProducts = async () => {
       // logic
-      const productData = await dispatch(fetchAllProducts());
+      await dispatch(fetchAllProducts());
     };
     getProducts();
   }, [dispatch]);

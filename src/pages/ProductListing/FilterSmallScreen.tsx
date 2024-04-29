@@ -18,8 +18,7 @@ export default function FilterSmallScreen() {
     useState<boolean>(false);
   const [openFilterType, setOpenFilterType] = useState<boolean>(false);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [newFilterSmOptions, setNewFilterSmOptions] =
-    useState<FilterOption[]>(filterSmOptions);
+  const [newFilterSmOptions] = useState<FilterOption[]>(filterSmOptions);
 
   const { theme } = useTheme();
 
