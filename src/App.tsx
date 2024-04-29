@@ -100,10 +100,12 @@ function App() {
     );
   };
   useEffect(() => {
-    const getPaymentIntent = async () => {
-      await dispatch(createPaymentIntent({ userId: user?.id, total }));
-    };
-    getPaymentIntent();
+    if (user?.id && total > 0.5) {
+      const getPaymentIntent = async () => {
+        await dispatch(createPaymentIntent({ userId: user?.id, total }));
+      };
+      getPaymentIntent();
+    }
   }, [total, user?.id, dispatch]);
 
   useEffect(() => {

@@ -15,7 +15,7 @@ export default function AdminHeader() {
   const { isSmallScreen, isBigScreen } = useMediaQueries();
 
   return (
-    <header className="header-container">
+    <header className="header-container-admin">
       <div className="header-greeting">
         <h1>Hello {user?.username}</h1>
         <p>Let's check your stats today</p>
