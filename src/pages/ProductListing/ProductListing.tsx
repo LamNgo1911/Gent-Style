@@ -28,6 +28,7 @@ export default function ProductListing() {
     size,
     color,
     search,
+    setSearch,
     setSort,
     setSize,
     setColor,
@@ -74,6 +75,7 @@ export default function ProductListing() {
     setSize("");
     setColor("");
     setCategoryName("");
+    setSearch("");
     setPriceRange([0, 999]);
   }, [location]);
 
