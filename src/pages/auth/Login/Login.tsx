@@ -49,7 +49,12 @@ export default function Login() {
 
   const googleLoginSuccessHandler = async (credentialResponse: any) => {
     if (credentialResponse.credential) {
-      await dispatch(fetchLoginGoogle());
+      const userGoogleData = await dispatch(
+        fetchLoginGoogle(credentialResponse.credential)
+      );
+      if (userGoogleData.type === "user/fetchLoginGoogle/fulfilled") {
+        navigate("/");
+      }
     }
   };
 

@@ -69,14 +69,22 @@ export const fetchLogin = createAsyncThunk<UserInformation, LoginInfo>(
   }
 );
 
-export const fetchLoginGoogle = createAsyncThunk<UserInformation>(
+export const fetchLoginGoogle = createAsyncThunk<UserInformation, string>(
   "user/fetchLoginGoogle",
-  async (_, { rejectWithValue }) => {
+  async (access_token, { rejectWithValue }) => {
+    console.log(access_token);
     try {
-      const userData = await axiosApi.post("users/google-authenticate", {});
+      const userData = await axiosApi.post(
+        "users/google-authenticate",
+        {},
+        {
+          headers: { Authorization: `Bearer ${access_token}` },
+        }
+      );
 
       return userData.data;
     } catch (error: any) {
+      console.log(error);
       return rejectWithValue(error.response.data.message);
     }
   }
