@@ -27,6 +27,7 @@ export default function Checkout() {
   const elements = useElements();
   const dispatch: AppDispatch = useDispatch();
   const dispatchAction = useDispatch();
+
   const clientSecret = useSelector(
     (state: RootState) => state.orders.clientSecret
   ) as string;
@@ -38,10 +39,11 @@ export default function Checkout() {
   const cartItems = useSelector(
     (state: RootState) => state.carts.items
   ) as CartItem[];
-
   const address = useSelector(
     (state: RootState) => state.orders.address
   ) as ShippingAddress;
+
+  const baseUrl = window.location.origin;
 
   const { theme } = useTheme();
 
@@ -132,7 +134,7 @@ export default function Checkout() {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: "http://localhost:3000/profile/my-orders?success=true",
+          return_url: `${baseUrl}/profile/my-orders?success=true`,
         },
       });
 
