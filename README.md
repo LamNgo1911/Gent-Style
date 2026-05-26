@@ -32,7 +32,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 ### Prerequisites
 
-- Node Js (at least version 16.18.0)
+- Node.js (at least version 16.18.0)
 - Git
 - Package Manager: Either npm or Yarn
 
@@ -61,7 +61,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
   ![register-img](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/5b58c655-ea02-451a-8d79-0db63b7106e5)
   ![login-img](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/943341d5-1da4-413b-9060-74da26a265d7)
 
-- Browse products, categories and, search products by product name
+- Browse products, categories, and search products by product name
 
   ![product-listing](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/e09098fe-8055-4e78-abac-36c29dea60cb)
   ![product-detail](https://github.com/LamNgo1911/fs17-Frontend-project/assets/121915847/14ba2204-8fd7-47c5-a0ab-9334ffd07582)
@@ -152,7 +152,7 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 
 ### Prerequisites
 
-- Node Js (at least version 16.18.0)
+- Node.js (at least version 16.18.0)
 - Git
 - Package Manager: Either npm or Yarn
 
@@ -230,8 +230,8 @@ The e-commerce application is a platform dedicated to men's fashion, offering a 
 - The components are organized based on their functionality and can be reused across different pages. The main components include:
 
   - Header: Displays the navigation bar and user-related actions.
-  - ProductCard: Displays product information. It includes an image, product name, price, description
-  - Slider: Displays a list of products with different swiping styles, such as pagination, scrollbar or navigation.
+  - ProductCard: Displays product information. It includes an image, product name, price, and description
+  - Slider: Displays a list of products with different swiping styles, such as pagination, scrollbar, or navigation.
   - ImageCard: Displays multiple product images, including a main image and thumbnail views. It enables users to have different perspectives and views of a product.
 
 ### Testing
